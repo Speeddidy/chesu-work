@@ -1,290 +1,543 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Работа в Грозном</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header id="main-header" class="main-header">
-<div class="logo">
-<span>Работа в Грозном</span>
-</div>
-<nav id="header-nav">
-<select id="city-select" onchange="searchJobs()">
-  <option>Вся Россия</option>
-  <option selected>Грозный</option>
-</select>
-<a href="#" onclick="showFavorites()"><i class="fas fa-heart"></i></a>
-<a href="#" onclick="showResponses()"><i class="fas fa-check"></i></a>
-<a href="#" id="auth-link">Войти</a>
-</nav>
-</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Работа в Грозном</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="main-header" class="main-header">
+      <div class="logo">
+        <span>Работа в Грозном</span>
+      </div>
+      <nav id="header-nav">
+        <select id="city-select" onchange="searchJobs()">
+          <option>Вся Россия</option>
+          <option selected>Грозный</option>
+        </select>
+        <a href="#" onclick="showResponses()"><i class="fas fa-check"></i></a>
+        <a href="#" onclick="showFavorites()"><i class="fas fa-heart"></i></a>
+        <a href="#" id="auth-link">Войти</a>
+      </nav>
+    </header>
 
-<header id="auth-header" style="display: none;">
-<div class="logo">
-<span>Работа в Грозном</span>
-</div>
-</header>
+    <header id="auth-header" style="display: none">
+      <div class="logo">
+        <span>Работа в Грозном</span>
+      </div>
+    </header>
 
-<div id="main-section" class="main-section active">
-<div class="search-container">
-<div class="search-main">
-  <div class="search-input-container">
-    <input type="text" id="search-input" placeholder="Поиск по вакансиям..." oninput="searchJobs()">
-    <button id="clear-input" class="clear-input" onclick="clearSearch()">✕</button>
-  </div>
-  <button onclick="searchJobs()">Найти</button>
-  <button class="filter-toggle" onclick="openFilterModal()"><i class="fas fa-filter"></i></button>
-</div>
-</div>
+    <div id="main-section" class="main-section active">
+      <div class="search-container">
+        <div class="search-main">
+          <div class="search-input-container">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Поиск по вакансиям..."
+              oninput="searchJobs()"
+            />
+            <button
+              id="clear-input"
+              class="clear-input"
+              onclick="clearSearch()"
+            >
+              ✕
+            </button>
+          </div>
+          <button onclick="searchJobs()">Найти</button>
+          <button class="filter-toggle" onclick="openFilterModal()">
+            <i class="fas fa-filter"></i>
+          </button>
+        </div>
+      </div>
 
-<div class="sort-container">
-<select id="sort-select" onchange="sortJobs()">
-  <option value="default">По умолчанию</option>
-  <option value="salary-desc">По убыванию зарплаты</option>
-  <option value="salary-asc">По возрастанию зарплаты</option>
-</select>
-</div>
+      <div class="sort-container">
+        <select id="sort-select" onchange="sortJobs()">
+          <option value="default">По умолчанию</option>
+          <option value="salary-desc">По убыванию зарплаты</option>
+          <option value="salary-asc">По возрастанию зарплаты</option>
+        </select>
+      </div>
 
-<h2 class="favorites-title">Избранные вакансии</h2>
+      <h2 class="favorites-title">Избранные вакансии</h2>
 
-<div class="map-list-container">
-<div class="map-column">
-  <div id="map"></div>
-  <div id="map-error" class="map-error">Ошибка загрузки карты</div>
-</div>
-<div id="job-list" class="list-column hidden"></div>
-</div>
+      <div class="map-list-container">
+        <div class="map-column">
+          <div id="map"></div>
+          <div id="map-error" class="map-error">Ошибка загрузки карты</div>
+        </div>
+        <div id="job-list" class="list-column hidden"></div>
+      </div>
 
-<div class="list-toggle">
-<button id="toggle-list-btn" onclick="toggleList()">Показать список</button>
-</div>
-</div>
+      <div class="list-toggle">
+        <button id="toggle-list-btn" onclick="toggleList()">
+          Показать список
+        </button>
+      </div>
+    </div>
 
-<div id="auth-section" class="auth-section">
-<div class="auth-container">
-<div class="tabs">
-  <div class="tab active" onclick="showTab('login')">Вход</div>
-  <div class="tab" onclick="showTab('register')">Регистрация</div>
-</div>
-<div id="login-form" class="auth-form active">
-  <input type="email" id="login-email" placeholder="Электронная почта" required>
-  <input type="password" id="login-password" placeholder="Пароль" required>
-  <button onclick="handleLogin()">Войти</button>
-  <div id="login-error" class="error-message">Неверный email или пароль</div>
-</div>
-<div id="register-form" class="auth-form">
-  <input type="text" id="register-name" placeholder="Имя" required>
-  <input type="email" id="register-email" placeholder="Электронная почта" required>
-  <input type="password" id="register-password" placeholder="Пароль" required>
-  <button onclick="handleRegister()">Зарегистрироваться</button>
-  <div id="register-error" class="error-message">Пользователь уже существует</div>
-</div>
-<div class="role-selection">
-  <button id="role-jobseeker" class="role-btn active" onclick="selectRole('jobseeker')">Соискатель</button>
-  <button id="role-employer" class="role-btn" onclick="selectRole('employer')">Работодатель</button>
-</div>
-</div>
-</div>
+    <div id="auth-section" class="auth-section">
+      <div class="auth-container">
+        <div class="tabs">
+          <div class="tab active" onclick="showTab('login')">Вход</div>
+          <div class="tab" onclick="showTab('register')">Регистрация</div>
+        </div>
+        <div id="login-form" class="auth-form active">
+          <input
+            type="email"
+            id="login-email"
+            placeholder="Электронная почта"
+            required
+          />
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Пароль"
+            required
+          />
+          <button onclick="handleLogin()">Войти</button>
+          <div id="login-error" class="error-message">
+            Неверный email или пароль
+          </div>
+        </div>
+        <div id="register-form" class="auth-form">
+          <input type="text" id="register-name" placeholder="Имя" required />
+          <input
+            type="email"
+            id="register-email"
+            placeholder="Электронная почта"
+            required
+          />
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Пароль"
+            required
+          />
+          <button onclick="handleRegister()">Зарегистрироваться</button>
+          <div id="register-error" class="error-message">
+            Пользователь уже существует
+          </div>
+        </div>
+        <div class="role-selection">
+          <button
+            id="role-jobseeker"
+            class="role-btn active"
+            onclick="selectRole('jobseeker')"
+          >
+            Соискатель
+          </button>
+          <button
+            id="role-employer"
+            class="role-btn"
+            onclick="selectRole('employer')"
+          >
+            Работодатель
+          </button>
+        </div>
+      </div>
+    </div>
 
-<div id="responses-section" class="responses-section">
-<div class="responses-container">
-<h2>Мои отклики</h2>
-<div id="responses-list" class="responses-column" onclick="openJobModalFromResponses(event)"></div>
-</div>
-</div>
+    <div id="responses-section" class="responses-section">
+      <div class="responses-container">
+        <h2>Мои отклики</h2>
+        <div
+          id="responses-list"
+          class="responses-column"
+          onclick="openJobModalFromResponses(event)"
+        ></div>
+      </div>
+    </div>
 
-<div id="profile-menu" class="profile-menu">
-<h3 id="profile-name"></h3>
-<ul>
-<li id="profile-my-items" onclick="showFavorites()">Мои избранные</li>
-<li onclick="showResponses()">Мои отклики</li>
-<li class="logout-btn" onclick="handleLogout()">Выйти</li>
-</ul>
-</div>
+    <div id="profile-menu" class="profile-menu">
+      <h3 id="profile-name"></h3>
+      <ul>
+        <li id="profile-my-items" onclick="showFavorites()">Мои избранные</li>
+        <li onclick="showResponses()">Мои отклики</li>
+        <li class="logout-btn" onclick="handleLogout()">Выйти</li>
+      </ul>
+    </div>
 
-<div id="job-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('job-modal')">×</span>
-    <h3 id="modal-title"></h3>
-    <p id="modal-company"></p>
-    <p id="modal-salary"></p>
-    <ul class="details">
-      <li><strong>Опыт:</strong> <span id="modal-experience"></span></li>
-      <li><strong>Занятость:</strong> <span id="modal-employment"></span></li>
-      <li><strong>График:</strong> <span id="modal-schedule"></span></li>
-      <li><strong>Часы работы:</strong> <span id="modal-hours"></span></li>
-      <li><strong>Стажировка:</strong> <span id="modal-internship"></span></li>
-      <li><strong>Формат работы:</strong> <span id="modal-work-format"></span></li>
-    </ul>
-    <div id="modal-description"></div>
-    <div id="modal-conditions"></div>
-    <div id="modal-responsibilities"></div>
-    <div id="modal-requirements"></div>
-    <div id="modal-key-skills"></div>
-    <!-- Добавляем контейнер для карты -->
-    <div id="modal-map" style="height: 300px; width: 100%; margin: 20px 0; border-radius: 10px;"></div>
-    <button id="modal-respond-btn" class="respond-btn">Откликнуться</button>
-  </div>
-</div>
+    <div id="job-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('job-modal')">×</span>
+        <h3 id="modal-title"></h3>
+        <p id="modal-company"></p>
+        <p id="modal-salary"></p>
+        <ul class="details">
+          <li><strong>Опыт:</strong> <span id="modal-experience"></span></li>
+          <li>
+            <strong>Занятость:</strong> <span id="modal-employment"></span>
+          </li>
+          <li><strong>График:</strong> <span id="modal-schedule"></span></li>
+          <li><strong>Часы работы:</strong> <span id="modal-hours"></span></li>
+          <li>
+            <strong>Стажировка:</strong> <span id="modal-internship"></span>
+          </li>
+          <li>
+            <strong>Формат работы:</strong> <span id="modal-work-format"></span>
+          </li>
+        </ul>
+        <div id="modal-description"></div>
+        <div id="modal-conditions"></div>
+        <div id="modal-responsibilities"></div>
+        <div id="modal-requirements"></div>
+        <div id="modal-key-skills"></div>
+        <!-- Добавляем контейнер для карты -->
+        <div
+          id="modal-map"
+          style="
+            height: 300px;
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
+          "
+        ></div>
+        <button id="modal-respond-btn" class="respond-btn">Откликнуться</button>
+      </div>
+    </div>
 
-<div id="create-job-modal" class="modal">
-<div class="modal-content">
-<span class="close" onclick="closeModal('create-job-modal')">×</span>
-<h3>Создать вакансию</h3>
-<form id="create-job-form">
-  <label for="job-title">Название профессии</label>
-  <input type="text" id="job-title" required>
-  
-  <label for="job-company">Название компании</label>
-  <input type="text" id="job-company" required>
-  
-  <label for="job-salary">Зарплата</label>
-  <div class="salary-inputs">
-    <input type="number" id="job-salary-min" placeholder="От" required>
-    <input type="number" id="job-salary-max" placeholder="До">
-  </div>
-  
-  <label for="job-experience">Опыт</label>
-  <select id="job-experience" required>
-    <option value="noExperience">Без опыта</option>
-    <option value="1-3">1–3 года</option>
-    <option value="3-6">3–6 лет</option>
-  </select>
-  
-  <label for="job-employment">Занятость</label>
-  <select id="job-employment" required>
-    <option value="full">Полная</option>
-    <option value="part">Частичная</option>
-    <option value="remote">Удалённая</option>
-  </select>
-  
-  <label for="job-schedule">График</label>
-  <select id="job-schedule" required>
-    <option value="5/2">5/2</option>
-    <option value="2/2">2/2</option>
-    <option value="flex">Гибкий</option>
-  </select>
-  
-  <label for="job-hours">Часы работы</label>
-  <select id="job-hours" required>
-    <option value="4-6">4–6 часов</option>
-    <option value="6-8">6–8 часов</option>
-    <option value="8">8 часов</option>
-  </select>
-  
-  <label for="job-internship">Стажировка</label>
-  <select id="job-internship" required>
-    <option value="no">Нет</option>
-    <option value="yes">Да</option>
-  </select>
-  
-  <label for="job-work-format">Формат работы</label>
-  <select id="job-work-format" required>
-    <option value="office">Офис</option>
-    <option value="remote">Удалённо</option>
-    <option value="hybrid">Гибрид</option>
-  </select>
-  
-  <label for="job-description">Описание</label>
-  <textarea id="job-description" required></textarea>
-  
-  <label for="job-conditions">Условия</label>
-  <textarea id="job-conditions" placeholder="Введите условия, разделяя их переносом строки"></textarea>
-  
-  <label for="job-responsibilities">Обязанности</label>
-  <textarea id="job-responsibilities" placeholder="Введите обязанности, разделяя их переносом строки"></textarea>
-  
-  <label for="job-requirements">Требования</label>
-  <textarea id="job-requirements" placeholder="Введите требования, разделяя их переносом строки"></textarea>
-  
-  <label for="job-key-skills">Ключевые навыки</label>
-  <div class="skills-container">
-    <input type="text" id="job-key-skills-input" placeholder="Введите навык..." autocomplete="off">
-    <ul id="skills-suggestions" class="skills-suggestions"></ul>
-    <div id="selected-skills" class="selected-skills"></div>
-  </div>
-  
-  <label for="job-address">Адрес (для карты)</label>
-  <div class="address-container">
-    <input type="text" id="job-address" placeholder="Например: ул. Мира, Грозный" required autocomplete="off">
-    <button type="button" class="map-select-btn" onclick="openMapSelectModal()">Указать на карте</button>
-    <ul id="address-suggestions" class="address-suggestions"></ul>
-  </div>
-  
-  <button type="submit">Создать</button>
-</form>
-</div>
-</div>
+    <div id="create-job-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('create-job-modal')">×</span>
+        <h3>Создать вакансию</h3>
+        <form id="create-job-form">
+          <label for="job-title">Название профессии</label>
+          <input type="text" id="job-title" required />
 
-<div id="filter-modal" class="modal">
-<div class="modal-content filter-modal-content">
-<span class="close" onclick="closeModal('filter-modal')">×</span>
-<h3>Фильтры</h3>
-<label for="experience-filter">Опыт работы</label>
-<select id="experience-filter">
-  <option value="">Любой</option>
-  <option value="noExperience">Без опыта</option>
-  <option value="1-3">1–3 года</option>
-  <option value="3-6">3–6 лет</option>
-</select>
-<label for="employment-filter">Тип занятости</label>
-<select id="employment-filter">
-  <option value="">Любой</option>
-  <option value="full">Полная</option>
-  <option value="part">Частичная</option>
-  <option value="remote">Удалённая</option>
-</select>
-<label for="schedule-filter">График работы</label>
-<select id="schedule-filter">
-  <option value="">Любой</option>
-  <option value="5/2">5/2</option>
-  <option value="2/2">2/2</option>
-  <option value="flex">Гибкий</option>
-</select>
-<label for="hours-filter">Часы работы</label>
-<select id="hours-filter">
-  <option value="">Любые</option>
-  <option value="4-6">4–6 часов</option>
-  <option value="6-8">6–8 часов</option>
-  <option value="8">8 часов</option>
-</select>
-<label for="work-format-filter">Формат работы</label>
-<select id="work-format-filter">
-  <option value="">Любой</option>
-  <option value="office">Офис</option>
-  <option value="remote">Удалённо</option>
-  <option value="hybrid">Гибрид</option>
-</select>
-<label for="salary-filter">Минимальная зарплата</label>
-<input type="number" id="salary-filter" placeholder="Введите сумму">
-<label for="internship-filter">Стажировка</label>
-<input type="checkbox" id="internship-filter">
-<button class="apply-btn" onclick="applyFilters()">Применить</button>
-<button class="clear-btn" onclick="clearFilters()">Очистить</button>
-</div>
-</div>
+          <label for="job-company">Название компании</label>
+          <input type="text" id="job-company" required />
 
-<div id="map-select-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('map-select-modal')">×</span>
-    <h3>Выберите место на карте</h3>
-    <div id="map-select" style="height: 400px; width: 100%; margin: 20px 0; border-radius: 10px;"></div>
-  </div>
-</div>
+          <label for="job-salary">Зарплата</label>
+          <div class="salary-inputs">
+            <input
+              type="number"
+              id="job-salary-min"
+              placeholder="От"
+              required
+            />
+            <input type="number" id="job-salary-max" placeholder="До" />
+          </div>
 
-<div id="notification" class="notification"></div>
+          <label for="job-experience">Опыт</label>
+          <select id="job-experience" required>
+            <option value="noExperience">Без опыта</option>
+            <option value="1-3">1–3 года</option>
+            <option value="3-6">3–6 лет</option>
+          </select>
 
-<footer>
-<p>© 2025 Работа в Грозном. Все права защищены.</p>
-</footer>
+          <label for="job-employment">Занятость</label>
+          <select id="job-employment" required>
+            <option value="full">Полная</option>
+            <option value="part">Частичная</option>
+            <option value="remote">Удалённая</option>
+          </select>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="script.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9360665ede0cc01a',t:'MTc0NTYxMDk0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9360bd05681e6754',t:'MTc0NTYxNDQ5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'936583ae59ee4589',t:'MTc0NTY2NDU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93706b26dfbab05b',t:'MTc0NTc3ODkxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+          <label for="job-schedule">График</label>
+          <select id="job-schedule" required>
+            <option value="5/2">5/2</option>
+            <option value="2/2">2/2</option>
+            <option value="flex">Гибкий</option>
+          </select>
+
+          <label for="job-hours">Часы работы</label>
+          <select id="job-hours" required>
+            <option value="4-6">4–6 часов</option>
+            <option value="6-8">6–8 часов</option>
+            <option value="8">8 часов</option>
+          </select>
+
+          <label for="job-internship">Стажировка</label>
+          <select id="job-internship" required>
+            <option value="no">Нет</option>
+            <option value="yes">Да</option>
+          </select>
+
+          <label for="job-work-format">Формат работы</label>
+          <select id="job-work-format" required>
+            <option value="office">Офис</option>
+            <option value="remote">Удалённо</option>
+            <option value="hybrid">Гибрид</option>
+          </select>
+
+          <label for="job-description">Описание</label>
+          <textarea id="job-description" required></textarea>
+
+          <label for="job-conditions">Условия</label>
+          <textarea
+            id="job-conditions"
+            placeholder="Введите условия, разделяя их переносом строки"
+          ></textarea>
+
+          <label for="job-responsibilities">Обязанности</label>
+          <textarea
+            id="job-responsibilities"
+            placeholder="Введите обязанности, разделяя их переносом строки"
+          ></textarea>
+
+          <label for="job-requirements">Требования</label>
+          <textarea
+            id="job-requirements"
+            placeholder="Введите требования, разделяя их переносом строки"
+          ></textarea>
+
+          <label for="job-key-skills">Ключевые навыки</label>
+          <div class="skills-container">
+            <input
+              type="text"
+              id="job-key-skills-input"
+              placeholder="Введите навык..."
+              autocomplete="off"
+            />
+            <ul id="skills-suggestions" class="skills-suggestions"></ul>
+            <div id="selected-skills" class="selected-skills"></div>
+          </div>
+
+          <label for="job-address">Адрес (для карты)</label>
+          <div class="address-container">
+            <input
+              type="text"
+              id="job-address"
+              placeholder="Например: ул. Мира, Грозный"
+              required
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              class="map-select-btn"
+              onclick="openMapSelectModal()"
+            >
+              Указать на карте
+            </button>
+            <ul id="address-suggestions" class="address-suggestions"></ul>
+          </div>
+
+          <button type="submit">Создать</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="filter-modal" class="modal">
+      <div class="modal-content filter-modal-content">
+        <span class="close" onclick="closeModal('filter-modal')">×</span>
+        <h3>Фильтры</h3>
+        <label for="experience-filter">Опыт работы</label>
+        <select id="experience-filter">
+          <option value="">Любой</option>
+          <option value="noExperience">Без опыта</option>
+          <option value="1-3">1–3 года</option>
+          <option value="3-6">3–6 лет</option>
+        </select>
+        <label for="employment-filter">Тип занятости</label>
+        <select id="employment-filter">
+          <option value="">Любой</option>
+          <option value="full">Полная</option>
+          <option value="part">Частичная</option>
+          <option value="remote">Удалённая</option>
+        </select>
+        <label for="schedule-filter">График работы</label>
+        <select id="schedule-filter">
+          <option value="">Любой</option>
+          <option value="5/2">5/2</option>
+          <option value="2/2">2/2</option>
+          <option value="flex">Гибкий</option>
+        </select>
+        <label for="hours-filter">Часы работы</label>
+        <select id="hours-filter">
+          <option value="">Любые</option>
+          <option value="4-6">4–6 часов</option>
+          <option value="6-8">6–8 часов</option>
+          <option value="8">8 часов</option>
+        </select>
+        <label for="work-format-filter">Формат работы</label>
+        <select id="work-format-filter">
+          <option value="">Любой</option>
+          <option value="office">Офис</option>
+          <option value="remote">Удалённо</option>
+          <option value="hybrid">Гибрид</option>
+        </select>
+        <label for="salary-filter">Минимальная зарплата</label>
+        <input type="number" id="salary-filter" placeholder="Введите сумму" />
+        <label for="internship-filter">Стажировка</label>
+        <input type="checkbox" id="internship-filter" />
+        <button class="apply-btn" onclick="applyFilters()">Применить</button>
+        <button class="clear-btn" onclick="clearFilters()">Очистить</button>
+      </div>
+    </div>
+
+    <div id="map-select-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('map-select-modal')">×</span>
+        <h3>Выберите место на карте</h3>
+        <div
+          id="map-select"
+          style="
+            height: 400px;
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
+          "
+        ></div>
+      </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <footer>
+      <p>© 2025 Работа в Грозном. Все права защищены.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9360665ede0cc01a',t:'MTc0NTYxMDk0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9360bd05681e6754',t:'MTc0NTYxNDQ5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'936583ae59ee4589',t:'MTc0NTY2NDU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'93706b26dfbab05b',t:'MTc0NTc3ODkxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
