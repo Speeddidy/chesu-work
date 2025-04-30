@@ -21,7 +21,7 @@ body {
 header {
   background-color: var(--primary-color);
   color: white;
-  padding: 15px 40px;
+  padding: 15px 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,7 +130,7 @@ nav .create-btn:hover {
   background-color: var(--card-background);
   padding: 20px;
   margin: 30px auto;
-  max-width: 1000px;
+  max-width: 70%;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -218,7 +218,7 @@ nav .create-btn:hover {
 
 .sort-container {
   text-align: right;
-  max-width: 1000px;
+  max-width: 70%;
   margin: 0 auto 10px;
 }
 
@@ -233,14 +233,13 @@ nav .create-btn:hover {
 
 .map-list-container {
   display: flex;
-  max-width: 1000px;
+  max-width: 70%;
   margin: 20px auto;
   min-height: 800px;
-  overflow: hidden;
 }
 
 .map-column {
-  flex: 1;
+  flex: 1 !important;
   min-height: 800px;
   transition: flex 0.3s ease;
 }
@@ -256,6 +255,9 @@ nav .create-btn:hover {
 }
 
 .list-column.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 400px;
   opacity: 1;
   visibility: visible;
@@ -351,7 +353,6 @@ nav .create-btn:hover {
 .job-card {
   background-color: var(--card-background);
   padding: 20px;
-  margin: 15px 0;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -1282,4 +1283,8 @@ footer .input-group .input-group-btn button:hover {
   height: 100%;
   width: 100%;
   border-radius: 10px;
+}
+
+.leaflet-attribution-flag {
+  display: none !important;
 }
