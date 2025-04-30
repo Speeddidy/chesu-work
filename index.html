@@ -368,8 +368,10 @@
         </select>
         <label for="salary-filter">Минимальная зарплата</label>
         <input type="number" id="salary-filter" placeholder="Введите сумму" />
-        <label for="internship-filter">Стажировка</label>
-        <input type="checkbox" id="internship-filter" />
+        <div class="internship-filter-container">
+          <label for="internship-filter">Стажировка</label>
+          <input type="checkbox" id="internship-filter" />
+        </div>
         <button class="apply-btn" onclick="applyFilters()">Применить</button>
         <button class="clear-btn" onclick="clearFilters()">Очистить</button>
       </div>

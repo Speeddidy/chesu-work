@@ -756,6 +756,14 @@ nav .create-btn:hover {
   color: var(--text-color);
 }
 
+.filter-modal-content {
+  width: 300px !important;
+}
+.internship-filter-container {
+  display: flex;
+  gap: 20px;
+}
+
 .filter-modal-content select,
 .filter-modal-content input[type="number"] {
   width: 100%;
@@ -766,8 +774,12 @@ nav .create-btn:hover {
   font-size: 12px;
 }
 
+#salary-filter {
+  width: 93%;
+}
+
 .filter-modal-content label {
-  font-size: 12px;
+  font-size: 14px;
   margin: 5px 0;
   display: block;
 }
