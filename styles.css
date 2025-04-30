@@ -12,6 +12,10 @@ body {
   padding: 0;
   background-color: var(--background-color);
   color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
 }
 
 header {
@@ -24,7 +28,7 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 .logo {
@@ -107,9 +111,18 @@ nav .create-btn:hover {
   display: none;
 }
 
-.main-section.active,
-.auth-section.active,
+.responses-section {
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
 .responses-section.active {
+  display: flex;
+}
+
+.main-section.active,
+.auth-section.active {
   display: block;
 }
 
@@ -270,15 +283,19 @@ nav .create-btn:hover {
 .responses-container {
   background-color: var(--card-background);
   padding: 20px;
-  margin: 30px auto;
   max-width: 1000px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .responses-container h2 {
   font-size: 24px;
-  margin: 0 0 20px;
+  margin: 0;
   color: var(--primary-color);
   text-align: center;
 }
@@ -961,9 +978,8 @@ footer {
   background-color: #3c3d41;
   color: rgba(255, 255, 255, 0.85);
   padding: 60px 40px;
-  margin-top: 20px;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+  display: flex;
+  justify-content: center;
 }
 
 footer .container {
