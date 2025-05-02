@@ -130,7 +130,7 @@ nav .create-btn:hover {
   background-color: var(--card-background);
   padding: 20px;
   margin: 30px auto;
-  max-width: 70%;
+  max-width: 58%;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -218,7 +218,7 @@ nav .create-btn:hover {
 
 .sort-container {
   text-align: right;
-  max-width: 70%;
+  max-width: 60%;
   margin: 0 auto 10px;
 }
 
@@ -233,7 +233,7 @@ nav .create-btn:hover {
 
 .map-list-container {
   display: flex;
-  max-width: 70%;
+  max-width: 60%;
   margin: 20px auto;
   min-height: 800px;
 }
@@ -579,7 +579,7 @@ nav .create-btn:hover {
   display: none;
   position: absolute;
   top: 60px;
-  right: 40px;
+  right: 10%;
   background-color: var(--card-background);
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
