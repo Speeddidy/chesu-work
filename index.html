@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Работа в Грозном</title>
+    <title>ChesuWork</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -16,8 +16,8 @@
   </head>
   <body>
     <header id="main-header" class="main-header">
-      <div class="logo">
-        <span>Работа в Грозном</span>
+      <div class="logo" onclick="goToMainPage()">
+        <span>ChesuWork</span>
       </div>
       <nav id="header-nav">
         <select id="city-select" onchange="searchJobs()">
@@ -31,7 +31,7 @@
     </header>
 
     <header id="auth-header" style="display: none">
-      <div class="logo">
+      <div class="logo" onclick="goToMainPage()">
         <span>Работа в Грозном</span>
       </div>
     </header>
@@ -88,6 +88,9 @@
 
     <div id="auth-section" class="auth-section">
       <div class="auth-container">
+        <div class="back-arrow" onclick="goToMainPage()">
+          <i class="fas fa-arrow-left"></i> Назад
+        </div>
         <div class="tabs">
           <div class="tab active" onclick="showTab('login')">Вход</div>
           <div class="tab" onclick="showTab('register')">Регистрация</div>
@@ -109,6 +112,14 @@
           <div id="login-error" class="error-message">
             Неверный email или пароль
           </div>
+          <div class="social-login">
+            <button class="social-button vk-button" onclick="handleVkLogin()">
+              <i class="fab fa-vk"></i> Войти через ВКонтакте
+            </button>
+            <button class="social-button google-button" onclick="handleGoogleLogin()">
+              <i class="fab fa-google"></i> Войти через Google
+            </button>
+          </div>
         </div>
         <div id="register-form" class="auth-form">
           <input type="text" id="register-name" placeholder="Имя" required />
@@ -127,6 +138,14 @@
           <button onclick="handleRegister()">Зарегистрироваться</button>
           <div id="register-error" class="error-message">
             Пользователь уже существует
+          </div>
+          <div class="social-login">
+            <button class="social-button vk-button" onclick="handleVkRegister()">
+              <i class="fab fa-vk"></i> Регистрация через ВКонтакте
+            </button>
+            <button class="social-button google-button" onclick="handleGoogleRegister()">
+              <i class="fab fa-google"></i> Регистрация через Google
+            </button>
           </div>
         </div>
         <div class="role-selection">
@@ -193,7 +212,6 @@
         <div id="modal-responsibilities"></div>
         <div id="modal-requirements"></div>
         <div id="modal-key-skills"></div>
-        <!-- Добавляем контейнер для карты -->
         <div
           id="modal-map"
           style="
@@ -390,6 +408,7 @@
             border-radius: 10px;
           "
         ></div>
+        <button onclick="confirmMapSelection()">Подтвердить</button>
       </div>
     </div>
 
@@ -399,6 +418,7 @@
       <p>© 2025 Работа в Грозном. Все права защищены.</p>
     </footer>
 
+    <script src="https://vk.com/js/api/openapi.js?169" async></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
     <script>
@@ -409,111 +429,6 @@
             var d = b.createElement("script");
             d.innerHTML =
               "window.__CF$cv$params={r:'9360665ede0cc01a',t:'MTc0NTYxMDk0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
-        }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'9360bd05681e6754',t:'MTc0NTYxNDQ5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
-        }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'936583ae59ee4589',t:'MTc0NTY2NDU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-            b.getElementsByTagName("head")[0].appendChild(d);
-          }
-        }
-        if (document.body) {
-          var a = document.createElement("iframe");
-          a.height = 1;
-          a.width = 1;
-          a.style.position = "absolute";
-          a.style.top = 0;
-          a.style.left = 0;
-          a.style.border = "none";
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
-          if ("loading" !== document.readyState) c();
-          else if (window.addEventListener)
-            document.addEventListener("DOMContentLoaded", c);
-          else {
-            var e = document.onreadystatechange || function () {};
-            document.onreadystatechange = function (b) {
-              e(b);
-              "loading" !== document.readyState &&
-                ((document.onreadystatechange = e), c());
-            };
-          }
-        }
-      })();
-    </script>
-    <script>
-      (function () {
-        function c() {
-          var b = a.contentDocument || a.contentWindow.document;
-          if (b) {
-            var d = b.createElement("script");
-            d.innerHTML =
-              "window.__CF$cv$params={r:'93706b26dfbab05b',t:'MTc0NTc3ODkxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
             b.getElementsByTagName("head")[0].appendChild(d);
           }
         }

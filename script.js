@@ -1794,3 +1794,60 @@ function getWorkFormatText(value) {
     }[value] || value
   );
 }
+
+function goToMainPage() {
+  isShowingFavorites = false;
+  isShowingResponses = false;
+  document.querySelector("#header-nav .fa-heart").classList.remove("active");
+  document.querySelector("#header-nav .fa-check").classList.remove("active");
+  document.getElementById("search-input").value = "";
+  document.getElementById("clear-input").classList.remove("visible");
+  document.getElementById("city-select").value = "Грозный";
+  document.getElementById("sort-select").value = "default";
+  clearFilters();
+  showSection("main");
+  updateJobList(jobs);
+  updateMap(jobs);
+  showNotification("Возвращение на главную страницу");
+}
+
+// Инициализация VK SDK
+VK.init({
+  apiId: "53524024", // Ваш client_id
+});
+
+// Функция для входа через ВКонтакте
+function handleVkLogin() {
+  VK.Auth.login(
+    function (response) {
+      if (response.session) {
+        const user = response.session.user;
+        const email = user.email || `${user.id}@vk.com`; // ВКонтакте не всегда возвращает email
+        const name = `${user.first_name} ${user.last_name}`;
+        const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+        if (!users[email]) {
+          // Если пользователь не существует, создаем нового
+          users[email] = { name, password: null, role: selectedRole };
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ email, name, role: selectedRole })
+        );
+        showSection("main");
+        updateHeader();
+        showNotification("Вход через ВКонтакте успешен");
+      } else {
+        showNotification("Ошибка входа через ВКонтакте");
+      }
+    },
+    VK.access.EMAIL // Запрашиваем доступ к email (если доступно)
+  );
+}
+
+function handleVkRegister() {
+  // Регистрация через ВКонтакте аналогична входу
+  handleVkLogin();
+}
