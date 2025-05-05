@@ -20,10 +20,27 @@
         <span>ChesuWork</span>
       </div>
       <nav id="header-nav">
-        <select id="city-select" onchange="searchJobs()">
-          <option>Вся Россия</option>
-          <option selected>Грозный</option>
-        </select>
+        <div class="city-select-container">
+          <button class="city-select-btn" onclick="toggleCityDropdown()">
+            <span id="selected-city">Грозный</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="city-dropdown" class="city-dropdown">
+            <div class="city-search">
+              <input type="text" id="city-search-input" placeholder="Поиск города..." oninput="filterCities()">
+              <button id="clear-city-search" class="clear-city-search" onclick="clearCitySearch()">✕</button>
+            </div>
+            <div class="city-list">
+              <div class="city-group">
+                <div class="city-item" onclick="selectCity('Аргун')">Аргун</div>
+                <div class="city-item" onclick="selectCity('Грозный')">Грозный</div>
+                <div class="city-item" onclick="selectCity('Гудермес')">Гудермес</div>
+                <div class="city-item" onclick="selectCity('Урус-Мартан')">Урус-Мартан</div>
+                <div class="city-item" onclick="selectCity('Шали')">Шали</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="#" onclick="showResponses()"><i class="fas fa-check"></i></a>
         <a href="#" onclick="showFavorites()"><i class="fas fa-heart"></i></a>
         <a href="#" id="auth-link">Войти</a>
