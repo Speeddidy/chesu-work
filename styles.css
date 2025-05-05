@@ -1306,7 +1306,7 @@ footer .input-group .input-group-btn button:hover {
   display: flex;
   align-items: center;
   font-size: 16px;
-  color: #007bff;
+  color: #666;
   cursor: pointer;
   margin-bottom: 15px;
 }
@@ -1316,7 +1316,7 @@ footer .input-group .input-group-btn button:hover {
 }
 
 .back-arrow:hover {
-  color: #0056b3;
+  color: #444;
 }
 
 .social-login {
@@ -1460,4 +1460,19 @@ footer .input-group .input-group-btn button:hover {
 .city-item:hover {
   background-color: #f0f0f0;
   color: #000;
+}
+
+.back-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
 }
