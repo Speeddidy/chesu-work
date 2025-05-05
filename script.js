@@ -1812,39 +1812,68 @@ function goToMainPage() {
 }
 
 // Инициализация VK SDK
-VK.init({
-  apiId: "53524024", // Ваш client_id
-});
+function initVK() {
+  return new Promise((resolve, reject) => {
+    if (window.VK) {
+      VK.init({
+        apiId: "53528960",
+        onlyWidgets: false
+      });
+      resolve();
+    } else {
+      // Если VK еще не загружен, ждем его загрузки
+      window.addEventListener('vk_loaded', () => {
+        VK.init({
+          apiId: "53528960",
+          onlyWidgets: false
+        });
+        resolve();
+      });
+      
+      // Таймаут на случай, если VK не загрузится
+      setTimeout(() => {
+        reject(new Error('VK SDK не загружен'));
+      }, 10000);
+    }
+  });
+}
 
 // Функция для входа через ВКонтакте
-function handleVkLogin() {
-  VK.Auth.login(
-    function (response) {
-      if (response.session) {
-        const user = response.session.user;
-        const email = user.email || `${user.id}@vk.com`; // ВКонтакте не всегда возвращает email
-        const name = `${user.first_name} ${user.last_name}`;
-        const users = JSON.parse(localStorage.getItem("users") || "{}");
+async function handleVkLogin() {
+  try {
+    await initVK();
+    
+    VK.Auth.login(
+      function (response) {
+        if (response.session) {
+          const user = response.session.user;
+          const email = user.email || `${user.id}@vk.com`; // ВКонтакте не всегда возвращает email
+          const name = `${user.first_name} ${user.last_name}`;
+          const users = JSON.parse(localStorage.getItem("users") || "{}");
 
-        if (!users[email]) {
-          // Если пользователь не существует, создаем нового
-          users[email] = { name, password: null, role: selectedRole };
-          localStorage.setItem("users", JSON.stringify(users));
+          if (!users[email]) {
+            // Если пользователь не существует, создаем нового
+            users[email] = { name, password: null, role: selectedRole };
+            localStorage.setItem("users", JSON.stringify(users));
+          }
+
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify({ email, name, role: selectedRole })
+          );
+          showSection("main");
+          updateHeader();
+          showNotification("Вход через ВКонтакте успешен");
+        } else {
+          showNotification("Ошибка входа через ВКонтакте: не удалось получить данные пользователя");
         }
-
-        localStorage.setItem(
-          "currentUser",
-          JSON.stringify({ email, name, role: selectedRole })
-        );
-        showSection("main");
-        updateHeader();
-        showNotification("Вход через ВКонтакте успешен");
-      } else {
-        showNotification("Ошибка входа через ВКонтакте");
-      }
-    },
-    VK.access.EMAIL // Запрашиваем доступ к email (если доступно)
-  );
+      },
+      VK.access.EMAIL // Запрашиваем доступ к email (если доступно)
+    );
+  } catch (error) {
+    console.error('Ошибка при инициализации VK:', error);
+    showNotification("Ошибка входа через ВКонтакте: " + error.message);
+  }
 }
 
 function handleVkRegister() {
