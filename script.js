@@ -1880,3 +1880,85 @@ function handleVkRegister() {
   // Регистрация через ВКонтакте аналогична входу
   handleVkLogin();
 }
+
+function toggleCityDropdown() {
+  const dropdown = document.getElementById('city-dropdown');
+  dropdown.classList.toggle('active');
+  
+  // Закрываем дропдаун при клике вне его
+  if (dropdown.classList.contains('active')) {
+    document.addEventListener('click', closeCityDropdown);
+  } else {
+    document.removeEventListener('click', closeCityDropdown);
+  }
+}
+
+function closeCityDropdown(event) {
+  const dropdown = document.getElementById('city-dropdown');
+  const citySelect = document.querySelector('.city-select-container');
+  
+  if (!citySelect.contains(event.target)) {
+    dropdown.classList.remove('active');
+    document.removeEventListener('click', closeCityDropdown);
+  }
+}
+
+function filterCities() {
+  const searchInput = document.getElementById('city-search-input');
+  const clearButton = document.getElementById('clear-city-search');
+  const searchText = searchInput.value.toLowerCase();
+  const cityItems = document.querySelectorAll('.city-item');
+  
+  // Показываем/скрываем кнопку очистки
+  clearButton.classList.toggle('visible', searchText.length > 0);
+  
+  cityItems.forEach(item => {
+    const cityName = item.textContent.toLowerCase();
+    if (cityName.includes(searchText)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function clearCitySearch() {
+  const searchInput = document.getElementById('city-search-input');
+  const clearButton = document.getElementById('clear-city-search');
+  
+  searchInput.value = '';
+  clearButton.classList.remove('visible');
+  filterCities();
+}
+
+function selectCity(city) {
+  document.getElementById('selected-city').textContent = city;
+  document.getElementById('city-dropdown').classList.remove('active');
+  document.removeEventListener('click', closeCityDropdown);
+  
+  // Обновляем список вакансий в соответствии с выбранным городом
+  const filteredJobs = city === 'Вся ЧР' 
+    ? jobs 
+    : jobs.filter(job => job.city === city);
+  
+  updateJobList(filteredJobs);
+  updateMap(filteredJobs);
+
+  // Центрируем карту на выбранном городе
+  if (city !== 'Вся ЧР') {
+    const cityCoordinates = {
+      'Грозный': [43.3177, 45.6949],
+      'Аргун': [43.2917, 45.8722],
+      'Гудермес': [43.3507, 46.1033],
+      'Урус-Мартан': [43.1303, 45.5389],
+      'Шали': [43.1481, 45.9019]
+    };
+
+    if (cityCoordinates[city]) {
+      map.setView(cityCoordinates[city], 13);
+    }
+  } else {
+    // Если выбрана вся ЧР, показываем всю республику
+    map.setView([43.3177, 45.6949], 9);
+  }
+}
