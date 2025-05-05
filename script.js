@@ -1796,19 +1796,7 @@ function getWorkFormatText(value) {
 }
 
 function goToMainPage() {
-  isShowingFavorites = false;
-  isShowingResponses = false;
-  document.querySelector("#header-nav .fa-heart").classList.remove("active");
-  document.querySelector("#header-nav .fa-check").classList.remove("active");
-  document.getElementById("search-input").value = "";
-  document.getElementById("clear-input").classList.remove("visible");
-  document.getElementById("city-select").value = "Грозный";
-  document.getElementById("sort-select").value = "default";
-  clearFilters();
   showSection("main");
-  updateJobList(jobs);
-  updateMap(jobs);
-  showNotification("Возвращение на главную страницу");
 }
 
 // Инициализация VK SDK
