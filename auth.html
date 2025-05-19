@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .auth-outer {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .auth-header-flex {
+      width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0;
+    }
+    .auth-title {
+      font-size: 30px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      margin-top: 28px;
+      margin-bottom: 32px;
+      letter-spacing: 0.01em;
+    }
+    .auth-card {
+      width: 440px;
+      min-width: 320px;
+      background: #191919;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      padding: 48px;
+      margin: 0 auto;
+      position: relative;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .auth-inner {
+      width: 344px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: stretch;
+    }
+    .auth-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 0;
+    }
+    .auth-label {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 11px;
+      padding: 0;
+      border: none;
+      line-height: 1;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 0 12px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #424242;
+      background: #131313;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border 0.18s, box-shadow 0.18s;
+      box-sizing: border-box;
+      font-weight: 500;
+    }
+    .auth-input::placeholder {
+      color: #676767;
+      opacity: 1;
+      font-weight: 400;
+    }
+    .auth-input:focus {
+      border: 1px solid #6a5acd;
+      background: #131313;
+      box-shadow: 0 0 0 1.5px #6a5acd;
+    }
+    .auth-form.signup .auth-input[type="email"] {
+      margin-bottom: 24px;
+    }
+    .auth-btn {
+      width: 100%;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: #fff;
+      color: #000;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      margin-bottom: 0;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .auth-btn:hover {
+      background: #f5f5f5;
+      color: #000;
+    }
+    .auth-or {
+      color: #888;
+      text-align: center;
+      margin: 0 0 0 0;
+      font-size: 1rem;
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 16px;
+    }
+    .auth-or:before, .auth-or:after {
+      content: '';
+      flex: 1 1 0;
+      height: 1px;
+      background: #333;
+      margin: 0 10px;
+      display: block;
+    }
+    .auth-or span {
+      color: #888;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .auth-social-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .auth-social-btn {
+      width: 100%;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: #181818;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #424242;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+    }
+    .auth-social-btn.vk {
+      background: #181818;
+      color: #fff;
+      border: 1px solid #424242;
+      font-weight: 600;
+    }
+    .auth-social-btn.vk:hover {
+      background: #181818;
+      border: 1px solid #6d6d6d;
+    }
+    .auth-social-btn.google {
+      background: #181818;
+      color: #EEEEEE;
+      border: 1px solid #424242;
+      font-weight: 600;
+    }
+    .auth-social-btn.google:hover {
+      background: #181818;
+      border: 1px solid #6d6d6d;
+    }
+    .auth-social-btn .icon {
+      margin-right: 8px;
+      margin-left: 0;
+    }
+    .auth-social-btn span {
+      color: #EEEEEE;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+    .auth-bottom {
+      margin: 0;
+      padding: 0;
+      border: none;
+      color: #aaa;
+      font-size: 1rem;
+      text-align: center;
+      width: 100%;
+      min-height: 0;
+      line-height: 1;
+    }
+    .auth-bottom a {
+      color: #6a5acd;
+      text-decoration: none;
+      margin-left: 2px;
+      font-weight: 500;
+    }
+    .auth-bottom a:hover {
+      text-decoration: underline;
+    }
+    .auth-terms {
+      color: #666;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 44px;
+      margin-bottom: 32px;
+      width: 100vw;
+      letter-spacing: 0.01em;
+    }
+    .auth-terms a {
+      color: #8ab4f8;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    @media (max-width: 500px) {
+      .auth-card { min-width: 0; width: 98vw; padding: 18px 2vw; }
+      .auth-header-flex { width: 98vw; }
+      .auth-inner { width: 100%; }
+      .auth-terms { font-size: 0.89rem; }
+    }
+    .auth-social-bottom-group {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .auth-password-wrap {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .auth-password-wrap .auth-input {
+      width: 100%;
+      padding-right: 38px;
+    }
+    .auth-password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      background: none;
+      border: none;
+      outline: none;
+      z-index: 2;
+      padding: 0;
+    }
+    .auth-password-toggle img {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    .auth-password-toggle:hover {
+      background: #232323;
+      border-radius: 6px;
+    }
+    .auth-social-btn.email {
+      background: #181818;
+      color: #EEEEEE;
+      border: 1px solid #424242;
+      font-weight: 600;
+      width: 100%;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 0;
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: border 0.15s;
+    }
+    .auth-social-btn.email:hover {
+      background: #181818;
+      border: 1px solid #6d6d6d;
+    }
+    .auth-back {
+      width: 100%;
+      text-align: left;
+      margin-top: 32px;
+    }
+    .auth-back a {
+      color: #6a5acd;
+      font-size: 1rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .auth-back a:hover {
+      text-decoration: underline;
+      color: #9B94DE;
+    }
+    .auth-back-out {
+      width: 440px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 24px auto 0 auto;
+      padding: 0;
+    }
+    .auth-back-out a {
+      color: #424242;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0 8px;
+      transition: color 0.15s;
+    }
+    .auth-back-out a:hover {
+      color: #6d6d6d;
+      text-decoration: underline;
+    }
+    .input-error {
+      border: 1.5px solid #e05a5a !important;
+      box-shadow: 0 0 0 1.5px #e05a5a !important;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+    /* Обновляем стили для кнопок выбора роли (role‑btn) – чтобы при активном состоянии (класс "active") рамка была фиолетовой толщиной 1px (как у инпутов) и не меняла размер кнопок (используем box‑sizing: border‑box) */
+    .role-btn { flex: 1; padding: 18px 0; border-radius: 10px; border: 1px solid #424242; background: #131313; color: #fff; font-size: 1.08rem; font-weight: 600; cursor: pointer; transition: all 0.15s; box-sizing: border-box; }
+    .role-btn:hover { background: #181818; border: 1px solid #6d6d6d; }
+    .role-btn:active, .role-btn.active { border: 1px solid #6a5acd; }
+  </style>
+</head>
+<body>
+  <div class="auth-outer">
+    <div class="auth-header-flex">
+      <div class="auth-title" id="auth-title">Вход</div>
+    </div>
+    <div class="auth-card" id="auth-card">
+      <div class="auth-inner" id="auth-inner">
+        <form class="auth-form" id="sign-in-form" autocomplete="off">
+          <label class="auth-label" for="email">Email</label>
+          <input class="auth-input" type="email" id="email" placeholder="Ваш email адрес" required />
+          <button class="auth-btn" type="submit">Продолжить</button>
+        </form>
+        <div class="auth-or"><span>ИЛИ</span></div>
+        <div class="auth-social-bottom-group">
+          <div class="auth-social-group">
+            <button class="auth-social-btn vk" id="vk-btn"><span class="icon"><img src="assets/svg/vk-1-logo-svgrepo-com.svg" alt="VK" style="width:20px;height:20px;vertical-align:middle;"></span><span>Продолжить с ВКонтакте</span></button>
+            <button class="auth-social-btn google" id="google-btn"><span class="icon"><img src="assets/svg/google-color-svgrepo-com.svg" alt="G" style="width:20px;height:20px;vertical-align:middle;"></span><span>Продолжить с Google</span></button>
+          </div>
+          <div class="auth-bottom">Нет аккаунта? <a href="#" id="to-signup">Зарегистрироваться</a></div>
+        </div>
+      </div>
+      <!-- Окно ввода пароля для входа -->
+      <div class="auth-inner" id="confirm-inner-signin" style="display:none;">
+        <form class="auth-form" id="confirm-form-signin" autocomplete="off">
+          <label class="auth-label" for="confirm-email-signin">Email</label>
+          <input class="auth-input" type="email" id="confirm-email-signin" readonly />
+          <label class="auth-label" for="confirm-password-signin" style="margin-top:20px;">Пароль</label>
+          <div class="auth-password-wrap">
+            <input class="auth-input" type="password" id="confirm-password-signin" placeholder="Введите ваш пароль" required />
+            <span class="auth-password-toggle" id="toggle-password-signin" tabindex="0" title="Показать/скрыть пароль"><img src="assets/svg/eye-closed-svgrepo-com.svg" alt="Скрыть"></span>
+          </div>
+          <button class="auth-btn" type="submit">Войти</button>
+        </form>
+        <div class="auth-or"><span>ИЛИ</span></div>
+        <button class="auth-social-btn email" id="email-code-btn-signin"><span class="icon"><img src="assets/svg/mail-svgrepo-com.svg" alt="Почта" style="width:20px;height:20px;vertical-align:middle;"></span><span>Продолжить по коду из почты</span></button>
+        <div class="auth-back-out"><a href="#" id="to-back-signin">← Назад</a></div>
+      </div>
+      <!-- Окно ввода пароля для регистрации -->
+      <div class="auth-inner" id="confirm-inner-signup" style="display:none;">
+        <form class="auth-form" id="confirm-form-signup" autocomplete="off">
+          <label class="auth-label" for="confirm-email-signup">Email</label>
+          <input class="auth-input" type="email" id="confirm-email-signup" readonly />
+          <label class="auth-label" for="confirm-password-signup" style="margin-top:20px;">Пароль</label>
+          <div class="auth-password-wrap">
+            <input class="auth-input" type="password" id="confirm-password-signup" placeholder="Придумайте пароль" required />
+            <span class="auth-password-toggle" id="toggle-password-signup" tabindex="0" title="Показать/скрыть пароль"><img src="assets/svg/eye-closed-svgrepo-com.svg" alt="Скрыть"></span>
+          </div>
+          <button class="auth-btn" type="submit">Зарегистрироваться</button>
+        </form>
+        <div class="auth-or"><span>ИЛИ</span></div>
+        <button class="auth-social-btn email" id="email-code-btn-signup"><span class="icon"><img src="assets/svg/mail-svgrepo-com.svg" alt="Почта" style="width:20px;height:20px;vertical-align:middle;"></span><span>Продолжить по коду из почты</span></button>
+        <div class="auth-back-out"><a href="#" id="to-back-signup">← Назад</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="auth-terms">Условия использования и <a href="#">Политика конфиденциальности</a></div>
+  <!-- Модальное окно выбора роли -->
+  <div id="role-modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.82); align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
+    <div style="background: #191919; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.18); width: 380px; max-width: 96vw; padding: 40px 32px 32px 32px; display: flex; flex-direction: column; align-items: center;">
+      <div style="font-size: 1.35rem; font-weight: 600; color: #fff; text-align: center; margin-bottom: 18px;"> Кто вы на этом сайте? </div>
+      <div style="color: #aaa; font-size: 1rem; text-align: center; margin-bottom: 28px; padding: 0 10px;"> Выберите, что вы ищете: работу или сотрудников. Это поможет нам подобрать для вас подходящий функционал. </div>
+      <div style="display: flex; gap: 18px; width: 100%; justify-content: center; margin-bottom: 28px;">
+         <button id="role-seeker" class="role-btn"> Я ищу работу </button>
+         <button id="role-employer" class="role-btn"> Я предлагаю работу </button>
+      </div>
+      <button id="role-continue" class="auth-btn" style="width: 100%; margin-top: 0;" disabled> Продолжить </button>
+    </div>
+  </div>
+  <script>
+    // Pixel-perfect переключение между Вход и Регистрация
+    const card = document.getElementById('auth-card');
+    const title = document.getElementById('auth-title');
+    const form = document.getElementById('sign-in-form');
+    const bottom = document.querySelector('.auth-bottom');
+    const toSignup = document.getElementById('to-signup');
+    const authInner = document.getElementById('auth-inner');
+    const confirmInnerSignin = document.getElementById('confirm-inner-signin');
+    const confirmInnerSignup = document.getElementById('confirm-inner-signup');
+    let lastEmail = '';
+    let isSignUp = false;
+    let regFirstName = '';
+    let regLastName = '';
+
+    // Функция для проверки валидности email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Функция для проверки валидности пароля
+    function isValidPassword(password) {
+        return password.length >= 6;
+    }
+
+    // Функция для добавления/удаления класса ошибки
+    function setInputError(input, isError) {
+      if (isError) {
+        input.classList.add('input-error');
+      } else {
+        input.classList.remove('input-error');
+      }
+    }
+
+    toSignup.onclick = function(e) {
+        e.preventDefault();
+        isSignUp = true;
+        title.textContent = 'Регистрация';
+        form.classList.add('signup');
+        form.innerHTML = `
+          <div style="display:flex; gap:8px; margin-bottom:18px; width:344px;">
+            <div style="width:168px;">
+              <div class="input-group">
+                <label class='auth-label' for='first-name'>Имя</label>
+                <input class='auth-input' type='text' id='first-name' placeholder='Ваше имя' required style='margin-bottom:0;' />
+              </div>
+            </div>
+            <div style="width:168px;">
+              <div class="input-group">
+                <label class='auth-label' for='last-name'>Фамилия</label>
+                <input class='auth-input' type='text' id='last-name' placeholder='Ваша фамилия' required style='margin-bottom:0;' />
+              </div>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class='auth-label' for='email'>Email</label>
+            <input class='auth-input' type='email' id='email' placeholder='Ваш email адрес' required />
+          </div>
+          <button class='auth-btn' type='submit' id='signup-btn'>Зарегистрироваться</button>
+        `;
+        bottom.innerHTML = 'Уже есть аккаунт? <a href="#" id="to-signin">Войти</a>';
+        document.getElementById('to-signin').onclick = function(e) {
+            e.preventDefault();
+            isSignUp = false;
+            title.textContent = 'Вход';
+            form.classList.remove('signup');
+            form.innerHTML = `
+                <div class="input-group">
+                  <label class='auth-label' for='email'>Email</label>
+                  <input class='auth-input' type='email' id='email' placeholder='Ваш email адрес' required />
+                </div>
+                <button class='auth-btn' type='submit'>Продолжить</button>
+            `;
+            bottom.innerHTML = 'Нет аккаунта? <a href="#" id="to-signup">Зарегистрироваться</a>';
+            document.getElementById('to-signup').onclick = toSignup.onclick;
+        };
+        setTimeout(() => {
+            const signupBtn = document.getElementById('signup-btn');
+            if (signupBtn) {
+                signupBtn.onclick = function(ev) {
+                    ev.preventDefault();
+                    const firstName = document.getElementById('first-name').value.trim();
+                    const lastName = document.getElementById('last-name').value.trim();
+                    const emailInput = document.getElementById('email');
+                    const email = emailInput.value.trim();
+
+                    // Очищаем предыдущие ошибки
+                    setInputError(document.getElementById('first-name'), false);
+                    setInputError(document.getElementById('last-name'), false);
+                    setInputError(emailInput, false);
+
+                    // Проверяем валидность полей
+                    let hasError = false;
+
+                    if (!firstName) {
+                        setInputError(document.getElementById('first-name'), true);
+                        hasError = true;
+                    }
+
+                    if (!lastName) {
+                        setInputError(document.getElementById('last-name'), true);
+                        hasError = true;
+                    }
+
+                    if (!email) {
+                        setInputError(emailInput, true);
+                        hasError = true;
+                    } else if (!isValidEmail(email)) {
+                        setInputError(emailInput, true);
+                        hasError = true;
+                    }
+
+                    // Проверяем существование пользователя
+                    let users = JSON.parse(localStorage.getItem('users') || '{}');
+                    if (users[email]) {
+                        setInputError(emailInput, true);
+                        const errorDiv = document.createElement('div');
+                        errorDiv.style.color = '#e05a5a';
+                        errorDiv.style.marginTop = '8px';
+                        errorDiv.style.fontSize = '14px';
+                        errorDiv.textContent = 'Пользователь с таким email уже существует';
+                        errorDiv.className = 'error-message';
+                        
+                        // Удаляем предыдущее сообщение об ошибке, если оно есть
+                        const existingError = emailInput.parentElement.querySelector('.error-message');
+                        if (existingError) existingError.remove();
+                        
+                        emailInput.parentElement.appendChild(errorDiv);
+                        hasError = true;
+                    }
+
+                    if (hasError) {
+                        return;
+                    }
+
+                    regFirstName = firstName;
+                    regLastName = lastName;
+                    lastEmail = email;
+                    authInner.style.display = 'none';
+                    confirmInnerSignup.style.display = '';
+                    document.getElementById('confirm-email-signup').value = lastEmail;
+                    title.textContent = 'Подтверждение';
+                };
+            }
+        }, 100);
+    };
+
+    // Обработчик формы входа
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('email');
+        if (!emailInput) return;
+        
+        const email = emailInput.value.trim();
+        if (!email || !isValidEmail(email)) {
+            setInputError(emailInput, true);
+            return;
+        }
+
+        lastEmail = email;
+        authInner.style.display = 'none';
+        const confirmInnerSignin = document.getElementById('confirm-inner-signin');
+        if (confirmInnerSignin) {
+            confirmInnerSignin.style.display = '';
+            const confirmEmailInput = document.getElementById('confirm-email-signin');
+            if (confirmEmailInput) confirmEmailInput.value = lastEmail;
+        }
+        title.textContent = 'Подтверждение';
+    };
+
+    // Обработчик формы подтверждения для входа
+    const confirmFormSignin = document.getElementById('confirm-form-signin');
+    if (confirmFormSignin) {
+        confirmFormSignin.onsubmit = function(ev) {
+            ev.preventDefault();
+            const emailInput = document.getElementById('confirm-email-signin');
+            const passwordInput = document.getElementById('confirm-password-signin');
+            if (!emailInput || !passwordInput) return;
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Очищаем предыдущие ошибки
+            setInputError(passwordInput, false);
+
+            // Проверяем пароль
+            if (!password || password.length < 6) {
+                setInputError(passwordInput, true);
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            console.log('Attempting login for:', email); // Отладка
+            console.log('User exists:', !!users[email]); // Отладка
+            console.log('Password matches:', users[email] && users[email].password === password); // Отладка
+
+            if (users[email] && users[email].password === password) {
+                localStorage.setItem('currentUser', JSON.stringify({ email, name: users[email].name }));
+                showRoleModal();
+            } else {
+                setInputError(passwordInput, true);
+                // Добавляем текст ошибки
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = '#e05a5a';
+                errorDiv.style.marginTop = '8px';
+                errorDiv.style.fontSize = '14px';
+                errorDiv.textContent = 'Неверный email или пароль';
+                
+                // Удаляем предыдущее сообщение об ошибке, если оно есть
+                const existingError = passwordInput.parentElement.querySelector('.error-message');
+                if (existingError) existingError.remove();
+                
+                errorDiv.className = 'error-message';
+                passwordInput.parentElement.appendChild(errorDiv);
+            }
+        };
+    }
+
+    // Обработчики переключения видимости пароля
+    document.addEventListener('click', function(e) {
+        if (e.target && (e.target.id === 'toggle-password-signin' || e.target.closest('#toggle-password-signin'))) {
+            const pwd = document.getElementById('confirm-password-signin');
+            const toggle = document.getElementById('toggle-password-signin');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                toggle.innerHTML = '<img src="assets/svg/eye-svgrepo-com.svg" alt="Показать">';
+            } else {
+                pwd.type = 'password';
+                toggle.innerHTML = '<img src="assets/svg/eye-closed-svgrepo-com.svg" alt="Скрыть">';
+            }
+        }
+        if (e.target && (e.target.id === 'toggle-password-signup' || e.target.closest('#toggle-password-signup'))) {
+            const pwd = document.getElementById('confirm-password-signup');
+            const toggle = document.getElementById('toggle-password-signup');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                toggle.innerHTML = '<img src="assets/svg/eye-svgrepo-com.svg" alt="Показать">';
+            } else {
+                pwd.type = 'password';
+                toggle.innerHTML = '<img src="assets/svg/eye-closed-svgrepo-com.svg" alt="Скрыть">';
+            }
+        }
+    });
+
+    // Обработчики кнопок "Назад"
+    document.getElementById('to-back-signin').onclick = function(e) {
+        e.preventDefault();
+        confirmInnerSignin.style.display = 'none';
+        authInner.style.display = '';
+        title.textContent = 'Вход';
+    };
+
+    document.getElementById('to-back-signup').onclick = function(e) {
+        e.preventDefault();
+        confirmInnerSignup.style.display = 'none';
+        authInner.style.display = '';
+        title.textContent = 'Регистрация';
+    };
+
+    // Обработчик формы подтверждения для регистрации
+    const confirmFormSignup = document.getElementById('confirm-form-signup');
+    if (confirmFormSignup) {
+        confirmFormSignup.onsubmit = function(ev) {
+            ev.preventDefault();
+            const emailInput = document.getElementById('confirm-email-signup');
+            const passwordInput = document.getElementById('confirm-password-signup');
+            if (!emailInput || !passwordInput) return;
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Очищаем предыдущие ошибки
+            setInputError(passwordInput, false);
+            const existingError = passwordInput.parentElement.querySelector('.error-message');
+            if (existingError) existingError.remove();
+
+            // Проверяем пароль
+            if (!password || password.length < 6) {
+                setInputError(passwordInput, true);
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = '#e05a5a';
+                errorDiv.style.marginTop = '8px';
+                errorDiv.style.fontSize = '14px';
+                errorDiv.textContent = 'Пароль должен быть не менее 6 символов';
+                errorDiv.className = 'error-message';
+                passwordInput.parentElement.appendChild(errorDiv);
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            console.log('Attempting registration for:', email); // Отладка
+            console.log('User already exists:', !!users[email]); // Отладка
+
+            if (users[email]) {
+                setInputError(passwordInput, true);
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = '#e05a5a';
+                errorDiv.style.marginTop = '8px';
+                errorDiv.style.fontSize = '14px';
+                errorDiv.textContent = 'Пользователь с таким email уже существует';
+                errorDiv.className = 'error-message';
+                passwordInput.parentElement.appendChild(errorDiv);
+                return;
+            }
+
+            users[email] = { name: regFirstName + ' ' + regLastName, password };
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify({ email, name: regFirstName + ' ' + regLastName }));
+            showRoleModal();
+        };
+    }
+
+    // --- МОДАЛЬНОЕ ОКНО ВЫБОРА РОЛИ ---
+    const roleModal = document.getElementById('role-modal');
+    const roleSeekerBtn = document.getElementById('role-seeker');
+    const roleEmployerBtn = document.getElementById('role-employer');
+    const roleContinueBtn = document.getElementById('role-continue');
+    let selectedRole = null;
+    if (roleSeekerBtn && roleEmployerBtn && roleContinueBtn) {
+      roleSeekerBtn.onclick = function() {
+        selectedRole = 'seeker';
+        roleSeekerBtn.classList.add('active');
+        roleEmployerBtn.classList.remove('active');
+        roleContinueBtn.disabled = false;
+      };
+      roleEmployerBtn.onclick = function() {
+        selectedRole = 'employer';
+        roleEmployerBtn.classList.add('active');
+        roleSeekerBtn.classList.remove('active');
+        roleContinueBtn.disabled = false;
+      };
+      roleContinueBtn.onclick = function() {
+        if (selectedRole) {
+          // Сохраняем флаг (например, isSeeker или isEmployer) в localStorage, чтобы в дальнейшем (например, в index.html) менять текст в шапке (например, вместо "Вакансии" писать "Отклики", а вместо "Вакансия+" – "Создать Резюме") в зависимости от выбранной роли.
+          if (selectedRole === 'seeker') {
+            localStorage.setItem('isSeeker', 'true');
+            localStorage.removeItem('isEmployer');
+          } else if (selectedRole === 'employer') {
+            localStorage.setItem('isEmployer', 'true');
+            localStorage.removeItem('isSeeker');
+          }
+          window.location.href = 'index.html';
+        }
+      };
+    }
+
+    // --- ПОКАЗ ОКНА ВЫБОРА РОЛИ ПОСЛЕ ВХОДА/РЕГИСТРАЦИИ ---
+    function showRoleModal() {
+      roleModal.style.display = 'flex';
+    }
+  </script>
+</body>
+</html> 

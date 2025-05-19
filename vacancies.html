@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вакансии | ChesuWork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Add load-header.js before other scripts -->
+    <script src="load-header.js"></script>
+    <style>
+      .vacancies-header {
+        margin-top: 32px;
+        margin-right: 400px;
+        margin-bottom: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .vacancies-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 24px;
+      }
+      .vacancies-tabs {
+        display: flex;
+        gap: 16px;
+        position: relative;
+        flex-direction: row;
+      }
+      .vacancy-tab {
+        background: #fff;
+        color: #222;
+        border-radius: 18px;
+        font-size: 17px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border: 1.5px solid #e0e0e0;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s, box-shadow 0.18s, border-color 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+      }
+      .vacancy-tab:hover:not(.active) {
+        /* background: #f3f4f6; */
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+        border-color: #bdbdbd;
+      }
+      .vacancy-tab.active {
+        background: #222;
+        color: #fff;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+        border: none;
+      }
+      .tab-count {
+        font-size: 13px;
+        font-weight: 700;
+        margin-left: 8px;
+      }
+      .vacancies-empty {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 340px;
+        background: none;
+        border-radius: 18px;
+      }
+      .vacancies-empty-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #f5f7fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+      .vacancies-empty-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      .vacancies-empty-desc {
+        font-size: 15px;
+        color: #888;
+        margin-bottom: 28px;
+        text-align: center;
+      }
+      .vacancies-empty-btn {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 14px 32px;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .vacancies-empty-btn:hover {
+        background: #1d4ed8;
+      }
+      .new-vacancy-btn {
+        display: none;
+        margin-top: 18px;
+        margin-left: 0;
+        background: #1677ff;
+        color: #fff;
+        font-weight: 700;
+        font-size: 17px;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 28px;
+        cursor: pointer;
+        transition: background 0.18s;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+      }
+      .new-vacancy-btn:hover {
+        background: #125fd1;
+      }
+      .vacancies-actions-row {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        margin-top: 18px;
+        width: 100%;
+      }
+      .vacancy-search-container {
+        position: relative;
+        width: 320px;
+      }
+      .vacancy-search-input {
+        width: 100%;
+        padding: 10px 16px 10px 38px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 14px;
+        font-size: 17px;
+        color: #222;
+        background: #fff;
+        transition: border-color 0.18s;
+      }
+      .vacancy-search-input:focus {
+        border-color: #2563eb;
+        outline: none;
+      }
+      .vacancy-search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #8ca0b3;
+        font-size: 18px;
+        pointer-events: none;
+      }
+    </style>
+</head>
+<body>
+    <header id="main-header" class="main-header cursor-header">
+      <div class="header-inner">
+        <div class="header-left">
+          <div class="logo" onclick="window.location.href='index.html'">
+            <span>ChesuWork</span>
+          </div>
+        </div>
+        <nav class="header-center">
+          <a href="#" class="nav-link">Прайсинг</a>
+          <a href="#" class="nav-link">Фичи</a>
+          <a href="#" class="nav-link">Для компаний</a>
+          <a href="#" class="nav-link">Блог</a>
+          <a href="#" class="nav-link">Форум</a>
+          <a href="vacancies.html" class="nav-link">Вакансии</a>
+        </nav>
+        <div class="header-right">
+          <button id="auth-link" class="profile-btn"><i class="fa-regular fa-user"></i></button>
+          <button class="vacancy-btn" onclick="window.location.href='create-job.html'"><span>Создать вакансию</span></button>
+        </div>
+      </div>
+    </header>
+    <main class="vacancies-container" style="max-width: 900px; margin: 40px auto 0 auto; min-height: 70vh; display: flex; flex-direction: column; align-items: stretch;">
+      <div class="vacancies-header">
+        <div class="vacancies-title">Вакансии</div>
+        <div class="vacancies-tabs">
+          <button class="vacancy-tab active" data-tab="active">Активные <span class="tab-count">0</span></button>
+          <button class="vacancy-tab" data-tab="drafts">Черновики <span class="tab-count">0</span></button>
+        </div>
+        <div class="vacancies-actions-row" id="vacanciesActionsRow" style="display:none;">
+          <button class="new-vacancy-btn" id="newVacancyBtn" onclick="window.location.href='create-job.html'">Новая вакансия</button>
+          <div class="vacancy-search-container">
+            <input type="text" class="vacancy-search-input" placeholder="Поиск">
+            <span class="vacancy-search-icon"><i class="fa fa-search"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="vacancies-empty" id="vacanciesEmptyBlock">
+        <div class="vacancies-empty-icon">
+          <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-3.314 0-10 1.657-10 5v3h20v-3c0-3.343-6.686-5-10-5Z" fill="#b0b8c1"/></svg>
+        </div>
+        <div class="vacancies-empty-title">Найдите идеального сотрудника</div>
+        <div class="vacancies-empty-desc">Создайте вакансию — не упустите хороших кандидатов</div>
+        <button class="vacancies-empty-btn" onclick="window.location.href='create-job.html'">Создать вакансию</button>
+      </div>
+    </main>
+    <div id="profile-menu" class="profile-menu">
+      <div class="profile-menu-header">
+        <div class="profile-menu-name" id="profile-name"></div>
+        <div class="profile-menu-email" id="profile-email"></div>
+      </div>
+      <div class="profile-menu-divider"></div>
+      <div class="profile-menu-link" id="account-settings">ACCOUNT SETTINGS</div>
+      <div class="profile-menu-link logout" id="logout-btn">
+        LOG OUT <span class="profile-menu-logout-icon"><img src="assets/svg/log-out-01-svgrepo-com.svg" alt="Logout" style="width:18px;height:18px;vertical-align:middle;"></span>
+      </div>
+    </div>
+    <script src="vacancies.js"></script>
+    <script src="script.js"></script>
+    <script>
+      // JS для переключения табов (пример)
+      document.querySelectorAll('.vacancy-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.vacancy-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          const newVacancyBtn = document.getElementById('newVacancyBtn');
+          const vacanciesEmptyBlock = document.getElementById('vacanciesEmptyBlock');
+          const actionsRow = document.getElementById('vacanciesActionsRow');
+          if (this.dataset.tab === 'drafts') {
+            newVacancyBtn.style.display = 'block';
+            vacanciesEmptyBlock.style.display = 'none';
+            actionsRow.style.display = 'flex';
+          } else {
+            newVacancyBtn.style.display = 'none';
+            vacanciesEmptyBlock.style.display = 'flex';
+            actionsRow.style.display = 'none';
+          }
+        });
+      });
+      // При загрузке страницы скрываем/показываем кнопку и блок пустого состояния в зависимости от активного таба
+      document.addEventListener('DOMContentLoaded', function() {
+        const activeTab = document.querySelector('.vacancy-tab.active');
+        const newVacancyBtn = document.getElementById('newVacancyBtn');
+        const vacanciesEmptyBlock = document.getElementById('vacanciesEmptyBlock');
+        const actionsRow = document.getElementById('vacanciesActionsRow');
+        if (activeTab && activeTab.dataset.tab === 'drafts') {
+          newVacancyBtn.style.display = 'block';
+          vacanciesEmptyBlock.style.display = 'none';
+          actionsRow.style.display = 'flex';
+        } else {
+          newVacancyBtn.style.display = 'none';
+          vacanciesEmptyBlock.style.display = 'flex';
+          actionsRow.style.display = 'none';
+        }
+      });
+    </script>
+</body>
+</html> 

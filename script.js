@@ -9,41 +9,7 @@ let respondedJobs = JSON.parse(localStorage.getItem("respondedJobs") || "[]");
 let isShowingFavorites = false;
 let isShowingResponses = false;
 
-const availableSkills = [
-  "Python",
-  "Django",
-  "PostgreSQL",
-  "Git",
-  "React",
-  "TypeScript",
-  "HTML",
-  "CSS",
-  "JavaScript",
-  "Adobe Photoshop",
-  "Illustrator",
-  "1С",
-  "Digital-маркетинг",
-  "Google Analytics",
-  "SEO",
-  "Копирайтинг",
-  "Продажи",
-  "Коммуникация",
-  "Переговоры",
-  "Флористика",
-  "Креативность",
-  "Обслуживание клиентов",
-  "Linux",
-  "Windows",
-  "Сетевые протоколы",
-  "Безопасность",
-  "Рекрутинг",
-  "Трудовое законодательство",
-  "Водительские навыки",
-  "Клиентоориентированность",
-  "Кулинария",
-  "Санитарные нормы",
-  "Командная работа",
-];
+
 
 let jobs = [
   {
@@ -937,33 +903,34 @@ document.addEventListener("click", function (e) {
 
 function updateHeader() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-  const nav = document.getElementById("header-nav");
   const authLink = document.getElementById("auth-link");
-  const oldCreateBtn = nav.querySelector(".create-btn");
-  if (oldCreateBtn) oldCreateBtn.remove();
+  if (!authLink) return;
 
   if (currentUser.email) {
-    authLink.textContent = currentUser.name || "Профиль";
-    authLink.onclick = toggleProfileMenu;
-    document.getElementById("profile-my-items").textContent = "Мои избранные";
-    if (currentUser.role === "employer") {
-      const createBtn = document.createElement("button");
-      createBtn.className = "create-btn";
-      createBtn.textContent = "Создать вакансию";
-      createBtn.onclick = openCreateJobModal;
-      nav.insertBefore(createBtn, document.getElementById("auth-link"));
-    } else {
-      const createBtn = document.createElement("button");
-      createBtn.className = "create-btn";
-      createBtn.textContent = "Создать резюме";
-      createBtn.onclick = function () {
-        showNotification("Переход к созданию резюме");
-      };
-      nav.insertBefore(createBtn, document.getElementById("auth-link"));
-    }
+    // Пользователь авторизован
+    authLink.innerHTML = '<i class="fa-regular fa-user"></i>';
+    authLink.title = 'Профиль';
+    authLink.onclick = function(e) {
+      e.preventDefault();
+      const profileMenu = document.getElementById("profile-menu");
+      if (profileMenu) {
+        profileMenu.classList.toggle("active");
+      }
+    };
+
+    // Обновляем информацию в профильном меню
+    const profileName = document.getElementById("profile-name");
+    const profileEmail = document.getElementById("profile-email");
+    if (profileName) profileName.textContent = currentUser.name || '';
+    if (profileEmail) profileEmail.textContent = currentUser.email || '';
   } else {
-    authLink.textContent = "Войти";
-    authLink.onclick = () => showSection("auth");
+    // Пользователь не авторизован
+    authLink.textContent = "ВОЙТИ";
+    authLink.title = '';
+    authLink.onclick = function(e) {
+      e.preventDefault();
+      window.location.href = 'auth.html';
+    };
   }
 }
 
@@ -1107,11 +1074,28 @@ async function createJob(e) {
 
 function handleLogout() {
   localStorage.removeItem("currentUser");
-  document.getElementById("profile-menu").classList.remove("active");
-  showSection("main");
+  const profileMenu = document.getElementById("profile-menu");
+  if (profileMenu) profileMenu.classList.remove("active");
   updateHeader();
-  showNotification("Выход выполнен");
+  window.location.href = 'auth.html';
 }
+
+// Добавляем обработчик события для кнопки выхода
+document.addEventListener('DOMContentLoaded', function() {
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.onclick = function(e) {
+      e.preventDefault();
+      handleLogout();
+    };
+  }
+
+  // Проверяем наличие сохраненного пользователя при загрузке страницы
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  if (currentUser.email) {
+    updateHeader();
+  }
+});
 
 function showTab(tab) {
   document
@@ -1186,9 +1170,8 @@ function formatSalary(min, max) {
 
 function updateJobList(filteredJobs = jobs) {
   const jobList = document.getElementById("job-list");
-  jobList.innerHTML = ""; // Очищаем весь список, включая старые заголовки и карточки
+  jobList.innerHTML = "";
 
-  // Добавляем заголовок "Избранные вакансии", если включен режим избранного
   if (isShowingFavorites) {
     const favoritesTitle = document.createElement("h2");
     favoritesTitle.className = "favorites-title";
@@ -1198,7 +1181,7 @@ function updateJobList(filteredJobs = jobs) {
 
   filteredJobs.forEach((job) => {
     const card = document.createElement("div");
-    card.className = "job-card";
+    card.className = "vacancy-card";
     card.setAttribute("data-title", job.title);
     card.setAttribute("data-company", job.company);
     card.setAttribute("data-description", job.fullDescription);
@@ -1213,28 +1196,43 @@ function updateJobList(filteredJobs = jobs) {
     card.setAttribute("data-work-format", job.workFormat);
     card.setAttribute("data-lat", job.lat);
     card.setAttribute("data-lng", job.lng);
-    const experienceTag =
-      job.experience === "noExperience"
-        ? `<span class="tag">${getExperienceText(job.experience)}</span>`
-        : `<span class="tag">Опыт: ${getExperienceText(job.experience)}</span>`;
+
+    // Форматируем зарплату
+    let salaryText = "";
+    if (job.salaryMin && job.salaryMax) {
+      salaryText = `${job.salaryMin.toLocaleString()} – ${job.salaryMax.toLocaleString()} ₽ за месяц`;
+    } else if (job.salaryMin) {
+      salaryText = `от ${job.salaryMin.toLocaleString()} ₽ за месяц`;
+    } else {
+      salaryText = "Зарплата не указана";
+    }
+
+    // Теги (опыт, выплаты и т.д.)
+    let tags = "";
+    if (job.experience === "noExperience") {
+      tags += '<span class="vacancy-card-tag">Без опыта</span>';
+    } else if (job.experience) {
+      tags += `<span class="vacancy-card-tag">Опыт ${getExperienceText(job.experience)}</span>`;
+    }
+    if (job.conditions && Array.isArray(job.conditions)) {
+      const payout = job.conditions.find(c => c.toLowerCase().includes("выплат"));
+      if (payout) {
+        tags += `<span class="vacancy-card-tag">${payout.replace(/^- /, "")}</span>`;
+      }
+    }
+
     card.innerHTML = `
-      <span class="favorite" onclick="toggleFavorite(this, '${
-        job.title
-      }')"><i class="fas fa-heart"></i></span>
-      <h3>${job.title}</h3>
-      <div class="salary-container">
-        <div class="salary">${formatSalary(job.salaryMin, job.salaryMax)}</div>
-        ${experienceTag}
-        <span class="tag">${getWorkFormatText(job.workFormat)}</span>
+      <div class="vacancy-card-title-row">
+        <span class="vacancy-card-title">${job.title}</span>
       </div>
-      <div class="company">${job.company}</div>
-      <div class="address">${job.city}, ${job.description}</div>
-      <button class="respond-btn${
-        respondedJobs.includes(job.title) ? " responded" : ""
-      }" onclick="respondToJob('${job.title}')">Откликнуться</button>
-      <button class="track-btn" onclick="trackOnMap(${job.lat}, ${job.lng}, '${
-      job.title
-    }')">Показать на карте</button>
+      <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span class="vacancy-card-salary">${salaryText}</span>
+        ${tags}
+      </div>
+      <div class="vacancy-card-company-row">
+        <span class="vacancy-card-company">${job.company}</span>
+      </div>
+      <div class="vacancy-card-address">${job.city}${job.description ? ', ' + job.description : ''}</div>
     `;
     jobList.appendChild(card);
     setTimeout(() => card.classList.add("visible"), 100);
@@ -1375,37 +1373,127 @@ function showResponses() {
   }
 }
 
+function getMarkerIcon(job) {
+  // Определяем иконку на основе типа работы
+  let iconClass = 'fa-briefcase'; // По умолчанию
+  
+  if (job.title.toLowerCase().includes('программист') || 
+      job.title.toLowerCase().includes('разработчик') ||
+      job.title.toLowerCase().includes('frontend') ||
+      job.title.toLowerCase().includes('backend')) {
+    iconClass = 'fa-code';
+  } else if (job.title.toLowerCase().includes('дизайн') || 
+             job.title.toLowerCase().includes('график')) {
+    iconClass = 'fa-palette';
+  } else if (job.title.toLowerCase().includes('менеджер') || 
+             job.title.toLowerCase().includes('продаж')) {
+    iconClass = 'fa-chart-line';
+  } else if (job.title.toLowerCase().includes('повар') || 
+             job.title.toLowerCase().includes('кухн')) {
+    iconClass = 'fa-utensils';
+  } else if (job.title.toLowerCase().includes('водитель') || 
+             job.title.toLowerCase().includes('курьер')) {
+    iconClass = 'fa-truck';
+  } else if (job.title.toLowerCase().includes('официант') || 
+             job.title.toLowerCase().includes('админ')) {
+    iconClass = 'fa-user-tie';
+  } else if (job.title.toLowerCase().includes('бухгалтер') || 
+             job.title.toLowerCase().includes('финанс')) {
+    iconClass = 'fa-calculator';
+  } else if (job.title.toLowerCase().includes('маркетолог') || 
+             job.title.toLowerCase().includes('реклам')) {
+    iconClass = 'fa-bullhorn';
+  }
+
+  return `<i class="fas ${iconClass}"></i>`;
+}
+
 function updateMap(filteredJobs) {
   if (!map) return;
   markers.forEach((marker) => map.removeLayer(marker));
   markers = [];
+
+  const jobCategories = {
+    'Программист': 'marker-blue',
+    'Frontend': 'marker-blue',
+    'Backend': 'marker-blue',
+    'Разработчик': 'marker-blue',
+    'Менеджер': 'marker-green',
+    'Продажи': 'marker-green',
+    'Флорист': 'marker-teal',
+    'Дизайнер': 'marker-purple',
+    'Графический': 'marker-purple',
+    'Бухгалтер': 'marker-orange',
+    'Финанс': 'marker-orange',
+    'Маркетолог': 'marker-pink',
+    'Реклама': 'marker-pink',
+    'Официант': 'marker-yellow',
+    'Повар': 'marker-yellow',
+    'Кухня': 'marker-yellow',
+    'Системный администратор': 'marker-red',
+    'IT': 'marker-red',
+    'HR': 'marker-teal',
+    'Курьер': 'marker-green',
+    'Копирайтер': 'marker-purple',
+    'Контент': 'marker-purple'
+  };
+
+  const jobIcons = {
+    'Программист': 'fa-code',
+    'Менеджер': 'fa-briefcase',
+    'Флорист': 'fa-leaf',
+    'Frontend': 'fa-laptop-code',
+    'Дизайнер': 'fa-palette',
+    'Бухгалтер': 'fa-calculator',
+    'Маркетолог': 'fa-bullhorn',
+    'Официант': 'fa-utensils',
+    'Системный администратор': 'fa-server',
+    'HR': 'fa-users',
+    'Курьер': 'fa-truck',
+    'Копирайтер': 'fa-pen-fancy',
+    'Повар': 'fa-utensils'
+  };
+
   filteredJobs.forEach((job) => {
     const salary = formatSalary(job.salaryMin, job.salaryMax);
-    const respondedClass = respondedJobs.includes(job.title)
-      ? " responded"
-      : "";
+    const respondedClass = respondedJobs.includes(job.title) ? " responded" : "";
+    
+    // Определяем иконку на основе названия должности
+    let iconClass = 'fa-map-marker-alt'; // дефолтная иконка
+    for (const [key, value] of Object.entries(jobIcons)) {
+      if (job.title.includes(key)) {
+        iconClass = value;
+        break;
+      }
+    }
+
+    // Определяем цвет маркера на основе категории
+    let colorClass = 'marker-blue'; // дефолтный цвет
+    for (const [key, value] of Object.entries(jobCategories)) {
+      if (job.title.toLowerCase().includes(key.toLowerCase())) {
+        colorClass = value;
+        break;
+      }
+    }
+
     const popupContent = `
       <div class="map-popup">
-        <b><a href="#" onclick="openJobModal('${job.title}', '${
-      job.company
-    }', '${salary}', '${job.fullDescription}', '${job.experience}', '${
-      job.employment
-    }', '${job.schedule}', '${job.hours}', '${job.internship}', '${
-      job.workFormat
-    }', '${job.conditions.join("|")}', '${job.responsibilities.join(
-      "|"
-    )}', '${job.requirements.join("|")}', '${job.keySkills.join(
-      "|"
-    )}'); return false;">${job.title}</a></b>
+        <b><a href="#" onclick="openJobModal('${job.title}', '${job.company}', '${salary}', '${job.fullDescription}', '${job.experience}', '${job.employment}', '${job.schedule}', '${job.hours}', '${job.internship}', '${job.workFormat}', '${job.conditions.join("|")}', '${job.responsibilities.join("|")}', '${job.requirements.join("|")}', '${job.keySkills.join("|")}'); return false;">${job.title}</a></b>
         <p><strong>Зарплата:</strong> ${salary}</p>
         <p>${job.company}</p>
         <p>${job.city}, ${job.description}</p>
-        <button class="respond-btn${respondedClass}" onclick="respondToJob('${
-      job.title
-    }')">Откликнуться</button>
+        <button class="respond-btn${respondedClass}" onclick="respondToJob('${job.title}')">Откликнуться</button>
       </div>
     `;
-    const marker = L.marker([job.lat, job.lng])
+
+    const markerIcon = L.divIcon({
+      className: `custom-marker ${colorClass}`,
+      html: `<i class="fas ${iconClass}"></i>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40]
+    });
+
+    const marker = L.marker([job.lat, job.lng], { icon: markerIcon })
       .addTo(map)
       .bindPopup(popupContent);
     marker.jobTitle = job.title;
@@ -1425,23 +1513,11 @@ function updateMarkerPopup(title) {
         : "";
       const popupContent = `
         <div class="map-popup">
-          <b><a href="#" onclick="openJobModal('${job.title}', '${
-        job.company
-      }', '${salary}', '${job.fullDescription}', '${job.experience}', '${
-        job.employment
-      }', '${job.schedule}', '${job.hours}', '${job.internship}', '${
-        job.workFormat
-      }', '${job.conditions.join("|")}', '${job.responsibilities.join(
-        "|"
-      )}', '${job.requirements.join("|")}', '${job.keySkills.join(
-        "|"
-      )}'); return false;">${job.title}</a></b>
+          <b><a href="#" onclick="openJobModal('${job.title}', '${job.company}', '${salary}', '${job.fullDescription}', '${job.experience}', '${job.employment}', '${job.schedule}', '${job.hours}', '${job.internship}', '${job.workFormat}', '${job.conditions.join("|")}', '${job.responsibilities.join("|")}', '${job.requirements.join("|")}', '${job.keySkills.join("|")}'); return false;">${job.title}</a></b>
           <p><strong>Зарплата:</strong> ${salary}</p>
           <p>${job.company}</p>
           <p>${job.city}, ${job.description}</p>
-          <button class="respond-btn${respondedClass}" onclick="respondToJob('${
-        job.title
-      }')">Откликнуться</button>
+          <button class="respond-btn${respondedClass}" onclick="respondToJob('${job.title}')">Откликнуться</button>
         </div>
       `;
       marker.setPopupContent(popupContent);
@@ -1450,56 +1526,17 @@ function updateMarkerPopup(title) {
 }
 
 function searchJobs() {
-  const query = document.getElementById("search-input").value.toLowerCase();
-  const city = document.getElementById("city-select").value;
-  const experience = document.getElementById("experience-filter").value;
-  const employment = document.getElementById("employment-filter").value;
-  const schedule = document.getElementById("schedule-filter").value;
-  const hours = document.getElementById("hours-filter").value;
-  const internship = document.getElementById("internship-filter").checked
-    ? "yes"
-    : "";
-  const workFormat = document.getElementById("work-format-filter").value;
-  const salary = document.getElementById("salary-filter").value;
-
-  const filteredJobs = jobs.filter((job) => {
-    const matchesQuery =
-      query === "" ||
-      job.title.toLowerCase().includes(query) ||
-      job.company.toLowerCase().includes(query) ||
-      job.fullDescription.toLowerCase().includes(query);
-    const matchesCity = city === "Вся Россия" || job.city === city;
-    const matchesExperience =
-      experience === "" || job.experience === experience;
-    const matchesEmployment =
-      employment === "" || job.employment === employment;
-    const matchesSchedule = schedule === "" || job.schedule === schedule;
-    const matchesHours = hours === "" || job.hours === hours;
-    const matchesInternship =
-      internship === "" || job.internship === internship;
-    const matchesWorkFormat =
-      workFormat === "" || job.workFormat === workFormat;
-    const matchesSalary =
-      !salary || parseInt(job.salaryMin) >= parseInt(salary);
-    return (
-      matchesQuery &&
-      matchesCity &&
-      matchesExperience &&
-      matchesEmployment &&
-      matchesSchedule &&
-      matchesHours &&
-      matchesInternship &&
-      matchesWorkFormat &&
-      matchesSalary
-    );
-  });
-
-  isShowingFavorites = false;
-  isShowingResponses = false;
-  document.querySelector("#header-nav .fa-heart").classList.remove("active");
-  document.querySelector("#header-nav .fa-check").classList.remove("active");
-  updateJobList(filteredJobs);
-  updateMap(filteredJobs);
+  const searchInput = document.getElementById("search-input");
+  const clearInput = document.getElementById("clear-input");
+  // Показываем кнопку очистки, если есть текст
+  if (searchInput.value.length > 0) {
+    clearInput.classList.add("visible");
+  } else {
+    clearInput.classList.remove("visible");
+  }
+  // Здесь добавьте вашу логику поиска
+  const type = document.querySelector('input[name="search-type"]:checked')?.value;
+  console.log("Поиск:", searchInput.value, "Тип:", type);
 }
 
 function clearSearch() {
@@ -1682,6 +1719,13 @@ function openFilterModal() {
   const modalContent = modal.querySelector(".modal-content");
   modal.style.display = "flex";
   setTimeout(() => modalContent.classList.add("active"), 10);
+  // Инициализация мультиселектов для модального фильтра
+  if (typeof renderFilterScheduleMultiSelectInputModal === 'function') {
+    renderFilterScheduleMultiSelectInputModal();
+  }
+  if (typeof renderFilterHoursMultiSelectInputModal === 'function') {
+    renderFilterHoursMultiSelectInputModal();
+  }
 }
 
 function applyFilters() {
@@ -1871,12 +1915,21 @@ function handleVkRegister() {
 
 function toggleCityDropdown() {
   const dropdown = document.getElementById('city-dropdown');
-  dropdown.classList.toggle('active');
+  const button = document.querySelector('.city-select-btn');
+  const isActive = dropdown.classList.contains('active');
   
-  // Закрываем дропдаун при клике вне его
-  if (dropdown.classList.contains('active')) {
+  if (!isActive) {
+    dropdown.classList.add('active');
+    button.classList.add('active');
     document.addEventListener('click', closeCityDropdown);
+    
+    // Focus the search input when opening
+    setTimeout(() => {
+      document.getElementById('city-search-input').focus();
+    }, 100);
   } else {
+    dropdown.classList.remove('active');
+    button.classList.remove('active');
     document.removeEventListener('click', closeCityDropdown);
   }
 }
@@ -1884,9 +1937,11 @@ function toggleCityDropdown() {
 function closeCityDropdown(event) {
   const dropdown = document.getElementById('city-dropdown');
   const citySelect = document.querySelector('.city-select-container');
+  const button = document.querySelector('.city-select-btn');
   
   if (!citySelect.contains(event.target)) {
     dropdown.classList.remove('active');
+    button.classList.remove('active');
     document.removeEventListener('click', closeCityDropdown);
   }
 }
@@ -1896,18 +1951,30 @@ function filterCities() {
   const clearButton = document.getElementById('clear-city-search');
   const searchText = searchInput.value.toLowerCase();
   const cityItems = document.querySelectorAll('.city-item');
+  let hasVisibleItems = false;
   
   // Показываем/скрываем кнопку очистки
   clearButton.classList.toggle('visible', searchText.length > 0);
   
   cityItems.forEach(item => {
     const cityName = item.textContent.toLowerCase();
-    if (cityName.includes(searchText)) {
-      item.style.display = 'block';
-    } else {
-      item.style.display = 'none';
-    }
+    const isVisible = cityName.includes(searchText);
+    item.style.display = isVisible ? 'flex' : 'none';
+    if (isVisible) hasVisibleItems = true;
   });
+  
+  // Показываем сообщение, если ничего не найдено
+  const noResults = document.querySelector('.no-results');
+  if (!hasVisibleItems && searchText.length > 0) {
+    if (!noResults) {
+      const message = document.createElement('div');
+      message.className = 'no-results';
+      message.innerHTML = '<i class="fas fa-search"></i> Город не найден';
+      document.querySelector('.city-list').appendChild(message);
+    }
+  } else if (noResults) {
+    noResults.remove();
+  }
 }
 
 function clearCitySearch() {
@@ -1917,11 +1984,23 @@ function clearCitySearch() {
   searchInput.value = '';
   clearButton.classList.remove('visible');
   filterCities();
+  searchInput.focus();
 }
 
 function selectCity(city) {
-  document.getElementById('selected-city').textContent = city;
-  document.getElementById('city-dropdown').classList.remove('active');
+  const selectedCity = document.getElementById('selected-city');
+  const dropdown = document.getElementById('city-dropdown');
+  const button = document.querySelector('.city-select-btn');
+  
+  // Анимация выбора города
+  selectedCity.style.opacity = '0';
+  setTimeout(() => {
+    selectedCity.textContent = city;
+    selectedCity.style.opacity = '1';
+  }, 150);
+  
+  dropdown.classList.remove('active');
+  button.classList.remove('active');
   document.removeEventListener('click', closeCityDropdown);
   
   // Обновляем список вакансий в соответствии с выбранным городом
@@ -1950,3 +2029,1030 @@ function selectCity(city) {
     map.setView([43.3177, 45.6949], 9);
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  var authBtn = document.getElementById('auth-link');
+  if (authBtn) {
+    authBtn.onclick = function(e) {
+      e.preventDefault();
+      window.location.href = 'auth.html';
+    };
+  }
+  var logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.onclick = function() {
+      handleLogout();
+    };
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  if (!currentUser.email) {
+    window.location.href = 'auth.html';
+  }
+});
+
+// --- SEARCH DROPDOWN LOGIC ---
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdown = document.querySelector('.search-dropdown');
+  const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+  const dropdownMenu = dropdown?.querySelector('.dropdown-menu');
+  const options = dropdownMenu?.querySelectorAll('.dropdown-option');
+  const selectedSpan = dropdownToggle?.querySelector('#dropdown-selected');
+  const radios = dropdownMenu?.querySelectorAll('input[type="radio"]');
+
+  // Открытие/закрытие меню
+  if (dropdownToggle && dropdown) {
+    dropdownToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+  }
+
+  // Выбор опции
+  if (options && selectedSpan && radios) {
+    options.forEach(option => {
+      option.addEventListener('click', function(e) {
+        const radio = option.querySelector('input[type="radio"]');
+        if (radio && !radio.checked) {
+          radio.checked = true;
+          radios.forEach(r => r.closest('.dropdown-option').classList.remove('active'));
+          option.classList.add('active');
+          selectedSpan.textContent = radio.value;
+          dropdown.classList.remove('open');
+        }
+      });
+    });
+    // При загрузке — выставить активную
+    radios.forEach(radio => {
+      if (radio.checked) {
+        radio.closest('.dropdown-option').classList.add('active');
+        selectedSpan.textContent = radio.value;
+      }
+    });
+  }
+});
+
+// Открыть модальное окно вакансии по id
+function openJobModalById(jobId) {
+  const jobs = getAllJobs();
+  const job = jobs.find(j => String(j.id) === String(jobId));
+  if (!job) return;
+
+  // Заполняем модальное окно
+  document.getElementById('modal-title').textContent = job.title || '';
+  document.getElementById('modal-company').textContent = job.specialization || '';
+  document.getElementById('modal-salary').textContent = job.salary ? `${job.salary.from} - ${job.salary.to} ${job.salary.currency} ${job.salary.period}` : '';
+  document.getElementById('modal-description').innerHTML = job.description || '';
+  // Можно добавить другие поля по аналогии
+
+  // Открываем модалку
+  document.getElementById('job-modal').style.display = 'flex';
+  setTimeout(() => {
+    document.querySelector('#job-modal .modal-content').classList.add('active');
+  }, 10);
+}
+
+// Делегирование клика по .view-job-btn (работает для карты и списка)
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('view-job-btn')) {
+    e.preventDefault();
+    const url = e.target.getAttribute('href');
+    const match = url.match(/id=(\d+)/);
+    if (match) {
+      openJobModalById(match[1]);
+    }
+  }
+});
+
+// Закрытие модального окна по крестику
+window.closeModal = function(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.style.display = 'none';
+  const content = modal.querySelector('.modal-content');
+  if (content) content.classList.remove('active');
+};
+
+// --- МУЛЬТИСЕЛЕКТЫ ДЛЯ ФИЛЬТРА ---
+const filterScheduleOptions = [
+  '6/1', '5/2', '4/4', '4/3', '4/2', '2/2', '2/1', '1/3', 'По выходным', 'Свободный', 'Другое'
+];
+let filterSelectedSchedules = [];
+const filterScheduleMultiSelect = document.getElementById('filter-schedule-multiselect');
+const filterScheduleMultiSelectInput = document.getElementById('filter-schedule-multiselect-input');
+const filterScheduleMultiSelectDropdown = document.getElementById('filter-schedule-multiselect-dropdown');
+const filterScheduleMultiSelectArrow = document.getElementById('filter-schedule-multiselect-arrow');
+
+function renderFilterScheduleMultiSelectInput() {
+  filterScheduleMultiSelectInput.innerHTML = '';
+  filterSelectedSchedules.forEach(val => {
+    const tag = document.createElement('span');
+    tag.className = 'multi-select-tag';
+    tag.textContent = val;
+    const close = document.createElement('span');
+    close.className = 'multi-select-tag-close';
+    close.innerHTML = '&times;';
+    close.onclick = function(e) {
+      e.stopPropagation();
+      filterSelectedSchedules = filterSelectedSchedules.filter(v => v !== val);
+      renderFilterScheduleMultiSelectInput();
+      renderFilterScheduleMultiSelectDropdown();
+    };
+    tag.appendChild(close);
+    filterScheduleMultiSelectInput.appendChild(tag);
+  });
+  if (filterSelectedSchedules.length === 0) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'multi-select-placeholder';
+    placeholder.textContent = 'Выберите из списка';
+    filterScheduleMultiSelectInput.appendChild(placeholder);
+  }
+}
+
+function renderFilterScheduleMultiSelectDropdown() {
+  filterScheduleMultiSelectDropdown.innerHTML = '';
+  filterScheduleOptions.forEach(opt => {
+    const row = document.createElement('div');
+    row.className = 'multi-select-option' + (filterSelectedSchedules.includes(opt) ? ' selected' : '');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = filterSelectedSchedules.includes(opt);
+    checkbox.onchange = function(e) {
+      if (this.checked) {
+        if (!filterSelectedSchedules.includes(opt)) filterSelectedSchedules.push(opt);
+      } else {
+        filterSelectedSchedules = filterSelectedSchedules.filter(v => v !== opt);
+      }
+      renderFilterScheduleMultiSelectInput();
+      renderFilterScheduleMultiSelectDropdown();
+    };
+    const label = document.createElement('label');
+    label.textContent = opt;
+    row.appendChild(checkbox);
+    row.appendChild(label);
+    filterScheduleMultiSelectDropdown.appendChild(row);
+  });
+}
+
+function openFilterScheduleMultiSelectDropdown() {
+  filterScheduleMultiSelectDropdown.style.display = 'block';
+  renderFilterScheduleMultiSelectDropdown();
+  filterScheduleMultiSelect.classList.add('active');
+}
+function closeFilterScheduleMultiSelectDropdown() {
+  filterScheduleMultiSelectDropdown.style.display = 'none';
+  filterScheduleMultiSelect.classList.remove('active');
+}
+
+filterScheduleMultiSelectInput.addEventListener('click', openFilterScheduleMultiSelectDropdown);
+filterScheduleMultiSelectInput.addEventListener('focus', openFilterScheduleMultiSelectDropdown);
+filterScheduleMultiSelectArrow.addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (filterScheduleMultiSelectDropdown.style.display === 'block') {
+    closeFilterScheduleMultiSelectDropdown();
+  } else {
+    openFilterScheduleMultiSelectDropdown();
+  }
+});
+document.addEventListener('click', function(e) {
+  if (!filterScheduleMultiSelect.contains(e.target)) {
+    closeFilterScheduleMultiSelectDropdown();
+  }
+});
+renderFilterScheduleMultiSelectInput();
+
+// --- МУЛЬТИСЕЛЕКТ ДЛЯ РАБОЧИХ ЧАСОВ В ДЕНЬ (ФИЛЬТР) ---
+const filterHoursOptions = [
+  '4', '6', '8', '10', '12', 'По договорённости', 'Другое'
+];
+let filterSelectedHours = [];
+const filterHoursMultiSelect = document.getElementById('filter-hours-multiselect');
+const filterHoursMultiSelectInput = document.getElementById('filter-hours-multiselect-input');
+const filterHoursMultiSelectDropdown = document.getElementById('filter-hours-multiselect-dropdown');
+const filterHoursMultiSelectArrow = document.getElementById('filter-hours-multiselect-arrow');
+
+function renderFilterHoursMultiSelectInput() {
+  filterHoursMultiSelectInput.innerHTML = '';
+  filterSelectedHours.forEach(val => {
+    const tag = document.createElement('span');
+    tag.className = 'multi-select-tag';
+    tag.textContent = val;
+    const close = document.createElement('span');
+    close.className = 'multi-select-tag-close';
+    close.innerHTML = '&times;';
+    close.onclick = function(e) {
+      e.stopPropagation();
+      filterSelectedHours = filterSelectedHours.filter(v => v !== val);
+      renderFilterHoursMultiSelectInput();
+      renderFilterHoursMultiSelectDropdown();
+    };
+    tag.appendChild(close);
+    filterHoursMultiSelectInput.appendChild(tag);
+  });
+  if (filterSelectedHours.length === 0) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'multi-select-placeholder';
+    placeholder.textContent = 'Выберите из списка';
+    filterHoursMultiSelectInput.appendChild(placeholder);
+  }
+}
+
+function renderFilterHoursMultiSelectDropdown() {
+  filterHoursMultiSelectDropdown.innerHTML = '';
+  filterHoursOptions.forEach(opt => {
+    const row = document.createElement('div');
+    row.className = 'multi-select-option' + (filterSelectedHours.includes(opt) ? ' selected' : '');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = filterSelectedHours.includes(opt);
+    checkbox.onchange = function(e) {
+      if (this.checked) {
+        if (!filterSelectedHours.includes(opt)) filterSelectedHours.push(opt);
+      } else {
+        filterSelectedHours = filterSelectedHours.filter(v => v !== opt);
+      }
+      renderFilterHoursMultiSelectInput();
+      renderFilterHoursMultiSelectDropdown();
+    };
+    const label = document.createElement('label');
+    label.textContent = opt;
+    row.appendChild(checkbox);
+    row.appendChild(label);
+    filterHoursMultiSelectDropdown.appendChild(row);
+  });
+}
+
+function openFilterHoursMultiSelectDropdown() {
+  filterHoursMultiSelectDropdown.style.display = 'block';
+  renderFilterHoursMultiSelectDropdown();
+  filterHoursMultiSelect.classList.add('active');
+}
+function closeFilterHoursMultiSelectDropdown() {
+  filterHoursMultiSelectDropdown.style.display = 'none';
+  filterHoursMultiSelect.classList.remove('active');
+}
+
+filterHoursMultiSelectInput.addEventListener('click', openFilterHoursMultiSelectDropdown);
+filterHoursMultiSelectInput.addEventListener('focus', openFilterHoursMultiSelectDropdown);
+filterHoursMultiSelectArrow.addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (filterHoursMultiSelectDropdown.style.display === 'block') {
+    closeFilterHoursMultiSelectDropdown();
+  } else {
+    openFilterHoursMultiSelectDropdown();
+  }
+});
+document.addEventListener('click', function(e) {
+  if (!filterHoursMultiSelect.contains(e.target)) {
+    closeFilterHoursMultiSelectDropdown();
+  }
+});
+renderFilterHoursMultiSelectInput();
+
+// --- DROPDOWN ДЛЯ ВЫБОРА ВАЛЮТЫ В ФИЛЬТРЕ ---
+const currencyDropdown = document.querySelector('.currency-dropdown');
+const currencySelected = document.getElementById('currency-selected');
+const currencySymbol = document.getElementById('currency-symbol');
+const currencyList = document.getElementById('currency-list');
+
+if (currencyDropdown && currencySelected && currencyList && currencySymbol) {
+  currencySelected.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = currencyList.style.display === 'block';
+    currencyList.style.display = isOpen ? 'none' : 'block';
+  });
+  currencyList.querySelectorAll('.dropdown-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const value = this.getAttribute('data-currency');
+      currencySymbol.textContent = value;
+      currencyList.style.display = 'none';
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!currencyDropdown.contains(e.target)) {
+      currencyList.style.display = 'none';
+    }
+  });
+}
+
+// --- Форматирование поля 'Своя зарплата' с пробелами ---
+const salaryOwnInput = document.getElementById('salary-own-input');
+if (salaryOwnInput) {
+  salaryOwnInput.addEventListener('input', function(e) {
+    let value = salaryOwnInput.value.replace(/\D/g, '');
+    if (value) {
+      salaryOwnInput.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    } else {
+      salaryOwnInput.value = '';
+    }
+  });
+}
+
+// --- Динамическая смена валюты и значений зарплаты в фильтре ---
+const salaryRadioContainer = document.querySelectorAll('input[type="radio"][name="salary"]');
+const salaryRadioLabels = Array.from(document.querySelectorAll('input[type="radio"][name="salary"]').values()).map(r => r.parentElement);
+const salaryOwnInputField = document.getElementById('salary-own-input');
+const salaryOwnRadio = document.getElementById('salary-own-radio');
+const currencySymbolSpan = document.getElementById('currency-symbol');
+
+function updateSalaryRadiosByCurrency(currency) {
+  // Массивы значений для разных валют
+  let values, symbol;
+  if (currency === '$' || currency === '€') {
+    values = [300, 500, 700, 900, 1000];
+    symbol = currency;
+  } else {
+    values = [30000, 50000, 70000, 90000, 100000];
+    symbol = '₽';
+  }
+  // Находим все radio и их label
+  const radios = document.querySelectorAll('input[type="radio"][name="salary"]');
+  const labels = Array.from(radios).map(r => r.parentElement);
+  let idx = 0;
+  for (let i = 0; i < labels.length; i++) {
+    const label = labels[i];
+    if (label.textContent.includes('Не имеет значения') || label.textContent.includes('Своя зарплата')) continue;
+    if (idx < values.length) {
+      label.childNodes[1].checked = false;
+      label.childNodes[1].value = `from_${values[idx]}_${symbol}`;
+      label.childNodes[1].nextSibling && (label.childNodes[1].nextSibling.textContent = ` от ${values[idx].toLocaleString()} ${symbol}`);
+      label.childNodes[1].parentElement.childNodes[2].textContent = ` от ${values[idx].toLocaleString()} ${symbol}`;
+      idx++;
+    } else {
+      label.style.display = 'none';
+    }
+  }
+  // Обновляем плейсхолдер и значок в поле "Своя зарплата"
+  if (salaryOwnInputField) {
+    salaryOwnInputField.placeholder = `от`;
+  }
+}
+
+if (currencySymbolSpan) {
+  const observer = new MutationObserver(function() {
+    updateSalaryRadiosByCurrency(currencySymbolSpan.textContent);
+  });
+  observer.observe(currencySymbolSpan, { childList: true });
+}
+// При первой загрузке выставить значения
+if (currencySymbolSpan) {
+  updateSalaryRadiosByCurrency(currencySymbolSpan.textContent);
+}
+
+// Header scroll effect
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.cursor-header');
+  if (window.scrollY > 10) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// Auth link click handler
+document.getElementById('auth-link').onclick = function() {
+  window.location.href = 'auth.html';
+};
+
+// Update header text based on user role
+(function() {
+  var isSeeker = localStorage.getItem("isSeeker") === "true";
+  var isEmployer = localStorage.getItem("isEmployer") === "true";
+  if (isSeeker) {
+    var navLink = document.querySelector("a[href='vacancies.html']");
+    if (navLink) { navLink.textContent = "Отклики"; }
+    var vacancyBtn = document.querySelector(".vacancy-btn span");
+    if (vacancyBtn) { vacancyBtn.textContent = "Создать Резюме"; }
+  } else if (isEmployer) {
+    // (если пользователь – работодатель, то текст в шапке не меняется, например, "Вакансии" и "Создать вакансию")
+  }
+})();
+
+// Custom salary input styling
+const filterSalaryOwnRadio = document.getElementById('salary-own-radio');
+const filterSalaryOwnInput = document.getElementById('salary-own-input');
+const filterSalaryRadios = document.querySelectorAll('input[type=radio][name=salary]');
+if (filterSalaryOwnRadio && filterSalaryOwnInput) {
+  filterSalaryRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (filterSalaryOwnRadio.checked) {
+        filterSalaryOwnInput.style.background = '#ffffff';
+        filterSalaryOwnInput.style.borderColor = '#2563eb';
+      } else {
+        filterSalaryOwnInput.style.background = '#f5f7fa';
+        filterSalaryOwnInput.style.borderColor = '#e0e0e0';
+      }
+    });
+  });
+}
+
+// Toggle between list and map views
+function toggleMapView() {
+  const mapBtnWrapper = document.getElementById('map-btn-wrapper');
+  const mapBtnMapControls = document.getElementById('map-btn-map-controls');
+  const mapBtn = document.querySelector('.vacancy-map-btn');
+  const filterSortRow = document.querySelector('.filter-sort-row');
+  const vacancyList = document.getElementById('vacancy-list');
+  const vacancyMap = document.getElementById('vacancy-map');
+  const mainFilter = document.querySelector('.main-filter');
+
+  if (vacancyList.style.display !== 'none') {
+    // Switch to map view
+    vacancyList.style.display = 'none';
+    mainFilter.style.display = 'none';
+    vacancyMap.style.display = 'block';
+    if (mapBtn && mapBtnMapControls) mapBtnMapControls.appendChild(mapBtn);
+    if (filterSortRow) filterSortRow.style.display = 'none';
+    mapBtn.textContent = 'Списком';
+
+    // Initialize map if not already initialized
+    if (!map) {
+      map = L.map('vacancy-map').setView([43.3177, 45.6949], 9);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+    }
+    // Update map with current jobs
+    updateMap(jobs);
+  } else {
+    // Switch to list view
+    vacancyList.style.display = 'flex';
+    mainFilter.style.display = 'block';
+    vacancyMap.style.display = 'none';
+    if (mapBtn && mapBtnWrapper) mapBtnWrapper.appendChild(mapBtn);
+    if (filterSortRow) filterSortRow.style.display = '';
+    mapBtn.textContent = 'На карте';
+  }
+}
+
+// Add event listener for the map toggle button
+document.addEventListener('DOMContentLoaded', function() {
+  const mapBtn = document.querySelector('.vacancy-map-btn');
+  if (mapBtn) {
+    mapBtn.addEventListener('click', toggleMapView);
+  }
+});
+
+function toggleMapSidebar() {
+  const mapControls = document.querySelector('.map-controls');
+  const mapSidebar = document.querySelector('.map-sidebar');
+  
+  mapControls.classList.toggle('sidebar-open');
+  mapSidebar.classList.toggle('open');
+  if (mapSidebar.classList.contains('open')) {
+    renderMapSidebarJobs();
+  }
+}
+
+function renderMapSidebarJobs(filteredJobs = jobs) {
+  const sidebarList = document.getElementById("map-vacancy-list");
+  sidebarList.innerHTML = "";
+  filteredJobs.forEach((job) => {
+    const card = document.createElement("div");
+    card.className = "vacancy-card";
+    // Форматируем зарплату
+    let salaryText = "";
+    if (job.salaryMin && job.salaryMax) {
+      salaryText = `${job.salaryMin.toLocaleString()} – ${job.salaryMax.toLocaleString()} ₽ за месяц`;
+    } else if (job.salaryMin) {
+      salaryText = `от ${job.salaryMin.toLocaleString()} ₽ за месяц`;
+    } else {
+      salaryText = "Зарплата не указана";
+    }
+    // Теги (опыт, выплаты и т.д.)
+    let tags = "";
+    if (job.experience === "noExperience") {
+      tags += '<span class="vacancy-card-tag">Без опыта</span>';
+    } else if (job.experience) {
+      tags += `<span class=\"vacancy-card-tag\">Опыт ${getExperienceText(job.experience)}</span>`;
+    }
+    if (job.conditions && Array.isArray(job.conditions)) {
+      const payout = job.conditions.find(c => c.toLowerCase().includes("выплат"));
+      if (payout) {
+        tags += `<span class=\"vacancy-card-tag\">${payout.replace(/^- /, "")}</span>`;
+      }
+    }
+    card.innerHTML = `
+      <div class="vacancy-card-title-row">
+        <span class="vacancy-card-title">${job.title}</span>
+      </div>
+      <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span class="vacancy-card-salary">${salaryText}</span>
+        ${tags}
+      </div>
+      <div class="vacancy-card-company-row">
+        <span class="vacancy-card-company">${job.company}</span>
+      </div>
+      <div class="vacancy-card-address">${job.city}${job.description ? ', ' + job.description : ''}</div>
+    `;
+    sidebarList.appendChild(card);
+    setTimeout(() => card.classList.add("visible"), 100);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const filterBtn = document.querySelector('.map-filter-btn');
+  const listBtn = document.querySelector('.map-list-btn');
+  const mapSidebar = document.querySelector('.map-sidebar');
+
+  if (filterBtn) {
+    filterBtn.addEventListener('click', function() {
+      filterBtn.classList.toggle('active');
+      // Если открыто окно фильтра, убираем рамку при закрытии
+      const filterModal = document.getElementById('filter-modal');
+      if (filterModal) {
+        filterModal.addEventListener('transitionend', function() {
+          if (filterModal.style.display === 'none') {
+            filterBtn.classList.remove('active');
+          }
+        });
+      }
+    });
+  }
+
+  if (listBtn) {
+    listBtn.addEventListener('click', function() {
+      listBtn.classList.toggle('active');
+      // Если боковое окно закрывается, убираем рамку
+      if (!mapSidebar.classList.contains('open')) {
+        listBtn.classList.remove('active');
+      }
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // ... существующий код ...
+
+  const sidebarCloseBtn = document.querySelector('.map-sidebar-close');
+  const mapSidebar = document.querySelector('.map-sidebar');
+  const mapControls = document.querySelector('.map-controls');
+  if (sidebarCloseBtn && mapSidebar && mapControls) {
+    sidebarCloseBtn.addEventListener('click', function() {
+      mapSidebar.classList.remove('open');
+      mapControls.classList.remove('sidebar-open');
+      const listBtn = document.querySelector('.map-list-btn');
+      if (listBtn) listBtn.classList.remove('active');
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // ... существующий код ...
+
+  const mapSidebar = document.querySelector('.map-sidebar');
+  if (mapSidebar && window.map) {
+    // Prevent map zoom when scrolling inside sidebar
+    mapSidebar.addEventListener('wheel', function(e) {
+      e.stopPropagation();
+    }, { passive: false });
+
+    // Prevent map zoom when mouse is over sidebar
+    mapSidebar.addEventListener('mouseenter', function() {
+      if (map && map.scrollWheelZoom) {
+        map.scrollWheelZoom.disable();
+      }
+    });
+
+    mapSidebar.addEventListener('mouseleave', function() {
+      if (map && map.scrollWheelZoom) {
+        map.scrollWheelZoom.enable();
+      }
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // ... existing code ...
+
+  // --- Логика выпадающих списков сортировки и периода в map-sidebar ---
+  const sidebarSortDropdown = document.querySelector('.map-sidebar .sort-dropdown');
+  const sidebarSortToggle = document.querySelector('.map-sidebar #sidebar-sort-toggle');
+  const sidebarSortMenu = document.querySelector('.map-sidebar #sidebar-sort-menu');
+  const sidebarSortSelected = document.querySelector('.map-sidebar #sidebar-sort-selected');
+  const sidebarSortOptions = sidebarSortMenu ? sidebarSortMenu.querySelectorAll('.sidebar-dropdown-option') : [];
+
+  const sidebarPeriodDropdown = document.querySelector('.map-sidebar .period-dropdown');
+  const sidebarPeriodToggle = document.querySelector('.map-sidebar #sidebar-period-toggle');
+  const sidebarPeriodMenu = document.querySelector('.map-sidebar #sidebar-period-menu');
+  const sidebarPeriodSelected = document.querySelector('.map-sidebar #sidebar-period-selected');
+  const sidebarPeriodOptions = sidebarPeriodMenu ? sidebarPeriodMenu.querySelectorAll('.sidebar-dropdown-option') : [];
+
+  // Открытие/закрытие меню сортировки
+  sidebarSortToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sidebarSortDropdown.classList.toggle('open');
+    sidebarPeriodDropdown.classList.remove('open');
+  });
+  // Открытие/закрытие меню периода
+  sidebarPeriodToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sidebarPeriodDropdown.classList.toggle('open');
+    sidebarSortDropdown.classList.remove('open');
+  });
+  // Закрытие всех dropdown при клике вне
+  document.addEventListener('click', function() {
+    sidebarSortDropdown.classList.remove('open');
+    sidebarPeriodDropdown.classList.remove('open');
+  });
+
+  // Выбор сортировки
+  sidebarSortOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sidebarSortOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      sidebarSortSelected.textContent = this.textContent;
+      sidebarSortDropdown.classList.remove('open');
+      applySidebarSortAndPeriod();
+    });
+  });
+  // Выбор периода
+  sidebarPeriodOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sidebarPeriodOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      sidebarPeriodSelected.textContent = this.textContent;
+      sidebarPeriodDropdown.classList.remove('open');
+      applySidebarSortAndPeriod();
+    });
+  });
+
+  // Основная функция применения сортировки и периода
+  function applySidebarSortAndPeriod() {
+    let sortType = sidebarSortMenu.querySelector('.sidebar-dropdown-option.active').getAttribute('data-sort');
+    let periodType = sidebarPeriodMenu.querySelector('.sidebar-dropdown-option.active').getAttribute('data-period');
+    let filtered = [...jobs];
+    // Фильтрация по периоду (заглушка, если появится поле date - реализовать)
+    if (periodType !== 'all') {
+      // Здесь можно реализовать фильтрацию по дате публикации
+      // Например, filtered = filtered.filter(job => ...)
+    }
+    // Сортировка
+    if (sortType === 'relevance') {
+      // По соответствию (оставим как есть)
+    } else if (sortType === 'date') {
+      filtered.sort((a, b) => (b.date || 0) - (a.date || 0));
+    } else if (sortType === 'salary-desc') {
+      filtered.sort((a, b) => {
+        // Сначала вакансии с зарплатой, потом без
+        const aSalary = a.salaryMax || a.salaryMin || 0;
+        const bSalary = b.salaryMax || b.salaryMin || 0;
+        if (!bSalary && aSalary) return -1;
+        if (!aSalary && bSalary) return 1;
+        return bSalary - aSalary;
+      });
+    } else if (sortType === 'salary-asc') {
+      filtered.sort((a, b) => {
+        const aSalary = a.salaryMin || a.salaryMax || 0;
+        const bSalary = b.salaryMin || b.salaryMax || 0;
+        if (!aSalary && bSalary) return 1;
+        if (!bSalary && aSalary) return -1;
+        return aSalary - bSalary;
+      });
+    }
+    renderMapSidebarJobs(filtered);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // --- Логика выпадающих списков сортировки и периода на главной странице ---
+  const mainSortDropdown = document.querySelector('.filter-sort-row .sort-dropdown');
+  const mainSortToggle = document.getElementById('main-sort-toggle');
+  const mainSortMenu = document.getElementById('main-sort-menu');
+  const mainSortSelected = document.getElementById('main-sort-selected');
+  const mainSortOptions = mainSortMenu ? mainSortMenu.querySelectorAll('.sidebar-dropdown-option') : [];
+
+  const mainPeriodDropdown = document.querySelector('.filter-sort-row .period-dropdown');
+  const mainPeriodToggle = document.getElementById('main-period-toggle');
+  const mainPeriodMenu = document.getElementById('main-period-menu');
+  const mainPeriodSelected = document.getElementById('main-period-selected');
+  const mainPeriodOptions = mainPeriodMenu ? mainPeriodMenu.querySelectorAll('.sidebar-dropdown-option') : [];
+
+  if (mainSortToggle && mainSortDropdown && mainPeriodDropdown) {
+    mainSortToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mainSortDropdown.classList.toggle('open');
+      mainPeriodDropdown.classList.remove('open');
+    });
+    mainPeriodToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mainPeriodDropdown.classList.toggle('open');
+      mainSortDropdown.classList.remove('open');
+    });
+    document.addEventListener('click', function() {
+      mainSortDropdown.classList.remove('open');
+      mainPeriodDropdown.classList.remove('open');
+    });
+  }
+
+  // Выбор сортировки
+  mainSortOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mainSortOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      mainSortSelected.textContent = this.textContent;
+      mainSortDropdown.classList.remove('open');
+      applyMainSortAndPeriod();
+    });
+  });
+  // Выбор периода
+  mainPeriodOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mainPeriodOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      mainPeriodSelected.textContent = this.textContent;
+      mainPeriodDropdown.classList.remove('open');
+      applyMainSortAndPeriod();
+    });
+  });
+
+  function applyMainSortAndPeriod() {
+    let sortType = mainSortMenu.querySelector('.sidebar-dropdown-option.active').getAttribute('data-sort');
+    let periodType = mainPeriodMenu.querySelector('.sidebar-dropdown-option.active').getAttribute('data-period');
+    let filtered = [...jobs];
+    // Фильтрация по периоду (заглушка)
+    if (periodType !== 'all') {
+      // Здесь можно реализовать фильтрацию по дате публикации
+    }
+    // Сортировка
+    if (sortType === 'relevance') {
+      // По соответствию (оставим как есть)
+    } else if (sortType === 'date') {
+      filtered.sort((a, b) => (b.date || 0) - (a.date || 0));
+    } else if (sortType === 'salary-desc') {
+      filtered.sort((a, b) => {
+        const aSalary = a.salaryMax || a.salaryMin || 0;
+        const bSalary = b.salaryMax || b.salaryMin || 0;
+        if (!bSalary && aSalary) return -1;
+        if (!aSalary && bSalary) return 1;
+        return bSalary - aSalary;
+      });
+    } else if (sortType === 'salary-asc') {
+      filtered.sort((a, b) => {
+        const aSalary = a.salaryMin || a.salaryMax || 0;
+        const bSalary = b.salaryMin || b.salaryMax || 0;
+        if (!aSalary && bSalary) return 1;
+        if (!bSalary && aSalary) return -1;
+        return aSalary - bSalary;
+      });
+    }
+    updateJobList(filtered);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // ... существующий код ...
+
+  // --- Мультиселекты в модальном фильтре ---
+  function setupModalMultiselect(inputId, dropdownId, options) {
+    const input = document.getElementById(inputId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!input || !dropdown) return;
+    let selected = [];
+    input.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    document.addEventListener('click', function() {
+      dropdown.style.display = 'none';
+    });
+    dropdown.innerHTML = '';
+    options.forEach(opt => {
+      const item = document.createElement('div');
+      item.textContent = opt;
+      item.className = 'multi-select-option';
+      item.style.padding = '8px 16px';
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (selected.includes(opt)) {
+          selected = selected.filter(o => o !== opt);
+        } else {
+          selected.push(opt);
+        }
+        renderSelected();
+      });
+      dropdown.appendChild(item);
+    });
+    function renderSelected() {
+      input.innerHTML = selected.length ? selected.join(', ') : '<span style="color:#b0b8c1">Выбрать...</span>';
+      Array.from(dropdown.children).forEach(child => {
+        if (selected.includes(child.textContent)) {
+          child.style.background = '#f3f8ff';
+          child.style.color = '#2563eb';
+        } else {
+          child.style.background = '#fff';
+          child.style.color = '#222';
+        }
+      });
+    }
+    renderSelected();
+  }
+
+  setupModalMultiselect('filter-schedule-multiselect-input-modal', 'filter-schedule-multiselect-dropdown-modal', [
+    '5/2', '2/2', 'Гибкий', 'Сменный', 'Вечерний', 'Утренний', 'Ночной', 'Свободный', 'Другое'
+  ]);
+  setupModalMultiselect('filter-hours-multiselect-input-modal', 'filter-hours-multiselect-dropdown-modal', [
+    '4-6 часов', '6-8 часов', '8 часов', 'Больше 8 часов', 'Гибко', 'Другое'
+  ]);
+
+  // ... существующий код ...
+});
+
+// ... existing code ...
+// --- МУЛЬТИСЕЛЕКТЫ ДЛЯ МОДАЛЬНОГО ФИЛЬТРА ---
+const filterScheduleOptionsModal = [
+  '6/1', '5/2', '4/4', '4/3', '4/2', '2/2', '2/1', '1/3', 'По выходным', 'Свободный', 'Другое'
+];
+let filterSelectedSchedulesModal = [];
+const filterScheduleMultiSelectModal = document.getElementById('filter-schedule-multiselect-modal');
+const filterScheduleMultiSelectInputModal = document.getElementById('filter-schedule-multiselect-input-modal');
+const filterScheduleMultiSelectDropdownModal = document.getElementById('filter-schedule-multiselect-dropdown-modal');
+const filterScheduleMultiSelectArrowModal = document.getElementById('filter-schedule-multiselect-arrow-modal');
+
+function renderFilterScheduleMultiSelectInputModal() {
+  filterScheduleMultiSelectInputModal.innerHTML = '';
+  filterSelectedSchedulesModal.forEach(val => {
+    const tag = document.createElement('span');
+    tag.className = 'multi-select-tag';
+    tag.textContent = val;
+    const close = document.createElement('span');
+    close.className = 'multi-select-tag-close';
+    close.innerHTML = '&times;';
+    close.onclick = function(e) {
+      e.stopPropagation();
+      filterSelectedSchedulesModal = filterSelectedSchedulesModal.filter(v => v !== val);
+      renderFilterScheduleMultiSelectInputModal();
+      renderFilterScheduleMultiSelectDropdownModal();
+    };
+    tag.appendChild(close);
+    filterScheduleMultiSelectInputModal.appendChild(tag);
+  });
+  if (filterSelectedSchedulesModal.length === 0) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'multi-select-placeholder';
+    placeholder.textContent = 'Выберите из списка';
+    filterScheduleMultiSelectInputModal.appendChild(placeholder);
+  }
+}
+
+function renderFilterScheduleMultiSelectDropdownModal() {
+  filterScheduleMultiSelectDropdownModal.innerHTML = '';
+  filterScheduleOptionsModal.forEach(opt => {
+    const row = document.createElement('div');
+    row.className = 'multi-select-option' + (filterSelectedSchedulesModal.includes(opt) ? ' selected' : '');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = filterSelectedSchedulesModal.includes(opt);
+    checkbox.onchange = function(e) {
+      if (this.checked) {
+        if (!filterSelectedSchedulesModal.includes(opt)) filterSelectedSchedulesModal.push(opt);
+      } else {
+        filterSelectedSchedulesModal = filterSelectedSchedulesModal.filter(v => v !== opt);
+      }
+      renderFilterScheduleMultiSelectInputModal();
+      renderFilterScheduleMultiSelectDropdownModal();
+    };
+    const label = document.createElement('label');
+    label.textContent = opt;
+    row.appendChild(checkbox);
+    row.appendChild(label);
+    filterScheduleMultiSelectDropdownModal.appendChild(row);
+  });
+}
+
+function openFilterScheduleMultiSelectDropdownModal() {
+  filterScheduleMultiSelectDropdownModal.style.display = 'block';
+  renderFilterScheduleMultiSelectDropdownModal();
+  filterScheduleMultiSelectModal.classList.add('active');
+}
+function closeFilterScheduleMultiSelectDropdownModal() {
+  filterScheduleMultiSelectDropdownModal.style.display = 'none';
+  filterScheduleMultiSelectModal.classList.remove('active');
+}
+
+if (filterScheduleMultiSelectInputModal) {
+  filterScheduleMultiSelectInputModal.addEventListener('click', openFilterScheduleMultiSelectDropdownModal);
+  filterScheduleMultiSelectInputModal.addEventListener('focus', openFilterScheduleMultiSelectDropdownModal);
+}
+if (filterScheduleMultiSelectArrowModal) {
+  filterScheduleMultiSelectArrowModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (filterScheduleMultiSelectDropdownModal.style.display === 'block') {
+      closeFilterScheduleMultiSelectDropdownModal();
+    } else {
+      openFilterScheduleMultiSelectDropdownModal();
+    }
+  });
+}
+document.addEventListener('click', function(e) {
+  if (filterScheduleMultiSelectModal && !filterScheduleMultiSelectModal.contains(e.target)) {
+    closeFilterScheduleMultiSelectDropdownModal();
+  }
+});
+renderFilterScheduleMultiSelectInputModal();
+
+// --- МУЛЬТИСЕЛЕКТ ДЛЯ РАБОЧИХ ЧАСОВ В ДЕНЬ (МОДАЛЬНЫЙ ФИЛЬТР) ---
+const filterHoursOptionsModal = [
+  '4', '6', '8', '10', '12', 'По договорённости', 'Другое'
+];
+let filterSelectedHoursModal = [];
+const filterHoursMultiSelectModal = document.getElementById('filter-hours-multiselect-modal');
+const filterHoursMultiSelectInputModal = document.getElementById('filter-hours-multiselect-input-modal');
+const filterHoursMultiSelectDropdownModal = document.getElementById('filter-hours-multiselect-dropdown-modal');
+const filterHoursMultiSelectArrowModal = document.getElementById('filter-hours-multiselect-arrow-modal');
+
+function renderFilterHoursMultiSelectInputModal() {
+  filterHoursMultiSelectInputModal.innerHTML = '';
+  filterSelectedHoursModal.forEach(val => {
+    const tag = document.createElement('span');
+    tag.className = 'multi-select-tag';
+    tag.textContent = val;
+    const close = document.createElement('span');
+    close.className = 'multi-select-tag-close';
+    close.innerHTML = '&times;';
+    close.onclick = function(e) {
+      e.stopPropagation();
+      filterSelectedHoursModal = filterSelectedHoursModal.filter(v => v !== val);
+      renderFilterHoursMultiSelectInputModal();
+      renderFilterHoursMultiSelectDropdownModal();
+    };
+    tag.appendChild(close);
+    filterHoursMultiSelectInputModal.appendChild(tag);
+  });
+  if (filterSelectedHoursModal.length === 0) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'multi-select-placeholder';
+    placeholder.textContent = 'Выберите из списка';
+    filterHoursMultiSelectInputModal.appendChild(placeholder);
+  }
+}
+
+function renderFilterHoursMultiSelectDropdownModal() {
+  filterHoursMultiSelectDropdownModal.innerHTML = '';
+  filterHoursOptionsModal.forEach(opt => {
+    const row = document.createElement('div');
+    row.className = 'multi-select-option' + (filterSelectedHoursModal.includes(opt) ? ' selected' : '');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = filterSelectedHoursModal.includes(opt);
+    checkbox.onchange = function(e) {
+      if (this.checked) {
+        if (!filterSelectedHoursModal.includes(opt)) filterSelectedHoursModal.push(opt);
+      } else {
+        filterSelectedHoursModal = filterSelectedHoursModal.filter(v => v !== opt);
+      }
+      renderFilterHoursMultiSelectInputModal();
+      renderFilterHoursMultiSelectDropdownModal();
+    };
+    const label = document.createElement('label');
+    label.textContent = opt;
+    row.appendChild(checkbox);
+    row.appendChild(label);
+    filterHoursMultiSelectDropdownModal.appendChild(row);
+  });
+}
+
+function openFilterHoursMultiSelectDropdownModal() {
+  filterHoursMultiSelectDropdownModal.style.display = 'block';
+  renderFilterHoursMultiSelectDropdownModal();
+  filterHoursMultiSelectModal.classList.add('active');
+}
+function closeFilterHoursMultiSelectDropdownModal() {
+  filterHoursMultiSelectDropdownModal.style.display = 'none';
+  filterHoursMultiSelectModal.classList.remove('active');
+}
+
+if (filterHoursMultiSelectInputModal) {
+  filterHoursMultiSelectInputModal.addEventListener('click', openFilterHoursMultiSelectDropdownModal);
+  filterHoursMultiSelectInputModal.addEventListener('focus', openFilterHoursMultiSelectDropdownModal);
+}
+if (filterHoursMultiSelectArrowModal) {
+  filterHoursMultiSelectArrowModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (filterHoursMultiSelectDropdownModal.style.display === 'block') {
+      closeFilterHoursMultiSelectDropdownModal();
+    } else {
+      openFilterHoursMultiSelectDropdownModal();
+    }
+  });
+}
+document.addEventListener('click', function(e) {
+  if (filterHoursMultiSelectModal && !filterHoursMultiSelectModal.contains(e.target)) {
+    closeFilterHoursMultiSelectDropdownModal();
+  }
+});
+renderFilterHoursMultiSelectInputModal();
+// ... existing code ...
