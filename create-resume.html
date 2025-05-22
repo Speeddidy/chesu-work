@@ -542,6 +542,8 @@
         background: #fff;
         padding: 0 4px;
         transition: top 0.18s, font-size 0.18s, transform 0.18s;
+        height: auto;
+        line-height: 1.2;
       }
       .resume-maininfo-input:hover .resume-maininfo-label {
         color: #222;
@@ -561,7 +563,7 @@
         font-size: 1.13rem;
         color: #222;
         background: transparent;
-        padding: 0 8px 8px 12px;
+        padding: 16px;
         box-sizing: border-box;
         text-align: left;
         display: flex;
@@ -611,6 +613,10 @@
         padding-top: 30px;
         align-items: flex-start;
       }
+      @media (max-width: 600px) {
+        .resume-step-maininfo-block { width: 100vw; }
+        .resume-maininfo-input { width: 100vw; min-width: 0; }
+      }
       .city-dropdown-list {
         position: absolute;
         left: 0;
@@ -649,6 +655,206 @@
       }
       .city-dropdown-option:hover {
         background: #e3e7ef;
+      }
+      .city-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        border: 1px solid #e3e7ef;
+        border-radius: 12px;
+        margin-top: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .city-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .city-item:hover {
+        background-color: #f3f7ff;
+      }
+
+      #city-input-container {
+        position: relative;
+      }
+      .birthdate-block {
+        width: 600px;
+        max-width: 100vw;
+        margin: 32px 0 0 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .birthdate-label {
+        color: #8a99ad;
+        font-size: 1.13rem;
+        margin-bottom: 8px;
+      }
+      .birthdate-fields {
+        display: flex;
+        gap: 12px;
+      }
+      .birthdate-input {
+        width: 192px;
+        height: 56px;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 12px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        box-sizing: border-box;
+        font-size: 1.13rem;
+        /* transition: border 0.18s; */
+        cursor: pointer;
+      }
+      .birthdate-input:hover {
+        border-color: #b0b8c1;
+      }
+      .birthdate-input:focus-within, .birthdate-input.active {
+        border-color: #2563eb;
+        border-width: 2px;
+      }
+      .birthdate-placeholder {
+        color: #8a99ad;
+        font-size: 1.13rem;
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: opacity 0.18s;
+        opacity: 1;
+      }
+      .birthdate-input input.birthdate-real-input,
+      .birthdate-input select.birthdate-real-input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.13rem;
+        color: #222;
+        background: transparent;
+        padding: 0;
+        box-sizing: border-box;
+        z-index: 1;
+        position: relative;
+        display: block;
+      }
+      .birthdate-input input.birthdate-real-input:focus,
+      .birthdate-input select.birthdate-real-input:focus {
+        outline: none;
+      }
+      .birthdate-input input.birthdate-real-input:not(:placeholder-shown),
+      .birthdate-input input.birthdate-real-input:valid,
+      .birthdate-input select.birthdate-real-input:valid {
+        background: transparent;
+      }
+      .birthdate-input input.birthdate-real-input:not(:focus):not(:placeholder-shown),
+      .birthdate-input input.birthdate-real-input:focus,
+      .birthdate-input select.birthdate-real-input:focus {
+        background: transparent;
+      }
+      .birthdate-input input.birthdate-real-input:focus ~ .birthdate-placeholder,
+      .birthdate-input input.birthdate-real-input:not(:placeholder-shown) ~ .birthdate-placeholder,
+      .birthdate-input select.birthdate-real-input:focus ~ .birthdate-placeholder,
+      .birthdate-input select.birthdate-real-input:valid ~ .birthdate-placeholder {
+        opacity: 0;
+      }
+      .birthdate-input input.birthdate-real-input::-webkit-input-placeholder {
+        color: transparent;
+      }
+      .birthdate-input input.birthdate-real-input:-moz-placeholder {
+        color: transparent;
+      }
+      .birthdate-input input.birthdate-real-input::-moz-placeholder {
+        color: transparent;
+      }
+      .birthdate-input input.birthdate-real-input:-ms-input-placeholder {
+        color: transparent;
+      }
+      .birthdate-input select.birthdate-real-input {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: transparent;
+        color: #222;
+        cursor: pointer;
+      }
+      .birthdate-input select.birthdate-real-input:invalid {
+        color: #8a99ad;
+      }
+      .birthdate-input select.birthdate-real-input option[value=""] {
+        color: #8a99ad;
+      }
+      .birthdate-input select.birthdate-real-input:focus {
+        outline: none;
+      }
+      .birthdate-input input.birthdate-real-input {
+        background: transparent;
+      }
+      .education-step-center {
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 40vh;
+        margin-top: 48px;
+      }
+      .education-step-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #111;
+        text-align: left;
+        width: 600px;
+        padding: 40px 0px 32px;
+        line-height: 40px;
+        margin: 0 auto 0 auto;
+      }
+      .education-options {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 600px;
+        max-width: 100vw;
+      }
+      .education-option-btn {
+        width: 600px;
+        max-width: 100vw;
+        height: 54px;
+        padding: 0 16px;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 12px;
+        font-size: 1.13rem;
+        font-weight: 500;
+        color: #111;
+        cursor: pointer;
+        transition: border 0.18s;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      .education-option-btn:hover {
+        border-color: #b0b8c1;
+      }
+      .education-option-btn.active,
+      .education-option-btn:focus {
+        border-color: #2563eb;
+        border-width: 2px;
       }
     </style>
   </head>
@@ -1419,23 +1625,43 @@
               </div>
               <div style="width:600px; margin-top:32px;">
                 <div style="color:#8a99ad; font-size:20px; margin-bottom:12px;">Контактная информация</div>
-                <div class="resume-maininfo-input" id="city-input-block">
+                <div class="resume-maininfo-input" id="city-input-container">
                   <label class="resume-maininfo-label">Город проживания</label>
-                  <input type="text" id="city-input" autocomplete="off" onfocus="showCityDropdown()" oninput="filterCityDropdown()" onblur="hideCityDropdown()" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
-                  <div id="city-dropdown" class="city-dropdown-list" style="display:none;">
-                    <div class="city-dropdown-title">Популярные регионы</div>
-                    <div class="city-dropdown-options">
-                      <div class="city-dropdown-option">Грозный</div>
-                      <div class="city-dropdown-option">Аргун</div>
-                      <div class="city-dropdown-option">Гудермес</div>
-                      <div class="city-dropdown-option">Урус-Мартан</div>
-                      <div class="city-dropdown-option">Шали</div>
-                    </div>
+                  <input type="text" id="city-input" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')" onfocus="showCityList()" onblur="hideCityList()">
+                  <div class="city-list" id="city-list">
+                    <div class="city-item">Грозный</div>
+                    <div class="city-item">Аргун</div>
+                    <div class="city-item">Гудермес</div>
+                    <div class="city-item">Урус-Мартан</div>
+                    <div class="city-item">Шали</div>
+                    <div class="city-item">Ачхой-Мартан</div>
+                    <div class="city-item">Курчалой</div>
+                    <div class="city-item">Цоци-Юрт</div>
+                    <div class="city-item">Бачи-Юрт</div>
+                    <div class="city-item">Алхан-Юрт</div>
                   </div>
                 </div>
                 <div class="resume-maininfo-input">
                   <label class="resume-maininfo-label">Номер телефона</label>
                   <input type="text" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                </div>
+              </div>
+              <!-- Блок даты рождения -->
+              <div class="birthdate-block">
+                <div class="birthdate-label">Дата рождения</div>
+                <div class="birthdate-fields">
+                  <div class="birthdate-input birthdate-day" tabindex="0">
+                    <span class="birthdate-placeholder">Дата</span>
+                    <input type="text" maxlength="2" class="birthdate-real-input" inputmode="numeric" pattern="[0-9]*" />
+                  </div>
+                  <div class="birthdate-input birthdate-month" tabindex="0">
+                    <span class="birthdate-placeholder">Месяц</span>
+                    <input type="text" maxlength="12" class="birthdate-real-input" />
+                  </div>
+                  <div class="birthdate-input birthdate-year" tabindex="0">
+                    <span class="birthdate-placeholder">Год</span>
+                    <input type="text" maxlength="4" class="birthdate-real-input" inputmode="numeric" pattern="[0-9]*" />
+                  </div>
                 </div>
               </div>
             `;
@@ -1500,8 +1726,115 @@
           });
         });
       });
+
+      // Функции для работы со списком городов
+      function showCityList() {
+        const cityList = document.getElementById('city-list');
+        const input = document.getElementById('city-input');
+        const filter = input.value.toLowerCase();
+        
+        // Фильтруем города по введенному тексту
+        const items = cityList.getElementsByClassName('city-item');
+        for (let item of items) {
+          const text = item.textContent.toLowerCase();
+          item.style.display = text.includes(filter) ? '' : 'none';
+        }
+        
+        cityList.style.display = 'block';
+      }
+
+      function hideCityList() {
+        setTimeout(() => {
+          document.getElementById('city-list').style.display = 'none';
+        }, 200);
+      }
+
+      // Добавляем обработчики для выбора города
+      document.addEventListener('DOMContentLoaded', function() {
+        const cityList = document.getElementById('city-list');
+        const cityInput = document.getElementById('city-input');
+        
+        if (cityList && cityInput) {
+          cityList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('city-item')) {
+              cityInput.value = e.target.textContent;
+              cityInput.parentNode.classList.add('filled');
+              cityList.style.display = 'none';
+            }
+          });
+        }
+      });
+
+      // --- Birthdate placeholder logic ---
+      function updateBirthdatePlaceholders() {
+        document.querySelectorAll('.birthdate-input').forEach(function(block) {
+          const input = block.querySelector('.birthdate-real-input');
+          const placeholder = block.querySelector('.birthdate-placeholder');
+          if (!input || !placeholder) return;
+          if ((input.tagName === 'INPUT' && input.value) || (input.tagName === 'SELECT' && input.selectedIndex > 0)) {
+            placeholder.style.opacity = '0';
+          } else {
+            placeholder.style.opacity = '1';
+          }
+        });
+      }
+      document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('birthdate-real-input')) {
+          updateBirthdatePlaceholders();
+        }
+      });
+      document.addEventListener('focusin', function(e) {
+        if (e.target.classList.contains('birthdate-real-input')) {
+          const block = e.target.closest('.birthdate-input');
+          if (block) block.classList.add('active');
+          updateBirthdatePlaceholders();
+        }
+      });
+      document.addEventListener('focusout', function(e) {
+        if (e.target.classList.contains('birthdate-real-input')) {
+          const block = e.target.closest('.birthdate-input');
+          if (block) block.classList.remove('active');
+          setTimeout(updateBirthdatePlaceholders, 10);
+        }
+      });
+      updateBirthdatePlaceholders();
+
+      // --- Education step: only one active button ---
+      document.addEventListener('DOMContentLoaded', function() {
+        const eduBtns = document.querySelectorAll('.education-option-btn');
+        eduBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            eduBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          });
+        });
+
+        // Переход на следующий шаг по кнопке
+        const eduNextBtn = document.querySelector('.education-next-btn');
+        const eduStep = document.querySelector('.education-step-center');
+        const eduNextStep = document.querySelector('.education-next-step-center');
+        if (eduNextBtn && eduStep && eduNextStep) {
+          eduNextBtn.addEventListener('click', function() {
+            eduStep.style.display = 'none';
+            eduNextStep.style.display = 'flex';
+            setProgressBarStep(4); // education step = 4
+          });
+        }
+      });
+
+      // --- Прогресс-бар: подсвечивать все предыдущие и текущий шаги ---
+      function setProgressBarStep(stepIdx) {
+        // stepIdx — номер текущего шага (0-based)
+        var segments = document.querySelectorAll('.resume-progress-segment');
+        segments.forEach(function(seg, i) {
+          if (i <= stepIdx) seg.classList.add('active');
+          else seg.classList.remove('active');
+        });
+      }
+      // При загрузке страницы подсвечиваем первый шаг
+      setProgressBarStep(0);
     });
     
     </script>
   </body>
-</html> 
+</html>
