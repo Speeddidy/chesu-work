@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Создать резюме - ChesuWork</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+      html, body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding-top: 64px;
+        overflow-y: auto;
+      }
+      main#resume-steps-root {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .resume-progress-bar {
+        display: flex;
+        width: 100%;
+        margin: 0 0 0 0;
+        gap: 8px;
+        height: 8px;
+        position: relative;
+        background: transparent;
+        flex-shrink: 0;
+        box-sizing: border-box;
+      }
+      footer {
+        flex-shrink: 0;
+      }
+      .resume-step-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 40vh;
+      }
+      .resume-step-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #111;
+        text-align: left;
+        width: 600px;
+        padding: 40px 0px 32px;
+        line-height: 40px;
+      }
+      .resume-step-title-2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #111;
+        text-align: left;
+        width: 600px;
+        height: 40px;
+        padding: 40px 0px 32px;
+        line-height: 40px;
+        margin: 0;
+      }
+      .resume-step-profession-block {
+        width: 600px;
+        max-width: 100vw;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .resume-step-profession-btn,
+      .resume-step-option-btn {
+        width: 100%;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 20px;
+        min-height: 100px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        position: relative;
+        padding: 24px;
+        font-size: 1.13rem;
+        font-weight: 500;
+        color: #111;
+        cursor: pointer;
+        transition: border 0.18s, box-shadow 0.18s;
+        box-shadow: none;
+        outline: none;
+        overflow: hidden;
+      }
+      .resume-step-profession-btn:focus,
+      .resume-step-profession-btn:hover,
+      .resume-step-option-btn:focus,
+      .resume-step-option-btn:hover {
+        border: 1.5px solid #2563eb;
+        box-shadow: 0 2px 12px rgba(37,99,235,0.07);
+      }
+      .resume-step-profession-options {
+        display: flex;
+        justify-content: space-between;
+        gap: 0;
+        width: 100%;
+      }
+      .resume-step-option-btn {
+        flex: none;
+        width: 294px;
+        height: 130px;
+        min-width: 0;
+        min-height: 130px;
+        margin: 0;
+      }
+      .resume-step-btn-icon-corner {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        font-size: 1.32rem;
+        color: #222;
+        opacity: 0.85;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .resume-step-btn-text-corner {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        font-size: 1.15rem;
+        color: #111;
+        font-weight: 500;
+        text-align: left;
+        width: calc(100% - 48px);
+        display: block;
+        line-height: 1.18;
+      }
+      .resume-step-profession-btn {
+        width: 600px;
+        height: 130px;
+        min-height: 130px;
+        max-width: 100%;
+      }
+      @media (max-width: 600px) {
+        .resume-step-profession-block { width: 100%; }
+        .resume-step-title { font-size: 1.2rem; }
+        .resume-step-profession-btn, .resume-step-option-btn { min-height: 64px; height: 64px; font-size: 1rem; }
+        .resume-step-btn-text-corner { font-size: 1rem; left: 14px; bottom: 10px; width: calc(100% - 28px); }
+        .resume-step-btn-icon-corner { font-size: 1.05rem; top: 10px; left: 14px; }
+        .resume-step-profession-btn {
+          width: 100%;
+          height: 80px;
+          min-height: 80px;
+        }
+        .resume-step-option-btn {
+          width: 100%;
+          height: 80px;
+          min-height: 80px;
+        }
+      }
+      .resume-progress-segment {
+        flex: 1 1 0;
+        background: #e3e7ef;
+        border-radius: 6px;
+        transition: background 0.2s;
+      }
+      .resume-progress-segment.active {
+        background: #2563eb;
+      }
+      .resume-step-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 100vw;
+        margin: 0 auto 0 auto;
+        padding: 16px 76px;
+        box-sizing: border-box;
+      }
+      .resume-step-back, .resume-step-next {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .resume-step-back {
+        background: #f3f7ff;
+        color: #2563eb;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .resume-step-back:hover {
+        background: #e3e7ef;
+      }
+      .resume-step-next {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .resume-step-next:hover {
+        background: #1746b0;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 600px) {
+        .resume-progress-bar {
+          width: 100vw;
+          min-width: 0;
+        }
+        .resume-step-actions {
+          max-width: 100vw;
+          padding: 0 4px 16px 4px;
+        }
+      }
+      .profession-search-block {
+        position: relative;
+        margin-bottom: 18px;
+        width: 100%;
+        max-width: 600px;
+      }
+      .profession-search-input {
+        width: 100%;
+        padding: 14px 18px 14px 44px;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 12px;
+        font-size: 1.13rem;
+        background: #fff;
+        color: #222;
+        outline: none;
+        transition: border 0.18s;
+      }
+      .profession-search-input:focus {
+        border: 1.5px solid #2563eb;
+      }
+      .profession-search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #b0b8c1;
+        font-size: 1.2rem;
+        pointer-events: none;
+      }
+      .profession-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        max-width: 600px;
+      }
+      .profession-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 12px;
+        padding: 18px 18px 18px 18px;
+        font-size: 1.13rem;
+        font-weight: 500;
+        color: #222;
+        cursor: pointer;
+        transition: border 0.18s, box-shadow 0.18s;
+        box-shadow: none;
+      }
+      .profession-item:hover, .profession-item:focus-within {
+        border: 1.5px solid #2563eb;
+        box-shadow: 0 2px 12px rgba(37,99,235,0.07);
+      }
+      .profession-item input[type="radio"] {
+        accent-color: #2563eb;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+      @media (max-width: 600px) {
+        .profession-search-block, .profession-list { max-width: 100vw; }
+      }
+     
+      .profession-search-inner-2 {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        position: relative;
+        padding: 8px 12px 8px 0px;
+      }
+      .profession-search-icon-2 {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #222;
+        opacity: 0.85;
+        font-size: 1.4rem;
+        pointer-events: none;
+      }
+      .profession-search-input-2 {
+        width: 100%;
+        height: 24px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 1.13rem;
+        color: #222;
+        padding: 0px 0px 0px 32px;
+        box-sizing: border-box;
+      }
+      .profession-search-input-2::placeholder {
+        color: #666;
+        opacity: 1;
+      }
+      .profession-search-outer-2 {
+        width: 600px;
+        height: 56px;
+        padding: 8px 8px 8px 16px;
+        box-sizing: border-box;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 14px;
+        transition: border 0.18s, box-shadow 0.18s;
+      }
+      .profession-search-outer-2:focus-within {
+        border: 1.5px solid #2563eb;
+        box-shadow: 0 0 0 2px #2563eb;
+      }
+      .profession-search-outer-2:hover {
+        border: 1.5px solid #d1d5db;
+      }
+      .profession-search-outer-2:hover .profession-search-icon-2 {
+        color: #111;
+        opacity: 1;
+      }
+      .profession-radio-list {
+        width: 600px;
+        margin-top: 0;
+      }
+      .profession-radio-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 56px;
+        background: #fff;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 14px;
+        padding: 16px;
+        box-sizing: border-box;
+        gap: 12px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 400;
+        color: #111;
+        transition: border 0.18s, box-shadow 0.18s;
+        margin-top: 12px;
+      }
+      .profession-radio-item input[type="radio"] {
+        accent-color: #2563eb;
+        width: 24px;
+        height: 24px;
+        margin: 0;
+        flex-shrink: 0;
+      }
+      .profession-radio-item:has(input[type="radio"]:checked) {
+        border: 1.5px solid #2563eb;
+        box-shadow: 0 0 0 2px #2563eb;
+      }
+      .profession-radio-item input[type="radio"]:checked ~ .profession-radio-item {
+        border: 1.5px solid #2563eb;
+        box-shadow: 0 0 0 2px #2563eb;
+      }
+      .profession-radio-text {
+        flex: 1 1 auto;
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+        color: #111;
+        line-height: 24px;
+      }
+      .profession-radio-list .profession-radio-item:first-child {
+        margin-top: 12px;
+      }
+      .profession-modal {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.18);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .profession-modal-content {
+        background: #fff;
+        border-radius: 20px;
+        padding: 24px;
+        min-width: 340px;
+        max-width: 98vw;
+        width: 600px;
+        box-sizing: border-box;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+        justify-content: center;
+      }
+      .profession-modal-header {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        padding: 0;
+      }
+      .profession-modal-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111;
+        text-align: left;
+        margin: 0;
+      }
+      .profession-modal-close {
+        background: none;
+        border: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .profession-modal-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+      }
+      .profession-modal-list .profession-radio-item {
+        width: 552px;
+        margin-top: 12px;
+      }
+      #profession-autocomplete-list {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        padding: 12px;
+        z-index: 1001;
+        max-height: 320px;
+        overflow-y: auto;
+        border: 1.5px solid #e3e7ef;
+        display: none;
+      }
+      .autocomplete-profession-item {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 1.13rem;
+        color: #222;
+        cursor: pointer;
+        transition: background 0.15s;
+        margin-bottom: 4px;
+        box-sizing: border-box;
+        width: 100%;
+        gap: 0;
+      }
+      .autocomplete-profession-item:last-child {
+        margin-bottom: 0;
+      }
+      .autocomplete-profession-item:hover, .autocomplete-profession-item.active {
+        background: #f3f7ff;
+      }
+      .resume-step-maininfo-block {
+        width: 600px;
+        max-width: 100vw;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        margin: 0 auto;
+        margin-top: 12px;
+      }
+      .resume-maininfo-input {
+        width: 600px;
+        max-width: 100vw;
+        height: 56px;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 12px;
+        font-size: 1.13rem;
+        color: #222;
+        padding: 0;
+        outline: none;
+        background: #fff;
+        box-sizing: border-box;
+        position: relative;
+        margin-bottom: 12px;
+        transition: border 0.18s;
+      }
+      .resume-maininfo-input:hover {
+        border-color: #b0b8c1;
+      }
+      .resume-maininfo-input:focus-within {
+        border-width: 2px;
+        border-color: #2563eb;
+      }
+      .resume-maininfo-label {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #8a99ad;
+        font-size: 1.13rem;
+        pointer-events: none;
+        background: #fff;
+        padding: 0 4px;
+        transition: top 0.18s, font-size 0.18s, transform 0.18s;
+      }
+      .resume-maininfo-input:hover .resume-maininfo-label {
+        color: #222;
+      }
+      .resume-maininfo-input:focus-within .resume-maininfo-label,
+      .resume-maininfo-input.filled .resume-maininfo-label {
+        top: 4px;
+        font-size: 0.95rem;
+        color: #8a99ad;
+        transform: none;
+      }
+      .resume-maininfo-input input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.13rem;
+        color: #222;
+        background: transparent;
+        padding: 0 8px 8px 12px;
+        box-sizing: border-box;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        vertical-align: middle;
+        /* Центрирование текста по высоте */
+      }
+      @media (max-width: 600px) {
+        .resume-step-maininfo-block { width: 100vw; }
+        .resume-maininfo-input { width: 100vw; min-width: 0; }
+      }
+      .gender-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 54px;
+        border: 2px solid #e3e7ef;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #fff;
+        padding: 16px;
+        user-select: none;
+        position: relative;
+      }
+      .gender-btn.active {
+        border-color: #2563eb;
+      }
+      .gender-btn:not(.active):hover {
+        border-color: #b0b8c1;
+      }
+      .gender-btn input[type="radio"] {
+        display: none;
+      }
+      .gender-btn-text {
+        height: 22px;
+        line-height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      .resume-maininfo-input:focus-within input,
+      .resume-maininfo-input.filled input {
+        padding-top: 30px;
+        align-items: flex-start;
+      }
+      .city-dropdown-list {
+        position: absolute;
+        left: 0;
+        top: 60px;
+        width: 100%;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        border: 1.5px solid #e3e7ef;
+        z-index: 10;
+        padding: 16px 0 12px 0;
+        display: none;
+      }
+      .city-dropdown-title {
+        color: #8a99ad;
+        font-size: 16px;
+        margin-left: 20px;
+        margin-bottom: 10px;
+      }
+      .city-dropdown-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 16px;
+        padding: 0 16px;
+      }
+      .city-dropdown-option {
+        background: #f1f5f9;
+        border-radius: 16px;
+        padding: 8px 18px;
+        font-size: 18px;
+        color: #222;
+        cursor: pointer;
+        transition: background 0.15s;
+        margin-bottom: 4px;
+        white-space: nowrap;
+      }
+      .city-dropdown-option:hover {
+        background: #e3e7ef;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="main-header" class="main-header cursor-header">
+      <div class="header-inner">
+        <div class="header-left">
+          <div class="logo" onclick="goToMainPage()">
+            <span>ChesuWork</span>
+          </div>
+        </div>
+        <nav class="header-center">
+          <a href="#" class="nav-link">Прайсинг</a>
+          <a href="#" class="nav-link">Фичи</a>
+          <a href="#" class="nav-link">Для компаний</a>
+          <a href="#" class="nav-link">Блог</a>
+          <a href="#" class="nav-link">Форум</a>
+          <a href="vacancies.html" class="nav-link">Вакансии</a>
+        </nav>
+        <div class="header-right">
+          <button id="auth-link" class="profile-btn">SIGN IN</button>
+          <button class="vacancy-btn" onclick="window.location.href='create-job.html'"><span>Создать вакансию</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="resume-steps-root" style="display:flex;flex-direction:column;">
+      <div id="resume-step-1" style="flex:1 0 auto;">
+        <div class="resume-step-center">
+          <h1 class="resume-step-title">Кем вы хотите работать?</h1>
+          <div class="resume-step-profession-block">
+            <button class="resume-step-profession-btn" id="choose-profession-btn">
+              <span class="resume-step-btn-icon-corner"><i class="fa fa-search"></i></span>
+              <span class="resume-step-btn-text-corner">Укажу профессию</span>
+            </button>
+            <div class="resume-step-profession-options">
+              <button class="resume-step-option-btn">
+                <span class="resume-step-btn-icon-corner"><i class="fa fa-briefcase"></i></span>
+                <span class="resume-step-btn-text-corner">Ищу любую работу</span>
+              </button>
+              <button class="resume-step-option-btn">
+                <span class="resume-step-btn-icon-corner"><i class="fa fa-question-circle"></i></span>
+                <span class="resume-step-btn-text-corner">Не знаю, кем хочу работать</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resume-step-2" style="display:none;flex:1 0 auto;">
+        <div class="resume-step-center" style="min-height:40vh;">
+          <h1 class="resume-step-title-2">Выберите или укажите профессию</h1>
+          <div class="profession-search-outer-2" style="position:relative;">
+            <div class="profession-search-block-2">
+              <div class="profession-search-inner-2">
+                <span class="profession-search-icon-2"><i class="fa fa-search"></i></span>
+                <input type="text" class="profession-search-input-2" placeholder="Поиск" autocomplete="off" id="profession-autocomplete-input" />
+              </div>
+              <div id="profession-autocomplete-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="profession-radio-list">
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Администратор">
+              <span class="profession-radio-text">Администратор</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Аналитик">
+              <span class="profession-radio-text">Аналитик</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Бухгалтер">
+              <span class="profession-radio-text">Бухгалтер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Водитель">
+              <span class="profession-radio-text">Водитель</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Врач">
+              <span class="profession-radio-text">Врач</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Грузчик">
+              <span class="profession-radio-text">Грузчик</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Дизайнер">
+              <span class="profession-radio-text">Дизайнер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Директор">
+              <span class="profession-radio-text">Директор</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Инженер">
+              <span class="profession-radio-text">Инженер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Кладовщик">
+              <span class="profession-radio-text">Кладовщик</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Копирайтер">
+              <span class="profession-radio-text">Копирайтер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Курьер">
+              <span class="profession-radio-text">Курьер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Менеджер">
+              <span class="profession-radio-text">Менеджер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Мерчандайзер">
+              <span class="profession-radio-text">Мерчандайзер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Монтажник">
+              <span class="profession-radio-text">Монтажник</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Начинающий специалист">
+              <span class="profession-radio-text">Начинающий специалист</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Оператор">
+              <span class="profession-radio-text">Оператор</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Официант">
+              <span class="profession-radio-text">Официант</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Охранник">
+              <span class="profession-radio-text">Охранник</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Повар">
+              <span class="profession-radio-text">Повар</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Помощник">
+              <span class="profession-radio-text">Помощник</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Преподаватель">
+              <span class="profession-radio-text">Преподаватель</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Программист">
+              <span class="profession-radio-text">Программист</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Продавец">
+              <span class="profession-radio-text">Продавец</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Промоутер">
+              <span class="profession-radio-text">Промоутер</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Рабочий">
+              <span class="profession-radio-text">Рабочий</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Руководитель">
+              <span class="profession-radio-text">Руководитель</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Секретарь">
+              <span class="profession-radio-text">Секретарь</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Слесарь">
+              <span class="profession-radio-text">Слесарь</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Сотрудник пункта выдачи заказов">
+              <span class="profession-radio-text">Сотрудник пункта выдачи заказов</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Специалист">
+              <span class="profession-radio-text">Специалист</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Тайный покупатель">
+              <span class="profession-radio-text">Тайный покупатель</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Торговый представитель">
+              <span class="profession-radio-text">Торговый представитель</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Уборщик">
+              <span class="profession-radio-text">Уборщик</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Упаковщик">
+              <span class="profession-radio-text">Упаковщик</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Экономист">
+              <span class="profession-radio-text">Экономист</span>
+            </label>
+            <label class="profession-radio-item">
+              <input type="radio" name="profession" value="Юрист">
+              <span class="profession-radio-text">Юрист</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="resume-progress-bar">
+      <div class="resume-progress-segment active"></div>
+      <div class="resume-progress-segment"></div>
+      <div class="resume-progress-segment"></div>
+      <div class="resume-progress-segment"></div>
+      <div class="resume-progress-segment"></div>
+      <div class="resume-progress-segment"></div>
+    </div>
+    <div class="resume-step-actions hidden" id="resume-global-actions">
+      <button class="resume-step-back">Назад</button>
+      <button class="resume-step-next">Сохранить и продолжить</button>
+    </div>
+
+    <footer>
+      <p>© 2025 Работа в Грозном. Все права защищены.</p>
+    </footer>
+
+    <!-- Модальное окно уточнения профессии -->
+    <div class="profession-modal" id="profession-modal-admin" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-admin" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор"><span class="profession-radio-text">Администратор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор салона красоты"><span class="profession-radio-text">Администратор салона красоты</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор магазина"><span class="profession-radio-text">Администратор магазина</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор офиса"><span class="profession-radio-text">Администратор офиса</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Помощник системного администратора"><span class="profession-radio-text">Помощник системного администратора</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор ресторана"><span class="profession-radio-text">Администратор ресторана</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Менеджер-администратор"><span class="profession-radio-text">Менеджер-администратор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор торгового зала"><span class="profession-radio-text">Администратор торгового зала</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор баз данных"><span class="profession-radio-text">Администратор баз данных</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор гостиницы"><span class="profession-radio-text">Администратор гостиницы</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор сайта"><span class="profession-radio-text">Администратор сайта</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор проекта"><span class="profession-radio-text">Администратор проекта</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Администратор-менеджер"><span class="profession-radio-text">Администратор-менеджер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-admin" value="Системный администратор Windows"><span class="profession-radio-text">Системный администратор Windows</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Аналитик -->
+    <div class="profession-modal" id="profession-modal-analyst" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-analyst" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Аналитик"><span class="profession-radio-text">Аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Финансовый аналитик"><span class="profession-radio-text">Финансовый аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Экономист-аналитик"><span class="profession-radio-text">Экономист-аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Бизнес-аналитик"><span class="profession-radio-text">Бизнес-аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Маркетолог-аналитик"><span class="profession-radio-text">Маркетолог-аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Системный аналитик"><span class="profession-radio-text">Системный аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Кредитный аналитик"><span class="profession-radio-text">Кредитный аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Инвестиционный аналитик"><span class="profession-radio-text">Инвестиционный аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Аналитик-маркетолог"><span class="profession-radio-text">Аналитик-маркетолог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Аналитик отдела продаж"><span class="profession-radio-text">Аналитик отдела продаж</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Химик-аналитик"><span class="profession-radio-text">Химик-аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Аналитик бизнес-процессов"><span class="profession-radio-text">Аналитик бизнес-процессов</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Младший аналитик"><span class="profession-radio-text">Младший аналитик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Ассистент аналитика"><span class="profession-radio-text">Ассистент аналитика</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-analyst" value="Аналитик-программист"><span class="profession-radio-text">Аналитик-программист</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Бухгалтер -->
+    <div class="profession-modal" id="profession-modal-accountant" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-accountant" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер"><span class="profession-radio-text">Бухгалтер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Заместитель главного бухгалтера"><span class="profession-radio-text">Заместитель главного бухгалтера</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер-экономист"><span class="profession-radio-text">Бухгалтер-экономист</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер-кассир"><span class="profession-radio-text">Бухгалтер-кассир</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер по расчету заработной платы"><span class="profession-radio-text">Бухгалтер по расчету заработной платы</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Экономист-бухгалтер"><span class="profession-radio-text">Экономист-бухгалтер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Старший бухгалтер"><span class="profession-radio-text">Старший бухгалтер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Ведущий бухгалтер"><span class="profession-radio-text">Ведущий бухгалтер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер на первичную документацию"><span class="profession-radio-text">Бухгалтер на первичную документацию</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер-калькулятор"><span class="profession-radio-text">Бухгалтер-калькулятор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Помошник бухгалтера"><span class="profession-radio-text">Помошник бухгалтера</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер по учету тмц"><span class="profession-radio-text">Бухгалтер по учету тмц</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Бухгалтер по банковским операциям"><span class="profession-radio-text">Бухгалтер по банковским операциям</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Помощник главного бухгалтера"><span class="profession-radio-text">Помощник главного бухгалтера</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-accountant" value="Ассистент бухгалтера"><span class="profession-radio-text">Ассистент бухгалтера</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Водитель -->
+    <div class="profession-modal" id="profession-modal-driver" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-driver" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-экспедитор"><span class="profession-radio-text">Водитель-экспедитор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Личный водитель"><span class="profession-radio-text">Личный водитель</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель погрузчика"><span class="profession-radio-text">Водитель погрузчика</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-курьер"><span class="profession-radio-text">Водитель-курьер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель персональный"><span class="profession-radio-text">Водитель персональный</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-охранник"><span class="profession-radio-text">Водитель-охранник</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Персональный водитель руководителя"><span class="profession-radio-text">Персональный водитель руководителя</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель электропогрузчика"><span class="profession-radio-text">Водитель электропогрузчика</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-международник"><span class="profession-radio-text">Водитель-международник</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-дальнобойщик"><span class="profession-radio-text">Водитель-дальнобойщик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-механик"><span class="profession-radio-text">Водитель-механик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Водитель-инкассатор"><span class="profession-radio-text">Водитель-инкассатор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Курьер-водитель"><span class="profession-radio-text">Курьер-водитель</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Механик-водитель"><span class="profession-radio-text">Механик-водитель</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-driver" value="Охранник-водитель"><span class="profession-radio-text">Охранник-водитель</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Врач -->
+    <div class="profession-modal" id="profession-modal-doctor" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-doctor" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Ветеринарный врач"><span class="profession-radio-text">Ветеринарный врач</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-терапевт"><span class="profession-radio-text">Врач-терапевт</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-стоматолог"><span class="profession-radio-text">Врач-стоматолог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-хирург"><span class="profession-radio-text">Врач-хирург</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-педиатр"><span class="profession-radio-text">Врач-педиатр</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Главный врач"><span class="profession-radio-text">Главный врач</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Санитарный врач"><span class="profession-radio-text">Санитарный врач</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-невролог"><span class="profession-radio-text">Врач-невролог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач акушер-гинеколог"><span class="profession-radio-text">Врач акушер-гинеколог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Ассистент врача-стоматолога"><span class="profession-radio-text">Ассистент врача-стоматолога</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-эксперт"><span class="profession-radio-text">Врач-эксперт</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-офтальмолог"><span class="profession-radio-text">Врач-офтальмолог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-косметолог"><span class="profession-radio-text">Врач-косметолог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-doctor" value="Врач-лаборант"><span class="profession-radio-text">Врач-лаборант</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Дизайнер -->
+    <div class="profession-modal" id="profession-modal-designer" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-designer" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер"><span class="profession-radio-text">Дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер интерьеров"><span class="profession-radio-text">Дизайнер интерьеров</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер-верстальщик"><span class="profession-radio-text">Дизайнер-верстальщик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Архитектор-дизайнер"><span class="profession-radio-text">Архитектор-дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Художник-дизайнер"><span class="profession-radio-text">Художник-дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер-консультант"><span class="profession-radio-text">Дизайнер-консультант</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Графический дизайнер"><span class="profession-radio-text">Графический дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Web-дизайнер"><span class="profession-radio-text">Web-дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер-художник"><span class="profession-radio-text">Дизайнер-художник</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Помощник дизайнера"><span class="profession-radio-text">Помощник дизайнера</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Веб-дизайнер"><span class="profession-radio-text">Веб-дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Дизайнер одежды"><span class="profession-radio-text">Дизайнер одежды</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Верстальщик-дизайнер"><span class="profession-radio-text">Верстальщик-дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Ландшафтный дизайнер"><span class="profession-radio-text">Ландшафтный дизайнер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-designer" value="Фотограф-дизайнер"><span class="profession-radio-text">Фотограф-дизайнер</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Директор -->
+    <div class="profession-modal" id="profession-modal-director" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-director" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор филиала"><span class="profession-radio-text">Директор филиала</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Коммерческий директор"><span class="profession-radio-text">Коммерческий директор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор магазина"><span class="profession-radio-text">Директор магазина</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по продажам"><span class="profession-radio-text">Директор по продажам</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по персоналу"><span class="profession-radio-text">Директор по персоналу</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Технический директор"><span class="profession-radio-text">Технический директор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Арт-директор"><span class="profession-radio-text">Арт-директор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по маркетингу"><span class="profession-radio-text">Директор по маркетингу</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Административный директор"><span class="profession-radio-text">Административный директор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Заместитель финансового директора"><span class="profession-radio-text">Заместитель финансового директора</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Заместитель генерального директора"><span class="profession-radio-text">Заместитель генерального директора</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по логистике"><span class="profession-radio-text">Директор по логистике</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор представительства"><span class="profession-radio-text">Директор представительства</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по строительству"><span class="profession-radio-text">Директор по строительству</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-director" value="Директор по производству"><span class="profession-radio-text">Директор по производству</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- Инженер -->
+    <div class="profession-modal" id="profession-modal-engineer" style="display:none;">
+      <div class="profession-modal-content">
+        <div class="profession-modal-header">
+          <span class="profession-modal-title">Уточните профессию</span>
+          <button class="profession-modal-close" data-modal-close="profession-modal-engineer" aria-label="Закрыть">
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#222" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="profession-modal-list">
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер"><span class="profession-radio-text">Инженер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-конструктор"><span class="profession-radio-text">Инженер-конструктор</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Главный инженер"><span class="profession-radio-text">Главный инженер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-механик"><span class="profession-radio-text">Инженер-механик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер ПТО"><span class="profession-radio-text">Инженер ПТО</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-строитель"><span class="profession-radio-text">Инженер-строитель</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-сметчик"><span class="profession-radio-text">Инженер-сметчик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-электрик"><span class="profession-radio-text">Инженер-электрик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер по охране труда"><span class="profession-radio-text">Инженер по охране труда</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-программист"><span class="profession-radio-text">Инженер-программист</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-эколог"><span class="profession-radio-text">Инженер-эколог</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Сервисный инженер"><span class="profession-radio-text">Сервисный инженер</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер технической поддержки"><span class="profession-radio-text">Инженер технической поддержки</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер-энергетик"><span class="profession-radio-text">Инженер-энергетик</span></label>
+          <label class="profession-radio-item"><input type="radio" name="subprofession-engineer" value="Инженер связи"><span class="profession-radio-text">Инженер связи</span></label>
+        </div>
+      </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Управление показом футера для шагов
+      function showStepFooter(step) {
+        var f1 = document.querySelector('.resume-step-footer');
+        var f2 = document.getElementById('resume-step-footer-2');
+        if (f1 && f2) {
+          if (step === 1) {
+            f1.style.display = '';
+            f2.style.display = 'none';
+          } else {
+            f1.style.display = 'none';
+            f2.style.display = '';
+          }
+        }
+      }
+      // На первом шаге — первый футер, на втором — второй
+      showStepFooter(1);
+      var btn = document.getElementById('choose-profession-btn');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          // Переход на второй шаг
+          var step1 = document.getElementById('resume-step-1');
+          var step2 = document.getElementById('resume-step-2');
+          if (step1 && step2) {
+            step1.style.display = 'none';
+            step2.style.display = '';
+          }
+          // Обновить прогресс-бар (второй активный)
+          var bars = document.querySelectorAll('.resume-step-footer');
+          bars.forEach(function(bar, idx) {
+            var segments = bar.querySelectorAll('.resume-progress-segment');
+            segments.forEach(function(seg, i) {
+              seg.classList.remove('active');
+              if (i === 1) seg.classList.add('active');
+            });
+          });
+          showStepFooter(2);
+          showGlobalActions(true); // Показываем кнопки начиная со второго шага
+        });
+      }
+      // Кнопка Назад
+      var backBtn = document.querySelector('.resume-step-back');
+      if (backBtn) {
+        backBtn.addEventListener('click', function() {
+          // Универсальный возврат между шагами
+          var steps = Array.from(document.querySelectorAll('[id^="resume-step-"]'));
+          var currentStepIdx = steps.findIndex(s => s.style.display !== 'none');
+          if (currentStepIdx > 0) {
+            steps[currentStepIdx].style.display = 'none';
+            steps[currentStepIdx - 1].style.display = '';
+            // Прогресс-бар и футер только для первого шага
+            if (currentStepIdx - 1 === 0) {
+              var bars = document.querySelectorAll('.resume-step-footer');
+              bars.forEach(function(bar, idx) {
+                var segments = bar.querySelectorAll('.resume-progress-segment');
+                segments.forEach(function(seg, i) {
+                  seg.classList.remove('active');
+                  if (i === 0) seg.classList.add('active');
+                });
+              });
+              showStepFooter(1);
+              showGlobalActions(false); // Скрываем кнопки только на первом шаге
+            } else {
+              showGlobalActions(true);
+            }
+          }
+        });
+      }
+
+      // Фильтрация профессий по поиску
+      var searchInput = document.querySelector('.profession-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          var filter = this.value.trim().toLowerCase();
+          document.querySelectorAll('.profession-item').forEach(function(item) {
+            var text = item.textContent.trim().toLowerCase();
+            item.style.display = text.includes(filter) ? '' : 'none';
+          });
+        });
+      }
+
+      // Управление показом кнопок снизу
+      function showGlobalActions(show) {
+        var actions = document.getElementById('resume-global-actions');
+        if (actions) {
+          if (show) actions.classList.remove('hidden');
+          else actions.classList.add('hidden');
+        }
+      }
+      showGlobalActions(false); // Кнопки скрыты только на первом шаге
+
+      // Открытие модалки по клику на радиокнопку или label для профессий с уточнением
+      const professionModals = {
+        'Администратор': 'profession-modal-admin',
+        'Аналитик': 'profession-modal-analyst',
+        'Бухгалтер': 'profession-modal-accountant',
+        'Водитель': 'profession-modal-driver',
+        'Врач': 'profession-modal-doctor',
+        'Грузчик': 'profession-modal-loader',
+        'Дизайнер': 'profession-modal-designer',
+        'Директор': 'profession-modal-director',
+        'Инженер': 'profession-modal-engineer',
+      };
+      document.querySelectorAll('.profession-radio-item').forEach(function(label) {
+        var input = label.querySelector('input[type="radio"]');
+        var text = label.textContent.trim();
+        if (input && professionModals[input.value]) {
+          label.addEventListener('click', function(e) {
+            document.getElementById(professionModals[input.value]).style.display = 'flex';
+            e.stopPropagation();
+          });
+        }
+      });
+      // Закрытие по крестику для всех модалок
+      document.querySelectorAll('.profession-modal-close').forEach(function(btn) {
+        btn.onclick = function() {
+          const modalId = btn.getAttribute('data-modal-close');
+          if (modalId) document.getElementById(modalId).style.display = 'none';
+        };
+      });
+      // Закрытие по клику вне окна для всех модалок
+      document.querySelectorAll('.profession-modal').forEach(function(modal) {
+        modal.addEventListener('mousedown', function(e) {
+          if (e.target === this) {
+            this.style.display = 'none';
+          }
+        });
+      });
+
+      // --- Построение карты sub-профессия → главная профессия ---
+      const subToMainMap = {};
+      const modalMainMap = {
+        'admin': 'Администратор',
+        'analyst': 'Аналитик',
+        'accountant': 'Бухгалтер',
+        'driver': 'Водитель',
+        'doctor': 'Врач',
+        'loader': 'Грузчик',
+        'designer': 'Дизайнер',
+        'director': 'Директор',
+        'engineer': 'Инженер',
+      };
+      document.querySelectorAll('.profession-modal').forEach(function(modal) {
+        const id = modal.id.replace('profession-modal-', '');
+        const mainProf = modalMainMap[id];
+        if (mainProf) {
+          modal.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+            subToMainMap[radio.value.trim()] = mainProf;
+          });
+        }
+      });
+
+      function getAllProfessions() {
+        // Основные профессии
+        const radios = Array.from(document.querySelectorAll('.profession-radio-item input[type="radio"]'));
+        // Sub-профессии из модальных окон
+        const subRadios = Array.from(document.querySelectorAll('.profession-modal-list input[type="radio"]'));
+        const all = radios.concat(subRadios).map(r => r.value.trim());
+        // Уникальные значения
+        return Array.from(new Set(all));
+      }
+      let professionList = getAllProfessions();
+      // Если профессии динамически меняются, можно обновлять professionList при каждом input
+      const input = document.getElementById('profession-autocomplete-input');
+      const list = document.getElementById('profession-autocomplete-list');
+      input.addEventListener('input', function() {
+        professionList = getAllProfessions();
+        const val = input.value.trim().toLowerCase();
+        list.innerHTML = '';
+        if (!val) {
+          list.style.display = 'none';
+          return;
+        }
+        const filtered = professionList.filter(p => p.toLowerCase().includes(val));
+        if (filtered.length === 0) {
+          list.style.display = 'none';
+          return;
+        }
+        filtered.forEach(prof => {
+          const div = document.createElement('div');
+          div.className = 'autocomplete-profession-item';
+          div.textContent = prof;
+          div.onclick = function() {
+            // Снимаем выделение со всех основных профессий
+            document.querySelectorAll('.profession-radio-item input[type="radio"]').forEach(r => r.checked = false);
+            // 1. Если это основная профессия
+            let radio = document.querySelector('.profession-radio-item input[type="radio"][value="' + prof.replace(/"/g, '\"') + '"]');
+            if (radio) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change', {bubbles:true}));
+              // Переместить label в начало списка
+              const label = radio.closest('.profession-radio-item');
+              const listBlock = label && label.closest('.profession-radio-list');
+              if (label && listBlock) {
+                const firstLabel = listBlock.querySelector('.profession-radio-item');
+                if (firstLabel && firstLabel !== label) {
+                  listBlock.insertBefore(label, firstLabel);
+                }
+              }
+              console.log('[Автокомплит] Основная профессия выбрана:', prof);
+            } else {
+              // 2. Если это sub-профессия — ищем главную профессию через карту
+              // Приводим к нижнему регистру и убираем пробелы для сопоставления
+              const profKey = prof.trim().toLowerCase();
+              let mainProf = null;
+              for (const [sub, main] of Object.entries(subToMainMap)) {
+                if (sub.trim().toLowerCase() === profKey) {
+                  mainProf = main;
+                  break;
+                }
+              }
+              if (mainProf) {
+                console.log('[Автокомплит] Найдена главная профессия для', prof, ':', mainProf);
+                const mainRadio = document.querySelector('.profession-radio-item input[type="radio"][value="' + mainProf.replace(/"/g, '\"') + '"]');
+                if (mainRadio) {
+                  mainRadio.checked = true;
+                  mainRadio.dispatchEvent(new Event('change', {bubbles:true}));
+                  const mainLabel = mainRadio.closest('.profession-radio-item');
+                  const mainList = mainLabel && mainLabel.closest('.profession-radio-list');
+                  if (mainLabel && mainList) {
+                    const firstLabel = mainList.querySelector('.profession-radio-item');
+                    if (firstLabel && firstLabel !== mainLabel) {
+                      mainList.insertBefore(mainLabel, firstLabel);
+                      console.log('[Автокомплит] Главная профессия перемещена вверх:', mainProf);
+                    }
+                  }
+                } else {
+                  console.log('[Автокомплит] Главная профессия не найдена в DOM:', mainProf);
+                }
+              } else {
+                console.log('[Автокомплит] Не найдена главная профессия для sub:', prof);
+              }
+            }
+            showGlobalActions(true); // Показываем кнопки при выборе профессии через автокомплит
+            input.value = prof;
+            list.style.display = 'none';
+          };
+          div.onmouseenter = function() {
+            document.querySelectorAll('.autocomplete-profession-item').forEach(el => el.classList.remove('active'));
+            div.classList.add('active');
+          };
+          list.appendChild(div);
+        });
+        list.style.display = 'block';
+      });
+      // Скрывать список при клике вне
+      document.addEventListener('mousedown', function(e) {
+        if (!list.contains(e.target) && e.target !== input) {
+          list.style.display = 'none';
+        }
+      });
+      // Навигация по стрелкам и Enter
+      input.addEventListener('keydown', function(e) {
+        const items = Array.from(list.querySelectorAll('.autocomplete-profession-item'));
+        let idx = items.findIndex(el => el.classList.contains('active'));
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (items.length) {
+            if (idx < items.length - 1) idx++;
+            else idx = 0;
+            items.forEach(el => el.classList.remove('active'));
+            items[idx].classList.add('active');
+            items[idx].scrollIntoView({block:'nearest'});
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (items.length) {
+            if (idx > 0) idx--;
+            else idx = items.length - 1;
+            items.forEach(el => el.classList.remove('active'));
+            items[idx].classList.add('active');
+            items[idx].scrollIntoView({block:'nearest'});
+          }
+        } else if (e.key === 'Enter') {
+          if (idx >= 0 && items[idx]) {
+            items[idx].click();
+            e.preventDefault();
+          }
+        }
+      });
+
+      // Переход на следующий шаг по кнопке 'Сохранить и продолжить'
+      var nextBtn = document.querySelector('.resume-step-next');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          var step2 = document.getElementById('resume-step-2');
+          var step3 = document.getElementById('resume-step-3');
+          if (!step3) {
+            // Если блока нет — создаём заглушку
+            step3 = document.createElement('div');
+            step3.id = 'resume-step-3';
+            step3.className = 'resume-step-center';
+            step3.innerHTML = `
+              <h1 class="resume-step-title-2" style="text-align:left;width:600px;">Заполните основную информацию</h1>
+              <div class="resume-step-maininfo-block">
+                <div class="resume-maininfo-input">
+                  <label class="resume-maininfo-label">Фамилия</label>
+                  <input type="text" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                </div>
+                <div class="resume-maininfo-input">
+                  <label class="resume-maininfo-label">Имя</label>
+                  <input type="text" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                </div>
+                <div class="resume-maininfo-input">
+                  <label class="resume-maininfo-label">Отчество</label>
+                  <input type="text" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                </div>
+              </div>
+              <div class="resume-gender-block" style="width: 600px; height: 88px; margin-top: 24px; display: flex; flex-direction: column; align-items: flex-start;">
+                <span style="color: #8a99ad; font-size: 18px; margin-bottom: 8px;">Пол</span>
+                <div style="display: flex; gap: 24px; width: 100%;">
+                  <button type="button" class="gender-btn active" data-gender="male">Мужской</button>
+                  <button type="button" class="gender-btn" data-gender="female">Женский</button>
+                </div>
+              </div>
+              <div style="width:600px; margin-top:32px;">
+                <div style="color:#8a99ad; font-size:20px; margin-bottom:12px;">Контактная информация</div>
+                <div class="resume-maininfo-input" id="city-input-block">
+                  <label class="resume-maininfo-label">Город проживания</label>
+                  <input type="text" id="city-input" autocomplete="off" onfocus="showCityDropdown()" oninput="filterCityDropdown()" onblur="hideCityDropdown()" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                  <div id="city-dropdown" class="city-dropdown-list" style="display:none;">
+                    <div class="city-dropdown-title">Популярные регионы</div>
+                    <div class="city-dropdown-options">
+                      <div class="city-dropdown-option">Грозный</div>
+                      <div class="city-dropdown-option">Аргун</div>
+                      <div class="city-dropdown-option">Гудермес</div>
+                      <div class="city-dropdown-option">Урус-Мартан</div>
+                      <div class="city-dropdown-option">Шали</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="resume-maininfo-input">
+                  <label class="resume-maininfo-label">Номер телефона</label>
+                  <input type="text" oninput="this.parentNode.classList[this.value ? 'add' : 'remove']('filled')">
+                </div>
+              </div>
+            `;
+            var main = document.getElementById('resume-steps-root');
+            if (main) main.appendChild(step3);
+            // Навешиваем обработчик на кнопки выбора пола сразу после их появления
+            const genderBlock = step3.querySelector('.resume-gender-block');
+            if (genderBlock) {
+              genderBlock.addEventListener('click', function(e) {
+                const btn = e.target.closest('.gender-btn');
+                if (btn) {
+                  genderBlock.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+                  btn.classList.add('active');
+                }
+              });
+            }
+          }
+          if (step2) step2.style.display = 'none';
+          if (step3) step3.style.display = '';
+          showGlobalActions(true); // Кнопки видны на всех шагах после первого
+        });
+      }
+      // --- Управление выбором пола ---
+      document.addEventListener('DOMContentLoaded', function() {
+        const genderBlock = document.querySelector('.resume-gender-block');
+        if (genderBlock) {
+          genderBlock.addEventListener('click', function(e) {
+            const btn = e.target.closest('.gender-btn');
+            if (btn) {
+              genderBlock.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+            }
+          });
+        }
+      });
+      // --- ВЫПАДАЮЩИЙ СПИСОК ГОРОДОВ ---
+      function showCityDropdown() {
+        setTimeout(function() {
+          document.getElementById('city-dropdown').style.display = 'block';
+        }, 80);
+      }
+      function hideCityDropdown() {
+        setTimeout(function() {
+          document.getElementById('city-dropdown').style.display = 'none';
+        }, 180);
+      }
+      function filterCityDropdown() {
+        const input = document.getElementById('city-input');
+        const filter = input.value.trim().toLowerCase();
+        document.querySelectorAll('.city-dropdown-option').forEach(function(opt) {
+          const text = opt.textContent.trim().toLowerCase();
+          opt.style.display = text.includes(filter) ? '' : 'none';
+        });
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.city-dropdown-option').forEach(function(opt) {
+          opt.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            document.getElementById('city-input').value = opt.textContent;
+            document.getElementById('city-dropdown').style.display = 'none';
+            document.getElementById('city-input').parentNode.classList.add('filled');
+          });
+        });
+      });
+    });
+    
+    </script>
+  </body>
+</html> 

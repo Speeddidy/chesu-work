@@ -799,6 +799,15 @@
     function showRoleModal() {
       roleModal.style.display = 'flex';
     }
+
+    // Открытие формы регистрации по параметру ?signup=1
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('signup') === '1') {
+        const toSignup = document.getElementById('to-signup');
+        if (toSignup) toSignup.click();
+      }
+    });
   </script>
 </body>
 </html> 

@@ -13,7 +13,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header id="main-header" class="main-header cursor-header">
@@ -33,15 +36,18 @@
         </nav>
         <div class="header-right">
           <button id="auth-link" class="profile-btn">SIGN IN</button>
-          <button class="vacancy-btn" onclick="window.location.href='create-job.html'"><span>Создать вакансию</span></button>
+          <button
+            class="vacancy-btn"
+            onclick="window.location.href='create-job.html'"
+          >
+            <span>Создать вакансию</span>
+          </button>
         </div>
       </div>
     </header>
 
     <header id="auth-header" style="display: none">
-      <div class="logo" onclick="goToMainPage()">
-        ChesuWork
-      </div>
+      <div class="logo" onclick="goToMainPage()">ChesuWork</div>
     </header>
 
     <div id="main-section" class="main-section active">
@@ -63,17 +69,32 @@
             </button>
           </div>
           <div class="search-dropdown" id="search-dropdown">
-            <button class="dropdown-toggle" id="dropdown-toggle" onclick="toggleDropdown(event)">
+            <button
+              class="dropdown-toggle"
+              id="dropdown-toggle"
+              onclick="toggleDropdown(event)"
+            >
               <span id="dropdown-selected">Вакансии</span>
-              <i class="fas fa-chevron-down"></i>
+              <span class="custom-chevron"></span>
             </button>
             <div class="dropdown-menu" id="dropdown-menu">
               <label class="dropdown-option">
-                <input type="radio" name="search-type" value="Резюме" onchange="selectDropdownOption(event)">
+                <input
+                  type="radio"
+                  name="search-type"
+                  value="Резюме"
+                  onchange="selectDropdownOption(event)"
+                />
                 <span>Резюме</span>
               </label>
               <label class="dropdown-option">
-                <input type="radio" name="search-type" value="Вакансии" checked onchange="selectDropdownOption(event)">
+                <input
+                  type="radio"
+                  name="search-type"
+                  value="Вакансии"
+                  checked
+                  onchange="selectDropdownOption(event)"
+                />
                 <span>Вакансии</span>
               </label>
             </div>
@@ -86,346 +107,1191 @@
       </div>
 
       <div class="main-flex-container">
-        <aside class="main-filter">
-          <div style="margin-bottom: 18px;">
-            <label style="font-size: 15px; font-weight: 600; margin-bottom: 6px; display: block;">Исключить слова</label>
-            <input type="text" placeholder="Исключить слова, через запятую" style="width: 100%; border-radius: 12px; border: 1.5px solid #e0e0e0; background: #fafbfc; padding: 12px 16px; font-size: 15px; margin-bottom: 0;">
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <label style="font-size: 15px; font-weight: 600;">Уровень дохода</label>
-              <div class="currency-dropdown" style="position: relative;">
-                <div class="dropdown-selected" id="currency-selected" style="display: flex; align-items: center; gap: 4px; cursor: pointer; min-width: 36px; font-size: 18px; height: 36px; border-radius: 10px; padding: 0 10px;">
-                  <span id="currency-symbol">₽</span>
-                  <span class="dropdown-arrow" style="margin-left: 2px;">
-                    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 7l3 3 3-3" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-                  </span>
+        <div class="vacancy-list-toolbar">
+          <div class="filter-sort-row">
+            <div class="sidebar-dropdown sort-dropdown">
+              <button
+                class="sort-btn sidebar-dropdown-toggle"
+                id="main-sort-toggle"
+              >
+                <span id="main-sort-selected">По соответствию</span>
+                <span class="sidebar-dropdown-arrow">⏷</span>
+              </button>
+              <div class="sidebar-dropdown-menu" id="main-sort-menu">
+                <div
+                  class="sidebar-dropdown-option active"
+                  data-sort="relevance"
+                >
+                  По соответствию
                 </div>
-                <div class="dropdown-list" id="currency-list" style="display: none; position: absolute; top: 120%; right: 0; background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.10); border: 1.5px solid #e0e0e0; min-width: 48px; z-index: 100; padding: 0; overflow: hidden;">
-                  <div class="dropdown-option" data-currency="₽" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 12px 12px 0 0; min-width: 48px; padding: 0;">₽</div>
-                  <div class="dropdown-option" data-currency="€" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 0; min-width: 48px; padding: 0;">€</div>
-                  <div class="dropdown-option" data-currency="$" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 0 0 12px 12px; min-width: 48px; padding: 0;">$</div>
+                <div class="sidebar-dropdown-option" data-sort="date">
+                  По дате
+                </div>
+                <div class="sidebar-dropdown-option" data-sort="salary-desc">
+                  По убыванию зарплат
+                </div>
+                <div class="sidebar-dropdown-option" data-sort="salary-asc">
+                  По возрастанию зарплаты
                 </div>
               </div>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" checked style="accent-color: #2563eb; width: 18px; height: 18px;"> Не имеет значения
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 30 000 ₽
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 50 000 ₽
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 70 000 ₽
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 90 000 ₽
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 100 000 ₽
-              </label>
-              <label style="display: flex; align-items: center; gap: 12px; font-size: 16px; color: #000; cursor: pointer;">
-                <input type="radio" id="salary-own-radio" name="salary" style="accent-color: #2563eb; width: 18px; height: 18px;">
-                Своя зарплата
-              </label>
-              <input type="text" id="salary-own-input" placeholder="от" style="border-radius: 14px; border: 2px solid #e0e0e0; background: #f5f7fa; padding: 10px 18px; font-size: 16px; color: #000; font-weight: 500; box-sizing: border-box; outline: none; width: 180px; margin-left: 30px; transition: all 0.3s ease;">
+            <div class="sidebar-dropdown period-dropdown">
+              <button
+                class="sort-btn sidebar-dropdown-toggle"
+                id="main-period-toggle"
+              >
+                <span id="main-period-selected">За всё время</span>
+                <span class="sidebar-dropdown-arrow">⏷</span>
+              </button>
+              <div class="sidebar-dropdown-menu" id="main-period-menu">
+                <div class="sidebar-dropdown-option active" data-period="all">
+                  За всё время
+                </div>
+                <div class="sidebar-dropdown-option" data-period="month">
+                  За месяц
+                </div>
+                <div class="sidebar-dropdown-option" data-period="week">
+                  За неделю
+                </div>
+                <div class="sidebar-dropdown-option" data-period="day">
+                  За сутки
+                </div>
+              </div>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Специализации</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Администратор
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Официант, бармен, бариста
-              </label>
-              <button id="open-spec-modal" style="background: none; border: none; color: #2563eb; font-size: 15px; font-weight: 500; cursor: pointer; text-align: left; padding: 0; margin-top: 2px;">Выбрать ещё</button>
+          <div class="vacancy-toolbar-actions">
+            <div id="map-btn-wrapper">
+              <button class="vacancy-map-btn">На карте</button>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Образование</div>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Не требуется или не указано
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Среднее профессиональное
-            </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Высшее
-            </label>
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Опыт работы</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp" checked style="accent-color: #2563eb; width: 18px; height: 18px;"> Не имеет значения
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp" style="accent-color: #2563eb; width: 18px; height: 18px;"> От 1 года до 3 лет
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp" style="accent-color: #2563eb; width: 18px; height: 18px;"> Нет опыта
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp" style="accent-color: #2563eb; width: 18px; height: 18px;"> От 3 до 6 лет
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp" style="accent-color: #2563eb; width: 18px; height: 18px;"> Более 6 лет
-              </label>
+        </div>
+        <div style="display: flex; gap: 32px; width: 100%">
+          <aside class="main-filter">
+            <div style="margin-bottom: 18px">
+              <label
+                style="
+                  font-size: 15px;
+                  font-weight: 600;
+                  margin-bottom: 6px;
+                  display: block;
+                "
+                >Исключить слова</label
+              >
+              <input
+                type="text"
+                placeholder="Исключить слова, через запятую"
+                style="
+                  width: 100%;
+                  border-radius: 12px;
+                  border: 1.5px solid #e0e0e0;
+                  background: #fafbfc;
+                  padding: 12px 16px;
+                  font-size: 15px;
+                  margin-bottom: 0;
+                  box-sizing: border-box;
+                "
+              />
             </div>
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Тип занятости</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Полная занятость
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Частичная занятость
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Проектная работа
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Вахта
-              </label>
-              <hr style="border: none; border-top: 1px solid #ececec; margin: 8px 0;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Стажировка
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Для выпускников
-              </label>
+            <div style="margin-bottom: 18px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 8px;
+                "
+              >
+                <label style="font-size: 15px; font-weight: 600"
+                  >Уровень дохода</label
+                >
+                <div class="currency-dropdown" style="position: relative">
+                  <div
+                    class="dropdown-selected"
+                    id="currency-selected"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                      cursor: pointer;
+                      min-width: 36px;
+                      font-size: 18px;
+                      height: 36px;
+                      border-radius: 10px;
+                      padding: 0 10px;
+                    "
+                  >
+                    <span id="currency-symbol">₽</span>
+                    <span class="dropdown-arrow" style="margin-left: 2px">
+                      <svg width="14" height="14" viewBox="0 0 16 16">
+                        <path
+                          d="M5 7l3 3 3-3"
+                          stroke="#222"
+                          stroke-width="2"
+                          fill="none"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                  <div
+                    class="dropdown-list"
+                    id="currency-list"
+                    style="
+                      display: none;
+                      position: absolute;
+                      top: 120%;
+                      right: 0;
+                      background: #fff;
+                      border-radius: 12px;
+                      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                      border: 1.5px solid #e0e0e0;
+                      min-width: 48px;
+                      z-index: 100;
+                      padding: 0;
+                      overflow: hidden;
+                    "
+                  >
+                    <div
+                      class="dropdown-option"
+                      data-currency="₽"
+                      style="
+                        font-size: 18px;
+                        text-align: center;
+                        cursor: pointer;
+                        height: 36px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 12px 12px 0 0;
+                        min-width: 48px;
+                        padding: 0;
+                      "
+                    >
+                      ₽
+                    </div>
+                    <div
+                      class="dropdown-option"
+                      data-currency="€"
+                      style="
+                        font-size: 18px;
+                        text-align: center;
+                        cursor: pointer;
+                        height: 36px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 0;
+                        min-width: 48px;
+                        padding: 0;
+                      "
+                    >
+                      €
+                    </div>
+                    <div
+                      class="dropdown-option"
+                      data-currency="$"
+                      style="
+                        font-size: 18px;
+                        text-align: center;
+                        cursor: pointer;
+                        height: 36px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 0 0 12px 12px;
+                        min-width: 48px;
+                        padding: 0;
+                      "
+                    >
+                      $
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    checked
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Не имеет значения
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  от 30 000 ₽
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  от 50 000 ₽
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  от 70 000 ₽
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  от 90 000 ₽
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  от 100 000 ₽
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    font-size: 16px;
+                    color: #000;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    id="salary-own-radio"
+                    name="salary"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Своя зарплата
+                </label>
+                <input
+                  type="text"
+                  id="salary-own-input"
+                  placeholder="от"
+                  style="
+                    border-radius: 14px;
+                    border: 2px solid #e0e0e0;
+                    background: #f5f7fa;
+                    padding: 10px 18px;
+                    font-size: 16px;
+                    color: #000;
+                    font-weight: 500;
+                    box-sizing: border-box;
+                    outline: none;
+                    width: 180px;
+                    margin-left: 30px;
+                    transition: all 0.3s ease;
+                  "
+                />
+              </div>
             </div>
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">График работы</div>
-            <div class="multi-select-container" id="filter-schedule-multiselect">
-              <div class="multi-select-input" id="filter-schedule-multiselect-input" tabindex="0"></div>
-              <span class="multi-select-arrow" id="filter-schedule-multiselect-arrow">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 11L14 18L21 11" stroke="#B0B8C1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <div class="multi-select-dropdown" id="filter-schedule-multiselect-dropdown"></div>
-            </div>
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Рабочие часы в день</div>
-            <div class="multi-select-container" id="filter-hours-multiselect">
-              <div class="multi-select-input" id="filter-hours-multiselect-input" tabindex="0"></div>
-              <span class="multi-select-arrow" id="filter-hours-multiselect-arrow">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 11L14 18L21 11" stroke="#B0B8C1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <div class="multi-select-dropdown" id="filter-hours-multiselect-dropdown"></div>
-            </div>
-          </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Формат работы</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> На месте работодателя
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Удалённо
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Гибрид
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Разъездной
-              </label>
-            </div>
-          </div>
-          <div style="display: flex; gap: 12px; margin-top: 18px;">
-            <button class="apply-btn" style="flex: 1; background: #2563eb; color: #fff; border-radius: 10px; font-size: 16px; font-weight: 600; padding: 12px 0; border: none;">Применить</button>
-            <button class="clear-btn" style="flex: 1; background: #f5f7fa; color: #2563eb; border-radius: 10px; font-size: 16px; font-weight: 600; padding: 12px 0; border: none;">Очистить</button>
-          </div>
-        </aside>
-        <section class="vacancy-list-section">
-          <div class="vacancy-list-toolbar">
-            <div class="filter-sort-row">
-              <div class="sidebar-dropdown sort-dropdown">
-                <button class="sort-btn sidebar-dropdown-toggle" id="main-sort-toggle">
-                  <span id="main-sort-selected">По соответствию</span>
-                  <span class="sidebar-dropdown-arrow">⏷</span>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Специализации
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Администратор
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Официант, бармен, бариста
+                </label>
+                <button
+                  id="open-spec-modal"
+                  style="
+                    background: none;
+                    border: none;
+                    color: #2563eb;
+                    font-size: 15px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    text-align: left;
+                    padding: 0;
+                    margin-top: 2px;
+                  "
+                >
+                  Выбрать ещё
                 </button>
-                <div class="sidebar-dropdown-menu" id="main-sort-menu">
-                  <div class="sidebar-dropdown-option active" data-sort="relevance">По соответствию</div>
-                  <div class="sidebar-dropdown-option" data-sort="date">По дате</div>
-                  <div class="sidebar-dropdown-option" data-sort="salary-desc">По убыванию зарплат</div>
-                  <div class="sidebar-dropdown-option" data-sort="salary-asc">По возрастанию зарплаты</div>
+              </div>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Образование
+              </div>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Не требуется или не указано
+              </label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Среднее профессиональное
+              </label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Высшее
+              </label>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Опыт работы
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 16px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="exp"
+                    checked
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Не имеет значения
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 16px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="exp"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  От 1 года до 3 лет
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 16px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="exp"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Нет опыта
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 16px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="exp"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  От 3 до 6 лет
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 16px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="exp"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Более 6 лет
+                </label>
+              </div>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Тип занятости
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Полная занятость
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Частичная занятость
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Проектная работа
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Вахта
+                </label>
+                <hr
+                  style="
+                    border: none;
+                    border-top: 1px solid #ececec;
+                    margin: 8px 0;
+                  "
+                />
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Стажировка
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Для выпускников
+                </label>
+              </div>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                График работы
+              </div>
+              <div
+                class="multi-select-container"
+                id="filter-schedule-multiselect"
+              >
+                <div
+                  class="multi-select-input"
+                  id="filter-schedule-multiselect-input"
+                  tabindex="0"
+                ></div>
+                <span
+                  class="multi-select-arrow"
+                  id="filter-schedule-multiselect-arrow"
+                >
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 11L14 18L21 11"
+                      stroke="#B0B8C1"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <div
+                  class="multi-select-dropdown"
+                  id="filter-schedule-multiselect-dropdown"
+                ></div>
+              </div>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Рабочие часы в день
+              </div>
+              <div class="multi-select-container" id="filter-hours-multiselect">
+                <div
+                  class="multi-select-input"
+                  id="filter-hours-multiselect-input"
+                  tabindex="0"
+                ></div>
+                <span
+                  class="multi-select-arrow"
+                  id="filter-hours-multiselect-arrow"
+                >
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 11L14 18L21 11"
+                      stroke="#B0B8C1"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <div
+                  class="multi-select-dropdown"
+                  id="filter-hours-multiselect-dropdown"
+                ></div>
+              </div>
+            </div>
+            <div style="margin-bottom: 18px">
+              <div
+                style="font-size: 15px; font-weight: 600; margin-bottom: 8px"
+              >
+                Формат работы
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  На месте работодателя
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Удалённо
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Гибрид
+                </label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 15px;
+                    color: #111;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    style="accent-color: #2563eb; width: 18px; height: 18px"
+                  />
+                  Разъездной
+                </label>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 18px">
+              <button class="apply-btn" style="flex: 1; padding: 12px 0">
+                Применить
+              </button>
+              <button class="clear-btn" style="flex: 1; padding: 12px 0">
+                Очистить
+              </button>
+            </div>
+          </aside>
+          <section class="vacancy-list-section">
+            <div id="vacancy-list">
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Программист Python</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >150 000 – 200 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 3–6 лет</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">ТехКорп</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Мира</div>
+              </div>
+
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Менеджер по продажам</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 70 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">Грозненский завод</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, пос. Гикало</div>
+              </div>
+
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Флорист</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >50 000 – 80 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Без опыта</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">MyFlowers</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Эсамбаева, 5
                 </div>
               </div>
-              <div class="sidebar-dropdown period-dropdown">
-                <button class="sort-btn sidebar-dropdown-toggle" id="main-period-toggle">
-                  <span id="main-period-selected">За всё время</span>
-                  <span class="sidebar-dropdown-arrow">⏷</span>
-                </button>
-                <div class="sidebar-dropdown-menu" id="main-period-menu">
-                  <div class="sidebar-dropdown-option active" data-period="all">За всё время</div>
-                  <div class="sidebar-dropdown-option" data-period="month">За месяц</div>
-                  <div class="sidebar-dropdown-option" data-period="week">За неделю</div>
-                  <div class="sidebar-dropdown-option" data-period="day">За сутки</div>
+
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Frontend разработчик</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >120 000 – 150 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">WebStudio</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Ленина, 10</div>
+              </div>
+
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Графический дизайнер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 80 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">CreativeLab</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Победы, 15</div>
+              </div>
+
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Бухгалтер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >65 000 – 90 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">ФинансГрупп</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Советская, 20
                 </div>
               </div>
-            </div>
-            <div class="vacancy-toolbar-actions">
-              <div id="map-btn-wrapper">
-                <button class="vacancy-map-btn">На карте</button>
-              </div>
-            </div>
-          </div>
-          <div id="vacancy-list">
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Программист Python</span>
-              </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">150 000 – 200 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 3–6 лет</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">ТехКорп</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Мира</div>
-            </div>
 
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Менеджер по продажам</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Маркетолог</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 90 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Опыт 3–6 лет</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">PromoAgency</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Центральная, 7
+                </div>
               </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">от 70 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 1–3 года</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">Грозненский завод</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, пос. Гикало</div>
-            </div>
 
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Флорист</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Официант</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >40 000 – 60 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Без опыта</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">Кафе Вечер</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Гагарина, 12
+                </div>
               </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">50 000 – 80 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Без опыта</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">MyFlowers</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Эсамбаева, 5</div>
-            </div>
 
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Frontend разработчик</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title"
+                    >Системный администратор</span
+                  >
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >110 000 – 130 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 3–6 лет</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">IT Solutions</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Маяковского, 3
+                </div>
               </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">120 000 – 150 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 1–3 года</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">WebStudio</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Ленина, 10</div>
-            </div>
 
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Графический дизайнер</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">HR-менеджер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 75 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">PeopleCorp</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Южная, 8</div>
               </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">от 80 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 1–3 года</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">CreativeLab</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Победы, 15</div>
-            </div>
 
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Бухгалтер</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">SMM-специалист</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 60 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Без опыта</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">MediaPro</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Пушкина, 21</div>
               </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">65 000 – 90 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 1–3 года</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">QA-инженер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >90 000 – 120 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 1–3 года</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">TestLab</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Лермонтова, 8
+                </div>
               </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">ФинансГрупп</span>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">Контент-менеджер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary">от 55 000 ₽ за месяц</span>
+                  <span class="vacancy-card-tag">Без опыта</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">ContentPlus</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Кадырова, 3</div>
               </div>
-              <div class="vacancy-card-address">Грозный, ул. Советская, 20</div>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">UI/UX дизайнер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >100 000 – 150 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 3–6 лет</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">DesignHub</span>
+                </div>
+                <div class="vacancy-card-address">
+                  Грозный, ул. Ахматова, 11
+                </div>
+              </div>
+              <div class="vacancy-card">
+                <div class="vacancy-card-title-row">
+                  <span class="vacancy-card-title">DevOps-инженер</span>
+                </div>
+                <div
+                  class="vacancy-card-salary-row"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <span class="vacancy-card-salary"
+                    >150 000 – 200 000 ₽ за месяц</span
+                  >
+                  <span class="vacancy-card-tag">Опыт 3–6 лет</span>
+                </div>
+                <div class="vacancy-card-company-row">
+                  <span class="vacancy-card-company">CloudTech</span>
+                </div>
+                <div class="vacancy-card-address">Грозный, ул. Баумана, 9</div>
+              </div>
             </div>
-
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Маркетолог</span>
-              </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">от 90 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 3–6 лет</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">PromoAgency</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Центральная, 7</div>
-            </div>
-
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Официант</span>
-              </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">40 000 – 60 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Без опыта</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">Кафе Вечер</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Гагарина, 12</div>
-            </div>
-
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">Системный администратор</span>
-              </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">110 000 – 130 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 3–6 лет</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">IT Solutions</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Маяковского, 3</div>
-            </div>
-
-            <div class="vacancy-card">
-              <div class="vacancy-card-title-row">
-                <span class="vacancy-card-title">HR-менеджер</span>
-              </div>
-              <div class="vacancy-card-salary-row" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span class="vacancy-card-salary">от 75 000 ₽ за месяц</span>
-                <span class="vacancy-card-tag">Опыт 1–3 года</span>
-              </div>
-              <div class="vacancy-card-company-row">
-                <span class="vacancy-card-company">PeopleCorp</span>
-              </div>
-              <div class="vacancy-card-address">Грозный, ул. Южная, 8</div>
-            </div>
-          </div>
-        </section>
+            <div id="pagination" class="pagination"></div>
+          </section>
+        </div>
       </div>
-
     </div>
 
     <div id="responses-section" class="responses-section">
@@ -441,12 +1307,26 @@
 
     <div id="profile-menu" class="profile-menu">
       <div class="profile-menu-header">
-        <div class="profile-menu-name" id="profile-name">DSAASDASD ASDASDAS</div>
-        <div class="profile-menu-email" id="profile-email">cepoviw596@deusa7.com</div>
+        <div class="profile-menu-name" id="profile-name">
+          DSAASDASD ASDASDAS
+        </div>
+        <div class="profile-menu-email" id="profile-email">
+          cepoviw596@deusa7.com
+        </div>
       </div>
       <div class="profile-menu-divider"></div>
-      <div class="profile-menu-link" id="account-settings">ACCOUNT SETTINGS</div>
-      <div class="profile-menu-link logout" id="logout-btn">LOG OUT <span class="profile-menu-logout-icon"><img src="assets/svg/log-out-01-svgrepo-com.svg" alt="Logout" style="width:18px;height:18px;vertical-align:middle;"></span></div>
+      <div class="profile-menu-link" id="account-settings">
+        ACCOUNT SETTINGS
+      </div>
+      <div class="profile-menu-link logout" id="logout-btn">
+        LOG OUT
+        <span class="profile-menu-logout-icon"
+          ><img
+            src="assets/svg/log-out-01-svgrepo-com.svg"
+            alt="Logout"
+            style="width: 18px; height: 18px; vertical-align: middle"
+        /></span>
+      </div>
     </div>
 
     <div id="job-modal" class="modal">
@@ -609,172 +1489,785 @@
 
     <div id="filter-modal" class="modal">
       <div class="modal-content filter-modal-content">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-          <h3 style="font-size: 22px; font-weight: 700; margin: 0;">Фильтр</h3>
-          <span class="close" onclick="closeModal('filter-modal')" style="font-size: 2rem; color: #888; cursor: pointer; line-height: 1; padding: 0 4px; margin-left: 10px;">×</span>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+          "
+        >
+          <h3 style="font-size: 22px; font-weight: 700; margin: 0">Фильтр</h3>
+          <span
+            class="close"
+            onclick="closeModal('filter-modal')"
+            style="
+              font-size: 2rem;
+              color: #888;
+              cursor: pointer;
+              line-height: 1;
+              padding: 0 4px;
+              margin-left: 10px;
+            "
+            >×</span
+          >
         </div>
-        <aside class="main-filter" style="box-shadow: none; border-radius: 0; padding: 0; background: none;">
-          <div style="margin-bottom: 18px;">
-            <label style="font-size: 15px; font-weight: 600; margin-bottom: 6px; display: block;">Исключить слова</label>
-            <input type="text" placeholder="Исключить слова, через запятую" style="width: 100%; border-radius: 12px; border: 1.5px solid #e0e0e0; background: #fafbfc; padding: 12px 16px; font-size: 15px; margin-bottom: 0;">
+        <aside
+          class="main-filter"
+          style="
+            box-shadow: none;
+            border-radius: 0;
+            padding: 0;
+            background: none;
+          "
+        >
+          <div style="margin-bottom: 18px">
+            <label
+              style="
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 6px;
+                display: block;
+              "
+              >Исключить слова</label
+            >
+            <input
+              type="text"
+              placeholder="Исключить слова, через запятую"
+              style="
+                width: 100%;
+                border-radius: 12px;
+                border: 1.5px solid #e0e0e0;
+                background: #fafbfc;
+                padding: 12px 16px;
+                font-size: 15px;
+                margin-bottom: 0;
+              "
+            />
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <label style="font-size: 15px; font-weight: 600;">Уровень дохода</label>
-              <div class="currency-dropdown" style="position: relative;">
-                <div class="dropdown-selected" id="currency-selected-modal" style="display: flex; align-items: center; gap: 4px; cursor: pointer; min-width: 36px; font-size: 18px; height: 36px; border-radius: 10px; padding: 0 10px;">
+          <div style="margin-bottom: 18px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+              "
+            >
+              <label style="font-size: 15px; font-weight: 600"
+                >Уровень дохода</label
+              >
+              <div class="currency-dropdown" style="position: relative">
+                <div
+                  class="dropdown-selected"
+                  id="currency-selected-modal"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    cursor: pointer;
+                    min-width: 36px;
+                    font-size: 18px;
+                    height: 36px;
+                    border-radius: 10px;
+                    padding: 0 10px;
+                  "
+                >
                   <span id="currency-symbol-modal">₽</span>
-                  <span class="dropdown-arrow" style="margin-left: 2px;">
-                    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 7l3 3 3-3" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                  <span class="dropdown-arrow" style="margin-left: 2px">
+                    <svg width="14" height="14" viewBox="0 0 16 16">
+                      <path
+                        d="M5 7l3 3 3-3"
+                        stroke="#222"
+                        stroke-width="2"
+                        fill="none"
+                        stroke-linecap="round"
+                      />
+                    </svg>
                   </span>
                 </div>
-                <div class="dropdown-list" id="currency-list-modal" style="display: none; position: absolute; top: 120%; right: 0; background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.10); border: 1.5px solid #e0e0e0; min-width: 48px; z-index: 100; padding: 0; overflow: hidden;">
-                  <div class="dropdown-option" data-currency="₽" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 12px 12px 0 0; min-width: 48px; padding: 0;">₽</div>
-                  <div class="dropdown-option" data-currency="€" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 0; min-width: 48px; padding: 0;">€</div>
-                  <div class="dropdown-option" data-currency="$" style="font-size: 18px; text-align: center; cursor: pointer; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 0 0 12px 12px; min-width: 48px; padding: 0;">$</div>
+                <div
+                  class="dropdown-list"
+                  id="currency-list-modal"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 120%;
+                    right: 0;
+                    background: #fff;
+                    border-radius: 12px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                    border: 1.5px solid #e0e0e0;
+                    min-width: 48px;
+                    z-index: 100;
+                    padding: 0;
+                    overflow: hidden;
+                  "
+                >
+                  <div
+                    class="dropdown-option"
+                    data-currency="₽"
+                    style="
+                      font-size: 18px;
+                      text-align: center;
+                      cursor: pointer;
+                      height: 36px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border-radius: 12px 12px 0 0;
+                      min-width: 48px;
+                      padding: 0;
+                    "
+                  >
+                    ₽
+                  </div>
+                  <div
+                    class="dropdown-option"
+                    data-currency="€"
+                    style="
+                      font-size: 18px;
+                      text-align: center;
+                      cursor: pointer;
+                      height: 36px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border-radius: 0;
+                      min-width: 48px;
+                      padding: 0;
+                    "
+                  >
+                    €
+                  </div>
+                  <div
+                    class="dropdown-option"
+                    data-currency="$"
+                    style="
+                      font-size: 18px;
+                      text-align: center;
+                      cursor: pointer;
+                      height: 36px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border-radius: 0 0 12px 12px;
+                      min-width: 48px;
+                      padding: 0;
+                    "
+                  >
+                    $
+                  </div>
                 </div>
               </div>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" checked style="accent-color: #2563eb; width: 18px; height: 18px;"> Не имеет значения
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  checked
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Не имеет значения
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 30 000 ₽
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                от 30 000 ₽
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 50 000 ₽
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                от 50 000 ₽
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 70 000 ₽
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                от 70 000 ₽
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 90 000 ₽
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                от 90 000 ₽
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #000; cursor: pointer;">
-                <input type="radio" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> от 100 000 ₽
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                от 100 000 ₽
               </label>
-              <label style="display: flex; align-items: center; gap: 12px; font-size: 16px; color: #000; cursor: pointer;">
-                <input type="radio" id="salary-own-radio-modal" name="salary-modal" style="accent-color: #2563eb; width: 18px; height: 18px;">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  font-size: 16px;
+                  color: #000;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  id="salary-own-radio-modal"
+                  name="salary-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
                 Своя зарплата
               </label>
-              <input type="text" id="salary-own-input-modal" placeholder="от" style="border-radius: 14px; border: 2px solid #e0e0e0; background: #f5f7fa; padding: 10px 18px; font-size: 16px; color: #000; font-weight: 500; box-sizing: border-box; outline: none; width: 180px; margin-left: 30px; transition: all 0.3s ease;">
+              <input
+                type="text"
+                id="salary-own-input-modal"
+                placeholder="от"
+                style="
+                  border-radius: 14px;
+                  border: 2px solid #e0e0e0;
+                  background: #f5f7fa;
+                  padding: 10px 18px;
+                  font-size: 16px;
+                  color: #000;
+                  font-weight: 500;
+                  box-sizing: border-box;
+                  outline: none;
+                  width: 180px;
+                  margin-left: 30px;
+                  transition: all 0.3s ease;
+                "
+              />
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Специализации</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Администратор
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Специализации
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Администратор
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Официант, бармен, бариста
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Официант, бармен, бариста
               </label>
-              <button id="open-spec-modal-modal" style="background: none; border: none; color: #2563eb; font-size: 15px; font-weight: 500; cursor: pointer; text-align: left; padding: 0; margin-top: 2px;">Выбрать ещё</button>
+              <button
+                id="open-spec-modal-modal"
+                style="
+                  background: none;
+                  border: none;
+                  color: #2563eb;
+                  font-size: 15px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  text-align: left;
+                  padding: 0;
+                  margin-top: 2px;
+                "
+              >
+                Выбрать ещё
+              </button>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Образование</div>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Не требуется или не указано
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Образование
+            </div>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 15px;
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                style="accent-color: #2563eb; width: 18px; height: 18px"
+              />
+              Не требуется или не указано
             </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Среднее профессиональное
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 15px;
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                style="accent-color: #2563eb; width: 18px; height: 18px"
+              />
+              Среднее профессиональное
             </label>
-            <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer;">
-              <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Высшее
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 15px;
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                style="accent-color: #2563eb; width: 18px; height: 18px"
+              />
+              Высшее
             </label>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Опыт работы</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp-modal" checked style="accent-color: #2563eb; width: 18px; height: 18px;"> Не имеет значения
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Опыт работы
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 16px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="exp-modal"
+                  checked
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Не имеет значения
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> От 1 года до 3 лет
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 16px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="exp-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                От 1 года до 3 лет
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> Нет опыта
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 16px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="exp-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Нет опыта
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> От 3 до 6 лет
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 16px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="exp-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                От 3 до 6 лет
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 16px; color: #111; cursor: pointer;">
-                <input type="radio" name="exp-modal" style="accent-color: #2563eb; width: 18px; height: 18px;"> Более 6 лет
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 16px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="radio"
+                  name="exp-modal"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Более 6 лет
               </label>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Тип занятости</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Полная занятость
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Тип занятости
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Полная занятость
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Частичная занятость
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Частичная занятость
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Проектная работа
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Проектная работа
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Вахта
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Вахта
               </label>
-              <hr style="border: none; border-top: 1px solid #ececec; margin: 8px 0;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Стажировка
+              <hr
+                style="
+                  border: none;
+                  border-top: 1px solid #ececec;
+                  margin: 8px 0;
+                "
+              />
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Стажировка
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Для выпускников
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Для выпускников
               </label>
             </div>
           </div>
-          <div style="margin-bottom: 18px; display: none;"></div>
-          <div style="margin-bottom: 18px; display: none;"></div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Формат работы</div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> На месте работодателя
+          <div style="margin-bottom: 18px; display: none"></div>
+          <div style="margin-bottom: 18px; display: none"></div>
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Формат работы
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                На месте работодателя
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Удалённо
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Удалённо
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Гибрид
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Гибрид
               </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #111; cursor: pointer;">
-                <input type="checkbox" style="accent-color: #2563eb; width: 18px; height: 18px;"> Разъездной
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-size: 15px;
+                  color: #111;
+                  cursor: pointer;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: #2563eb; width: 18px; height: 18px"
+                />
+                Разъездной
               </label>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">График работы</div>
-            <div class="multi-select-container" id="filter-schedule-multiselect-modal">
-              <div class="multi-select-input" id="filter-schedule-multiselect-input-modal" tabindex="0"></div>
-              <span class="multi-select-arrow" id="filter-schedule-multiselect-arrow-modal">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 11L14 18L21 11" stroke="#B0B8C1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              График работы
+            </div>
+            <div
+              class="multi-select-container"
+              id="filter-schedule-multiselect-modal"
+            >
+              <div
+                class="multi-select-input"
+                id="filter-schedule-multiselect-input-modal"
+                tabindex="0"
+              ></div>
+              <span
+                class="multi-select-arrow"
+                id="filter-schedule-multiselect-arrow-modal"
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 11L14 18L21 11"
+                    stroke="#B0B8C1"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </span>
-              <div class="multi-select-dropdown" id="filter-schedule-multiselect-dropdown-modal"></div>
+              <div
+                class="multi-select-dropdown"
+                id="filter-schedule-multiselect-dropdown-modal"
+              ></div>
             </div>
           </div>
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">Рабочие часы в день</div>
-            <div class="multi-select-container" id="filter-hours-multiselect-modal">
-              <div class="multi-select-input" id="filter-hours-multiselect-input-modal" tabindex="0"></div>
-              <span class="multi-select-arrow" id="filter-hours-multiselect-arrow-modal">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 11L14 18L21 11" stroke="#B0B8C1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <div style="margin-bottom: 18px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px">
+              Рабочие часы в день
+            </div>
+            <div
+              class="multi-select-container"
+              id="filter-hours-multiselect-modal"
+            >
+              <div
+                class="multi-select-input"
+                id="filter-hours-multiselect-input-modal"
+                tabindex="0"
+              ></div>
+              <span
+                class="multi-select-arrow"
+                id="filter-hours-multiselect-arrow-modal"
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 11L14 18L21 11"
+                    stroke="#B0B8C1"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </span>
-              <div class="multi-select-dropdown" id="filter-hours-multiselect-dropdown-modal"></div>
+              <div
+                class="multi-select-dropdown"
+                id="filter-hours-multiselect-dropdown-modal"
+              ></div>
             </div>
           </div>
-          <div style="display: flex; gap: 12px; margin-top: 18px;">
-            <button class="apply-btn" style="flex: 1; background: #2563eb; color: #fff; border-radius: 10px; font-size: 16px; font-weight: 600; padding: 12px 0; border: none;">Применить</button>
-            <button class="clear-btn" style="flex: 1; background: #f5f7fa; color: #2563eb; border-radius: 10px; font-size: 16px; font-weight: 600; padding: 12px 0; border: none;">Очистить</button>
+          <div style="display: flex; gap: 12px; margin-top: 18px">
+            <button class="apply-btn" style="flex: 1; padding: 12px 0">
+              Применить
+            </button>
+            <button class="clear-btn" style="flex: 1; padding: 12px 0">
+              Очистить
+            </button>
           </div>
         </aside>
       </div>
@@ -810,33 +2303,86 @@
         </button>
       </div>
       <div class="map-sidebar">
-        <div class="map-sidebar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-          <span style="font-size: 1.35rem; font-weight: 700;">Вакансии</span>
-          <button class="map-sidebar-close" style="background: none; border: none; font-size: 2rem; color: #888; cursor: pointer; line-height: 1; padding: 0 4px; margin-left: 10px;" aria-label="Закрыть">×</button>
+        <div
+          class="map-sidebar-header"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+          "
+        >
+          <span style="font-size: 1.35rem; font-weight: 700">Вакансии</span>
+          <button
+            class="map-sidebar-close"
+            style="
+              background: none;
+              border: none;
+              font-size: 2rem;
+              color: #888;
+              cursor: pointer;
+              line-height: 1;
+              padding: 0 4px;
+              margin-left: 10px;
+            "
+            aria-label="Закрыть"
+          >
+            ×
+          </button>
         </div>
-        <div class="map-sidebar-sort" style="display: flex; justify-content: space-between; margin-bottom: 20px; padding: 0 4px;">
+        <div
+          class="map-sidebar-sort"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 4px;
+          "
+        >
           <div class="sidebar-dropdown sort-dropdown">
-            <button class="sort-btn sidebar-dropdown-toggle" id="sidebar-sort-toggle">
+            <button
+              class="sort-btn sidebar-dropdown-toggle"
+              id="sidebar-sort-toggle"
+            >
               <span id="sidebar-sort-selected">По соответствию</span>
               <span class="sidebar-dropdown-arrow">⏷</span>
             </button>
             <div class="sidebar-dropdown-menu" id="sidebar-sort-menu">
-              <div class="sidebar-dropdown-option active" data-sort="relevance">По соответствию</div>
-              <div class="sidebar-dropdown-option" data-sort="date">По дате</div>
-              <div class="sidebar-dropdown-option" data-sort="salary-desc">По убыванию зарплат</div>
-              <div class="sidebar-dropdown-option" data-sort="salary-asc">По возрастанию зарплаты</div>
+              <div class="sidebar-dropdown-option active" data-sort="relevance">
+                По соответствию
+              </div>
+              <div class="sidebar-dropdown-option" data-sort="date">
+                По дате
+              </div>
+              <div class="sidebar-dropdown-option" data-sort="salary-desc">
+                По убыванию зарплат
+              </div>
+              <div class="sidebar-dropdown-option" data-sort="salary-asc">
+                По возрастанию зарплаты
+              </div>
             </div>
           </div>
           <div class="sidebar-dropdown period-dropdown">
-            <button class="sort-btn sidebar-dropdown-toggle" id="sidebar-period-toggle">
+            <button
+              class="sort-btn sidebar-dropdown-toggle"
+              id="sidebar-period-toggle"
+            >
               <span id="sidebar-period-selected">За всё время</span>
               <span class="sidebar-dropdown-arrow">⏷</span>
             </button>
             <div class="sidebar-dropdown-menu" id="sidebar-period-menu">
-              <div class="sidebar-dropdown-option active" data-period="all">За всё время</div>
-              <div class="sidebar-dropdown-option" data-period="month">За месяц</div>
-              <div class="sidebar-dropdown-option" data-period="week">За неделю</div>
-              <div class="sidebar-dropdown-option" data-period="day">За сутки</div>
+              <div class="sidebar-dropdown-option active" data-period="all">
+                За всё время
+              </div>
+              <div class="sidebar-dropdown-option" data-period="month">
+                За месяц
+              </div>
+              <div class="sidebar-dropdown-option" data-period="week">
+                За неделю
+              </div>
+              <div class="sidebar-dropdown-option" data-period="day">
+                За сутки
+              </div>
             </div>
           </div>
         </div>
@@ -850,8 +2396,216 @@
       <p>© 2025 Работа в Грозном. Все права защищены.</p>
     </footer>
 
-    <script src="https://vk.com/js/api/openapi.js?169" async onload="window.dispatchEvent(new Event('vk_loaded'))"></script>
+    <script
+      src="https://vk.com/js/api/openapi.js?169"
+      async
+      onload="window.dispatchEvent(new Event('vk_loaded'))"
+    ></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
+    <style>
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin: 38px auto 0 auto;
+        padding: 0 18px;
+        border: 1.5px solid #e3e7ef;
+        border-radius: 28px;
+        background: #fff;
+        min-height: 48px;
+        width: fit-content;
+        font-family: "Inter", sans-serif;
+        font-size: 20px;
+        user-select: none;
+        box-shadow: none;
+      }
+      .pagination-btn,
+      .pagination-ellipsis {
+        border: none;
+        background: none;
+        color: #6b7685;
+        font-size: 20px;
+        min-width: 40px;
+        height: 40px;
+        margin: 0 2px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pagination-btn.active {
+        background: #f6f8fa;
+        color: #2563eb;
+        font-weight: 700;
+        pointer-events: none;
+        border: none;
+        box-shadow: none;
+      }
+      .pagination-btn:hover:not(.active) {
+        background: #f3f6fa;
+        color: #2563eb;
+      }
+      .pagination-arrow {
+        font-size: 26px;
+        color: #b0b8c1;
+        background: none;
+        border: none;
+        border-radius: 50%;
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0 2px;
+        transition: background 0.15s, color 0.15s;
+      }
+      .pagination-arrow:disabled {
+        color: #e3e7ef;
+        cursor: default;
+        background: none;
+      }
+      .pagination-ellipsis {
+        cursor: default;
+        background: none;
+        color: #b0b8c1;
+        font-size: 22px;
+        min-width: 32px;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+    </style>
+    <script>
+      // --- ПАГИНАЦИЯ ВАКАНСИЙ ---
+      const vacancyList = document.getElementById("vacancy-list");
+      const pagination = document.getElementById("pagination");
+      let allVacancies = Array.from(vacancyList.children);
+      const vacanciesPerPage = 10;
+      let currentPage = 1;
+
+      function renderVacanciesPage(page) {
+        currentPage = page;
+        const start = (page - 1) * vacanciesPerPage;
+        const end = start + vacanciesPerPage;
+        allVacancies.forEach((el, i) => {
+          el.style.display = i >= start && i < end ? "" : "none";
+        });
+        renderPagination();
+      }
+
+      function renderPagination() {
+        const total = allVacancies.length;
+        const pages = Math.ceil(total / vacanciesPerPage);
+        if (pages <= 1) {
+          pagination.innerHTML = `<button class="pagination-btn active">1</button><button class="pagination-arrow" disabled>&#8594;</button>`;
+          return;
+        }
+        let html = "";
+        // Prev arrow
+        html += `<button class="pagination-arrow" ${
+          currentPage === 1 ? "disabled" : ""
+        } onclick="goToPage(${currentPage - 1})">&#8592;</button>`;
+        // Page numbers
+        let pageBtns = [];
+        if (pages <= 8) {
+          for (let i = 1; i <= pages; i++) {
+            pageBtns.push(i);
+          }
+        } else {
+          pageBtns = [1];
+          if (currentPage > 4) pageBtns.push("...");
+          let start = Math.max(2, currentPage - 2);
+          let end = Math.min(pages - 1, currentPage + 2);
+          for (let i = start; i <= end; i++) pageBtns.push(i);
+          if (currentPage + 2 < pages - 1) pageBtns.push("...");
+          pageBtns.push(pages);
+        }
+        for (let btn of pageBtns) {
+          if (btn === "...") {
+            html += `<span class="pagination-ellipsis">...</span>`;
+          } else {
+            html += `<button class="pagination-btn${
+              btn === currentPage ? " active" : ""
+            }" onclick="goToPage(${btn})">${btn}</button>`;
+          }
+        }
+        // Next arrow
+        html += `<button class="pagination-arrow" ${
+          currentPage === pages ? "disabled" : ""
+        } onclick="goToPage(${currentPage + 1})">&#8594;</button>`;
+        pagination.innerHTML = html;
+      }
+
+      window.goToPage = function (page) {
+        const total = allVacancies.length;
+        const pages = Math.ceil(total / vacanciesPerPage);
+        if (page < 1 || page > pages) return;
+        renderVacanciesPage(page);
+      };
+
+      // Функция для сортировки вакансий
+      function sortVacancies(sortType) {
+        const vacancyCards = Array.from(vacancyList.children);
+
+        vacancyCards.sort((a, b) => {
+          const salaryA = getSalaryValue(
+            a.querySelector(".vacancy-card-salary").textContent
+          );
+          const salaryB = getSalaryValue(
+            b.querySelector(".vacancy-card-salary").textContent
+          );
+
+          if (sortType === "salary-desc") {
+            return salaryB - salaryA;
+          } else if (sortType === "salary-asc") {
+            return salaryA - salaryB;
+          }
+          return 0;
+        });
+
+        // Очищаем список и добавляем отсортированные карточки
+        vacancyList.innerHTML = "";
+        vacancyCards.forEach((card) => vacancyList.appendChild(card));
+
+        // Обновляем allVacancies и перерисовываем страницу
+        allVacancies = Array.from(vacancyList.children);
+        renderVacanciesPage(1);
+      }
+
+      // Функция для извлечения числового значения зарплаты
+      function getSalaryValue(salaryText) {
+        const numbers = salaryText.match(/\d+/g);
+        if (!numbers) return 0;
+        return parseInt(numbers[0]);
+      }
+
+      // Добавляем обработчики событий для сортировки
+      document
+        .querySelectorAll(".sidebar-dropdown-option[data-sort]")
+        .forEach((option) => {
+          option.addEventListener("click", function () {
+            const sortType = this.getAttribute("data-sort");
+            sortVacancies(sortType);
+
+            // Обновляем активный класс
+            document
+              .querySelectorAll(".sidebar-dropdown-option")
+              .forEach((opt) => opt.classList.remove("active"));
+            this.classList.add("active");
+
+            // Обновляем текст в кнопке
+            const selectedText = this.textContent;
+            document.getElementById("main-sort-selected").textContent =
+              selectedText;
+          });
+        });
+
+      // Инициализация
+      renderVacanciesPage(1);
+    </script>
   </body>
 </html>
