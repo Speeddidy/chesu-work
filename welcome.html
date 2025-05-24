@@ -3,447 +3,690 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добро пожаловать | Наш сайт</title>
+    <title>Добро пожаловать | ChesuJob</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
-        .supernova-nav {
-            width: 100%;
-            background: #cbe5ff;
-            color: #7a8fa6;
-            font-size: 15px;
-            padding: 0;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-        .supernova-nav .bloko-columns-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 40px;
-            max-width: 1320px;
+        .welcome-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-            gap: 40px;
+            padding: 40px 20px;
+            margin-top: 80px;
         }
-        .supernova-nav .nav-left,
-        .supernova-nav .nav-right {
-            display: flex;
-            align-items: center;
-        }
-        .supernova-nav .nav-left a {
-            color: #337ab7;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        .supernova-nav .nav-left a:first-child {
-            margin-right: 20px;
-        }
-        .supernova-nav .nav-left a:nth-child(2),
-        .supernova-nav .nav-left a:nth-child(3) {
-            margin-left: 20px;
-        }
-        .supernova-nav .nav-left a.nav-active {
-            color: #111;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: default;
-        }
-        .supernova-nav .nav-right a {
-            color: #337ab7;
-            text-decoration: none;
-            font-size: 15px;
-            margin-left: 24px;
-            white-space: normal;
-            word-break: break-word;
-            max-width: 120px;
-            display: inline-block;
+
+        .hero-section {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 24px;
+            padding: 60px 40px;
+            color: white;
             text-align: center;
+            margin-bottom: 60px;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
         }
-        .supernova-nav .nav-right a:first-child {
-            margin-left: 0;
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.2;
         }
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-top: 32px;
+
+        .hero-subtitle {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .header-bg {
-            position: relative;
-            width: 100%;
-            height: 410px;
-            background: url('https://images.unsplash.com/photo-1515168833906-d2a3b82b1e2e?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-        }
-        .header-bg::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(30, 34, 44, 0.62);
-        }
-        .bloko-columns-wrapper {
-            position: relative;
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 20px;
-            z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-        .logo-circle {
-            background: #e1001a;
-            color: #fff;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 22px;
-            margin-right: 14px;
-            font-family: 'Arial Black', Arial, sans-serif;
-        }
-        .help-link {
-            color: #fff;
+
+        .cta-button {
+            background: white;
+            color: #2563eb;
+            border: none;
+            padding: 16px 40px;
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
             text-decoration: none;
-            border-bottom: 1px dotted #fff;
-            margin-top: 2px;
         }
-        .header-actions {
-            display: flex;
-            gap: 16px;
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .header-actions button {
-            background: transparent;
-            border: 1.5px solid #4caf50;
-            color: #4caf50;
-            border-radius: 22px;
-            padding: 7px 22px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
+
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
         }
-        .header-actions button:last-child {
-            border: 1.5px solid #fff;
-            color: #fff;
-            margin-left: 6px;
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
         }
-        .center-block {
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .feature-description {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
             text-align: center;
         }
-        .main-title {
-            color: #fff;
-            font-size: 2.6rem;
-            font-weight: bold;
-            margin-bottom: 22px;
-            margin-top: 0;
-            letter-spacing: 0.5px;
+
+        .stat-item {
+            padding: 20px;
         }
-        .search-column {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .search-row {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 0 0 0 18px;
-            height: 48px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .search-row input {
-            border: none;
-            outline: none;
-            font-size: 1.15rem;
-            flex: 1;
-            padding: 0 10px;
-            background: transparent;
-        }
-        .search-row .search-icon {
-            color: #b0b0b0;
-            font-size: 1.3rem;
-            margin-right: 8px;
-        }
-        .search-row .filter-btn {
-            background: #f3f6fa;
-            border: none;
-            border-radius: 6px;
-            width: 38px;
-            height: 38px;
-            margin-right: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .search-row .filter-btn svg {
-            width: 22px;
-            height: 22px;
-            color: #7a8fa6;
-        }
-        .search-row button.search-btn {
-            background: #238aff;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 0 32px;
-            height: 38px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            margin-right: 8px;
-        }
-        .search-link {
-            color: #fff;
-            text-decoration: underline;
-            font-size: 1.08rem;
-            margin: 10px 0 0 8px;
-            display: block;
-        }
-        .stats-row {
-            display: flex;
-            justify-content: center;
-            gap: 54px;
-            margin-top: 38px;
-        }
-        .stat {
-            color: #fff;
-            text-align: center;
-        }
-        .stat .num {
-            font-size: 1.32rem;
-            font-weight: bold;
-        }
-        .main {
-            max-width: 1100px;
-            margin: 38px auto 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .card-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-            margin-top: 24px;
-            width: 100%;
-            justify-content: center;
-        }
-        .card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            padding: 18px 22px;
-            min-width: 210px;
-            max-width: 240px;
-            flex: 1 1 210px;
-            text-align: left;
-        }
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-        .card-sub {
-            color: #888;
-            font-size: 0.98rem;
-        }
-        @media (max-width: 900px) {
-            .bloko-columns-wrapper { max-width: 98vw; padding: 0 8px; }
-            .center-block { margin-top: 18px; }
-            .main-title { font-size: 1.5rem; }
-            .search-row { width: 98vw; min-width: 0; }
-            .main { max-width: 98vw; }
-            .card-row { flex-direction: column; align-items: center; }
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
-            font-size: 24px;
+
+        .stat-number {
+            font-size: 36px;
             font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            letter-spacing: -0.5px;
-            cursor: pointer;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .welcome-container {
+                padding: 20px;
+            }
+        }
+
+        section[id] {
+            scroll-margin-top: 80px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="supernova-nav">
-            <div class="bloko-columns-wrapper">
-                <div class="nav-left">
-                    <a href="#" id="city-link">Москва</a>
-                    <a href="#" id="seekers-link" class="nav-active">Соискателям</a>
-                    <a href="#" id="employers-link">Работодателям</a>
+    <header id="main-header" class="main-header cursor-header">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="logo" onclick="goToMainPage()">
+                    <span>ChesuJob</span>
                 </div>
-                <div class="nav-right">
-                    <a href="#">Готовое резюме</a>
-                    <a href="#">Карьерная консультация</a>
-                </div>
+            </div>
+            <nav class="header-center">
+                <a href="#hero" class="nav-link">Главная</a>
+                <a href="#students" class="nav-link">Для студентов</a>
+                <a href="#employers" class="nav-link">Для работодателей</a>
+                <a href="#universities" class="nav-link">Университетам</a>
+            </nav>
+            <div class="header-right">
+                <button id="auth-link" class="profile-btn" onclick="window.location.href='auth.html?mode=login'">
+                    <span>Вход</span>
+                </button>
+                <button class="vacancy-btn" onclick="window.location.href='auth.html?mode=register'">
+                    <span>Зарегистрироваться</span>
+                </button>
             </div>
         </div>
     </header>
-    <div class="header-bg">
-        <div class="bloko-columns-wrapper">
-            <div class="header-row">
-                <div class="header-left">
-                    <span class="logo">ChesuWork</span>
-                </div>
-                <div class="header-actions" id="seekers-actions">
-                    <button>Создать резюме</button>
-                    <button onclick="window.location.href='auth.html'">Войти</button>
-                </div>
-                <div class="header-actions" id="employers-actions" style="display:none;">
-                    <button style="background:transparent; border:1.5px solid #fff; color:#fff; border-radius:22px; padding:7px 22px; font-size:16px; font-weight:500; cursor:pointer;" onclick="window.location.href='auth.html?signup=1'">Зарегистрироваться</button>
-                    <button style="background:transparent; border:1.5px solid #fff; color:#fff; border-radius:22px; padding:7px 22px; font-size:16px; font-weight:500; cursor:pointer; margin-left:6px;" onclick="window.location.href='auth.html'">Войти</button>
-                </div>
-            </div>
-        </div>
-        <div class="bloko-columns-wrapper">
-            <div id="seekers-content" class="center-block">
-                <h1 class="main-title">Работа найдётся для каждого</h1>
-                <div class="search-column">
-                    <div class="search-row">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" placeholder="Профессия, должность или компания">
-                        <button class="filter-btn" title="Фильтр">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M6 12h12M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        </button>
-                        <button class="search-btn">Найти</button>
-                    </div>
-                    <a class="search-link" href="#">Я ищу сотрудника</a>
-                </div>
-                <div class="stats-row">
-                    <div class="stat">
-                        <div class="num">82 473 362</div>
-                        резюме
-                    </div>
-                    <div class="stat">
-                        <div class="num">1 130 457</div>
-                        вакансий
-                    </div>
-                    <div class="stat">
-                        <div class="num">2 225 724</div>
-                        компаний
-                    </div>
-                </div>
-            </div>
-            <div id="employers-content" class="center-block" style="display:none; min-height: 340px; align-items: center; justify-content: center;">
-                <h1 class="main-title" style="font-size:2.4rem; margin-bottom: 18px;">Разместите вакансию на ChesuWork</h1>
-                <div style="color:#444; font-size:1.15rem; margin-bottom: 24px;">И находите сотрудников среди тех, кто хочет у вас работать.<br>ChesuWork — сервис №1 по поиску сотрудников</div>
-                <button style="background:#238aff; color:#fff; border:none; border-radius:8px; font-size:1.15rem; font-weight:600; padding:14px 32px; cursor:pointer;">Разместить вакансию</button>
-            </div>
-        </div>
-    </div>
-    <div id="main-content" class="main">
-        <div class="card-row">
-            <div class="card">
-                <div class="card-title">Вакансии дня</div>
-                <div class="card-sub">55 000 – 95 000 ₽<br>14 вакансий</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Компании дня</div>
-                <div class="card-sub">1532 вакансии</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Работа из дома</div>
-                <div class="card-sub">80 553 вакансии</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Подработка</div>
-                <div class="card-sub">до 325 000 ₽</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Курьер</div>
-                <div class="card-sub">15 000 – 295 000 ₽<br>5835 вакансий</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Водитель</div>
-                <div class="card-sub">до 300 000 ₽<br>5603 вакансии</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Продавец</div>
-                <div class="card-sub">15 000 – 200 000 ₽<br>14 353 вакансии</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Кассир</div>
-                <div class="card-sub">15 000 – 170 000 ₽<br>9786 вакансий</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Администратор</div>
-                <div class="card-sub">до 295 000 ₽</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Оператор</div>
-                <div class="card-sub">до 250 000 ₽</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Программист</div>
-                <div class="card-sub">до 500 000 ₽</div>
-            </div>
-            <div class="card">
-                <div class="card-title">Менеджер</div>
-                <div class="card-sub">до 350 000 ₽</div>
-            </div>
-        </div>
-    </div>
-    <script>
-      const seekersLink = document.getElementById('seekers-link');
-      const employersLink = document.getElementById('employers-link');
-      const seekersContent = document.getElementById('seekers-content');
-      const employersContent = document.getElementById('employers-content');
-      const mainContent = document.getElementById('main-content');
 
-      seekersLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        seekersLink.classList.add('nav-active');
-        employersLink.classList.remove('nav-active');
-        seekersContent.style.display = '';
-        employersContent.style.display = 'none';
-        if (mainContent) mainContent.style.display = '';
-        document.getElementById('seekers-actions').style.display = '';
-        document.getElementById('employers-actions').style.display = 'none';
-      });
-      employersLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        employersLink.classList.add('nav-active');
-        seekersLink.classList.remove('nav-active');
-        seekersContent.style.display = 'none';
-        employersContent.style.display = '';
-        if (mainContent) mainContent.style.display = 'none';
-        document.getElementById('seekers-actions').style.display = 'none';
-        document.getElementById('employers-actions').style.display = '';
-      });
+    <div class="welcome-container">
+        <section id="hero" class="hero-section">
+            <h1 class="hero-title">Начни свою карьеру с ChesuJob</h1>
+            <p class="hero-subtitle">
+                Первая платформа для выпускников, где ты можешь найти работу мечты. 
+                Мы помогаем молодым специалистам сделать первые шаги в карьере и 
+                соединяем таланты с лучшими компаниями.
+            </p>
+            <a href="index.html" class="cta-button">Начать поиск работы</a>
+        </section>
+
+        <section id="students" class="for-students-section">
+            <h2 class="section-title">Для студентов</h2>
+            <div class="students-grid">
+                <div class="student-card">
+                    <div class="student-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Начни карьеру раньше</h3>
+                    <p>Найди стажировку или первую работу уже во время учебы. Получай опыт и зарабатывай.</p>
+                    <a href="create-resume.html" class="secondary-button">Создать резюме</a>
+                </div>
+                <div class="student-card">
+                    <div class="student-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3>Бесплатное обучение</h3>
+                    <p>Доступ к курсам и вебинарам от компаний-партнеров. Развивай навыки, которые ценят работодатели.</p>
+                    <a href="#" class="secondary-button">Смотреть курсы</a>
+                </div>
+                <div class="student-card">
+                    <div class="student-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Менторство</h3>
+                    <p>Получи поддержку от опытных специалистов. Они помогут сориентироваться в карьере.</p>
+                    <a href="#" class="secondary-button">Найти ментора</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="employers" class="for-employers-section">
+            <div class="employers-content">
+                <div class="employers-text">
+                    <h2 class="section-title">Для работодателей</h2>
+                    <p class="employers-description">
+                        ChesuJob помогает компаниям находить талантливых выпускников и молодых специалистов. 
+                        Размещайте вакансии, проводите стажировки и находите будущих сотрудников.
+                    </p>
+                    <div class="employers-features">
+                        <div class="employer-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Доступ к базе резюме выпускников</span>
+                        </div>
+                        <div class="employer-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Проведение стажировок</span>
+                        </div>
+                        <div class="employer-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Прямой контакт с университетами</span>
+                        </div>
+                        <div class="employer-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Аналитика и отчеты</span>
+                        </div>
+                    </div>
+                    <a href="create-job.html" class="employer-cta-button">Разместить вакансию</a>
+                </div>
+                <div class="employers-image">
+                    <img src="assets/employers-illustration.svg" alt="Для работодателей" onerror="this.src='https://placehold.co/600x400'">
+                </div>
+            </div>
+        </section>
+
+        <section id="universities" class="universities-section">
+            <h2 class="section-title">Университетам</h2>
+            <div class="universities-content">
+                <p class="universities-description">
+                    Станьте партнером ChesuJob и помогите своим студентам найти работу мечты. 
+                    Мы предоставляем специальные инструменты для университетов.
+                </p>
+                <div class="universities-features">
+                    <div class="university-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Статистика трудоустройства</h4>
+                        <p>Отслеживайте успехи выпускников</p>
+                    </div>
+                    <div class="university-feature">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h4>Ярмарки вакансий</h4>
+                        <p>Организуйте встречи с работодателями</p>
+                    </div>
+                    <div class="university-feature">
+                        <i class="fas fa-bullhorn"></i>
+                        <h4>Продвижение</h4>
+                        <p>Расскажите о своих программах</p>
+                    </div>
+                </div>
+                <a href="#" class="university-cta-button">Стать партнером</a>
+            </div>
+        </section>
+    </div>
+
+    <style>
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1f2937;
+        }
+
+        /* Стили для секции студентов */
+        .for-students-section {
+            padding: 60px 0;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .student-icon {
+            font-size: 40px;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        .student-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .student-card p {
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .secondary-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #f3f4f6;
+            color: #2563eb;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .secondary-button:hover {
+            background: #e5e7eb;
+        }
+
+        /* Стили для секции работодателей */
+        .for-employers-section {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 60px 0;
+        }
+
+        .employers-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .employers-text {
+            max-width: 600px;
+        }
+
+        .employers-description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 30px;
+        }
+
+        .employers-features {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .employer-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #1f2937;
+        }
+
+        .employer-feature i {
+            color: #2563eb;
+            font-size: 20px;
+        }
+
+        .employer-cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: #2563eb;
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .employer-cta-button:hover {
+            background: #1d4ed8;
+        }
+
+        .employers-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Стили для секции университетов */
+        .universities-section {
+            padding: 60px 0;
+        }
+
+        .universities-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .universities-description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 40px;
+        }
+
+        .universities-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .university-feature {
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .university-feature i {
+            font-size: 32px;
+            color: #2563eb;
+            margin-bottom: 16px;
+        }
+
+        .university-feature h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .university-feature p {
+            color: #6b7280;
+        }
+
+        .university-cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: #2563eb;
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .university-cta-button:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .employers-content {
+                grid-template-columns: 1fr;
+            }
+
+            .employers-image {
+                order: -1;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+
+    <script>
+        function goToMainPage() {
+            window.location.href = 'index.html';
+        }
+
+        // Плавная прокрутка к секциям
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 class="footer-title">ChesuJob</h3>
+                    <p class="footer-description">
+                        Первая платформа для выпускников, где ты можешь найти работу мечты. 
+                        Мы помогаем молодым специалистам сделать первые шаги в карьере.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Навигация</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Главная</a></li>
+                        <li><a href="#students">Для студентов</a></li>
+                        <li><a href="#employers">Для работодателей</a></li>
+                        <li><a href="#universities">Университетам</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Поддержка</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Контакты</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>support@chesuwork.ru</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>8 (800) 123-45-67</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Москва, ул. Примерная, 123</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">© 2024 ChesuJob. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .main-footer {
+            background: #1f2937;
+            color: #fff;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-link {
+            color: #fff;
+            font-size: 20px;
+            transition: color 0.2s;
+        }
+
+        .social-link:hover {
+            color: #2563eb;
+        }
+
+        .footer-subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #2563eb;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .footer-contact i {
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .copyright {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .main-footer {
+                padding: 40px 0 20px;
+            }
+        }
+    </style>
 </body>
-</html> 
+</html>
